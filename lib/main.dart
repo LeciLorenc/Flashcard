@@ -1,9 +1,11 @@
 import 'package:flashcard/authentication/authentication_screen.dart';
+import 'package:flashcard/bloc/play_bloc.dart';
 import 'package:flashcard/bloc/user/authentication_bloc.dart';
 import 'package:flashcard/bloc/user/user_bloc.dart' as user_bloc;
 import 'package:flashcard/constants.dart';
 import 'package:flashcard/firebase_options.dart';
 import 'package:flashcard/generated/l10n.dart';
+import 'package:flashcard/pages/home_page/home_content/home_content.dart';
 import 'package:flashcard/pages/home_page/home_page.dart';
 import 'package:flashcard/loading_screen.dart';
 import 'package:flashcard/utils/scroll_behavior.dart';
@@ -12,15 +14,22 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flashcard/bloc/subject_bloc.dart'; // Import the SubjectBloc
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(
-    MultiBlocProvider(
+  runApp(const AppRoot());
+}
+
+class AppRoot extends StatelessWidget {
+  const AppRoot({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
       providers: [
         BlocProvider(
           lazy: false,
@@ -29,22 +38,23 @@ Future<void> main() async {
         BlocProvider(
           create: (BuildContext context) => user_bloc.UserBloc(),
         ),
+        BlocProvider<SubjectBloc>(
+          create: (BuildContext context) => SubjectBloc(),
+        ),
       ],
       child: const MyApp(),
-    ),
-  );
+    );
+  }
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<StatefulWidget> createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  Widget home = const LoadingPage();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,7 +64,6 @@ class _MyAppState extends State<MyApp> {
       ],
       supportedLocales: S.delegate.supportedLocales,
       builder: (context, child) {
-
         if (!isTablet(context)) {
           SystemChrome.setPreferredOrientations([
             DeviceOrientation.portraitUp,
@@ -68,13 +77,12 @@ class _MyAppState extends State<MyApp> {
             DeviceOrientation.landscapeRight,
           ]);
         }
-
         return ScrollConfiguration(
           behavior: NoGlowScrollBehavior(),
           child: child ?? const LoadingPage(),
         );
       },
-      title: 'Walk the dog',
+      title: 'FlashCard',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(color: Colors.black),
@@ -85,29 +93,32 @@ class _MyAppState extends State<MyApp> {
         primaryColor: primaryColor,
         scaffoldBackgroundColor: secondaryColor,
       ),
-      home: BlocListener<AuthenticationBloc, AuthenticationState>(
-        listener: (BuildContext context, AuthenticationState state) {
-          Navigator.popUntil(context, (route) => route.isFirst);
-          Widget home = const LoadingPage();
-
-          if (state is InitializationState) {
-            home = const LoadingPage();
-          } else if (state is UnauthenticatedState) {
-            home = const AuthenticationScreen();
+      home: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+        listener: (context, state) {
+          // React to state changes here
+          if (state is UnauthenticatedState) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const AuthenticationScreen()),
+                  (Route<dynamic> route) => false,
+            );
           } else if (state is AuthenticatedState) {
-            home = const HomePage();
-            context.read<user_bloc.UserBloc>().add(user_bloc.InitUserBloc());
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const HomePage()),
+                  (Route<dynamic> route) => false,
+            );
           }
-          setState(() {
-            this.home = home;
-          });
         },
-        child: home,
+        builder: (context, state) {
+          if (state is InitializationState) {
+            return const LoadingPage();
+          }
+          // Return an empty container to ensure the navigator operates correctly.
+          return Container();
+        },
       ),
     );
   }
 }
-
 
 // import 'package:flashcard/pages/home_page/home_page.dart';
 // import 'package:flutter/material.dart';
