@@ -1,4 +1,7 @@
 import 'package:flashcard/authentication/authentication_screen.dart';
+import 'package:flashcard/authentication/sign_in/sign_in_bloc.dart';
+import 'package:flashcard/authentication/sign_in/sign_in_screen.dart';
+import 'package:flashcard/authentication/sign_up/sign_up_bloc.dart';
 import 'package:flashcard/bloc/play_bloc.dart';
 import 'package:flashcard/bloc/user/authentication_bloc.dart';
 import 'package:flashcard/bloc/user/user_bloc.dart' as user_bloc;
@@ -15,37 +18,69 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flashcard/bloc/subject_bloc.dart'; // Import the SubjectBloc
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
+
+
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const AppRoot());
-}
+  runApp(
+    MultiBlocProvider(
+    providers: [
+    BlocProvider(
+    lazy: false,
+    create: (BuildContext context) => AuthenticationBloc(),
+  ),
+  BlocProvider(
+  create: (BuildContext context) => user_bloc.UserBloc(),
+  ),
+  // Include the SubjectBloc provider
+  BlocProvider(
+  create: (BuildContext context) => SubjectBloc(),
+  ),
+  // Add other BlocProviders here
+  // BlocProvider(
+  //   create: (BuildContext context) => OfferBloc(),
+  // ),
+  // BlocProvider(
+  //   create: (BuildContext context) => LocationBloc(),
+  // ),
+  // BlocProvider(
+  //   create: (BuildContext context) => OrderBloc(),
+  // ),
+  ],
+  child: const MyApp(),));
 
-class AppRoot extends StatelessWidget {
-  const AppRoot({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          lazy: false,
-          create: (BuildContext context) => AuthenticationBloc(),
-        ),
-        BlocProvider(
-          create: (BuildContext context) => user_bloc.UserBloc(),
-        ),
-        BlocProvider<SubjectBloc>(
-          create: (BuildContext context) => SubjectBloc(),
-        ),
-      ],
-      child: const MyApp(),
-    );
-  }
 }
+//
+// class AppRoot extends StatelessWidget {
+//   const AppRoot({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MultiBlocProvider(
+//       providers: [
+//         BlocProvider(
+//           lazy: false,
+//           create: (BuildContext context) => AuthenticationBloc(),
+//         ),
+//         BlocProvider(
+//           create: (BuildContext context) => user_bloc.UserBloc(),
+//         ),
+//         // Include the SubjectBloc provider
+//         BlocProvider(
+//           create: (BuildContext context) => SubjectBloc(),
+//         ),
+//       ],
+//       child: const MyApp(),
+//     );
+//   }
+// }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -55,6 +90,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  Widget home = const LoadingPage();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -93,30 +129,32 @@ class _MyAppState extends State<MyApp> {
         primaryColor: primaryColor,
         scaffoldBackgroundColor: secondaryColor,
       ),
-      home: BlocConsumer<AuthenticationBloc, AuthenticationState>(
-        listener: (context, state) {
-          // React to state changes here
-          if (state is UnauthenticatedState) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => const AuthenticationScreen()),
-                  (Route<dynamic> route) => false,
-            );
-          } else if (state is AuthenticatedState) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => const HomePage()),
-                  (Route<dynamic> route) => false,
-            );
-          }
-        },
-        builder: (context, state) {
+        home: BlocListener<AuthenticationBloc, AuthenticationState>(
+          listener: (context, state) {
+      // Pop to first route
+          Navigator.popUntil(context, (route) => route.isFirst);
+
+          Widget newHome = const LoadingPage();
+
           if (state is InitializationState) {
-            return const LoadingPage();
-          }
-          // Return an empty container to ensure the navigator operates correctly.
-          return Container();
+            newHome = const LoadingPage();
+          } else if (state is UnauthenticatedState) {
+            newHome = const AuthenticationScreen();
+          } else if (state is AuthenticatedState) {
+           newHome = const HomePage();
+           context.read<user_bloc.UserBloc>().add(user_bloc.InitUserBloc());
+
+        // Trigger init events for other blocs here
+        }
+
+      // Update the home widget state
+          setState(() {
+          home = newHome;
+         });
         },
-      ),
-    );
+         child: home,
+  ));
+
   }
 }
 

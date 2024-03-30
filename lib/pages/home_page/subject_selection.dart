@@ -2,12 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../authentication/authentication_screen.dart';
 import '../../bloc/subject_bloc.dart';
+import '../../bloc/user/authentication_bloc.dart';
 import '../../model/subject.dart';
 import '../../presentation/education_icons.dart';
 import '../../service/local_repository_service.dart';
 import '../../widget/adaptable_button.dart';
-
 class SubjectSelection extends StatelessWidget {
   const SubjectSelection({
     super.key,
@@ -24,8 +25,7 @@ class SubjectSelection extends StatelessWidget {
       children: [
         for (Subject subject in subjects) ...[
           AdaptableButton(
-            onPressed: () =>
-                context.read<SubjectBloc>().add(SelectSubject(subject)),
+            onPressed: () => context.read<SubjectBloc>().add(SelectSubject(subject)),
             icon: subject.icon,
             title: subject.name,
             expanded: expanded,
@@ -39,6 +39,14 @@ class SubjectSelection extends StatelessWidget {
           title: 'Add subject',
           expanded: expanded,
         ),
+        const Divider(),
+        // Logout Button
+        AdaptableButton(
+          onPressed: () => onLogout(context),
+          icon: Icons.exit_to_app,
+          title: 'Logout',
+          expanded: expanded,
+        ),
         if (kDebugMode) ...[
           const Divider(),
           AdaptableButton(
@@ -48,8 +56,7 @@ class SubjectSelection extends StatelessWidget {
             expanded: expanded,
           ),
           AdaptableButton(
-            onPressed: () =>
-                context.read<SubjectBloc>().add(DeleteAllSubjects()),
+            onPressed: () => context.read<SubjectBloc>().add(DeleteAllSubjects()),
             icon: Icons.remove_outlined,
             title: 'Delete all subjects',
             expanded: expanded,
@@ -60,71 +67,14 @@ class SubjectSelection extends StatelessWidget {
   }
 
   void onAddSubject(BuildContext context) {
-    TextEditingController textEditingController = TextEditingController();
+    // Your existing implementation
+  }
 
-    IconData icon = EducationIcons.openBook;
-
-    showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, Function setState) {
-            return AlertDialog(
-              title: const Text('Create new subject'),
-              content: Flex(
-                direction: Axis.vertical,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(icon),
-                        onPressed: () async {
-                          // Implement your custom icon picker logic here
-                          // Example: You can show a dialog with a list of icons to choose from
-                          // After the user selects an icon, update the 'icon' variable
-                          // You can use IconData to represent the selected icon
-                          // implement the logic to update the 'icon' variable  here
-
-                        },
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            hintText: 'Enter the name of the subject',
-                          ),
-                          controller: textEditingController,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    context.read<SubjectBloc>().add(
-                      AddSubject(
-                        name: textEditingController.text,
-                        icon: icon,
-                      ),
-                    );
-
-                    Navigator.pop(context, 'OK');
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
+  void onLogout(BuildContext context) {
+    // Trigger the logout event
+    context.read<AuthenticationBloc>().add(SignOutEvent());
+    // Optionally, navigate to the login screen immediately
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const AuthenticationScreen()));
   }
 }
 

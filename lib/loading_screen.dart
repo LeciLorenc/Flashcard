@@ -55,7 +55,7 @@ class _LoadingWidgetState extends State<LoadingWidget>
 
   late List<Image> images = [
     for (int i = 0; i < 6; i++)
-      Image.asset('assets/animations/running_dog/$i.png')
+      Image.asset('assets/animations/cards/memo_$i.png')
   ];
 
   @override

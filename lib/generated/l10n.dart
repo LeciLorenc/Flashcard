@@ -641,10 +641,10 @@ class S {
   }
 
   /// `Walk the dog`
-  String get walkTheDog {
+  String get FlashCard {
     return Intl.message(
-      'Walk the dog',
-      name: 'walkTheDog',
+      'FlashCard',
+      name: 'FlashCard',
       desc: '',
       args: [],
     );

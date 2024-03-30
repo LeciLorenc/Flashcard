@@ -28,6 +28,7 @@ dependencies:
   intl: any
   icon_picker: ^2.1.0
   firebase_storage: ^11.2.2
+  provider: ^6.0.0 # Use the latest version that's compatible with your project
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +42,9 @@ flutter:
     - gen_l10n
 
   uses-material-design: true
+
+  assets:
+    - assets/animations/cards/
 
   fonts:
     - family: EducationIcons

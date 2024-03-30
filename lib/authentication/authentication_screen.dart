@@ -26,10 +26,10 @@ class AuthenticationScreen extends StatelessWidget {
                       child: FittedBox(
                         fit: BoxFit.fitWidth,
                         child: Text(
-                          S.of(context).walkTheDog,
+                          S.of(context).FlashCard,
                           style: const TextStyle(
                             color: Colors.black,
-                            fontSize: 110,
+                            fontSize: 140,
                             fontFamily: 'Pacifico',
                           ),
                         ),
