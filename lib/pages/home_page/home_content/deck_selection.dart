@@ -1,13 +1,18 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../ChatGPT_services/model/deckCreation.dart';
+import '../../../ChatGPT_services/model-view/processAImessage.dart';
 import '../../../bloc/subject_bloc.dart';
 import '../../../model/deck.dart';
 import '../../../model/subject.dart';
 import '../../../presentation/education_icons.dart';
-import '../../../widget/adaptable_button.dart';
 import '../../play_page/play_page.dart';
+import '../../../ChatGPT_services/view/creationDeckDialog.dart';
+import 'package:flashcard/ChatGPT_services/view/dialogs/loading_dialog.dart';
 
+import 'package:flashcard/ChatGPT_services/model-view/api_service.dart';
 class DeckSelection extends StatelessWidget {
   const DeckSelection({
     super.key,
@@ -18,6 +23,7 @@ class DeckSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return ListView(
       children: [
         for (final Deck deck in subject.decks) ...[
@@ -72,10 +78,19 @@ class DeckSelection extends StatelessWidget {
           ),
           const Divider(),
         ],
-        ListTile(
-          onTap: () => onAddDeck(context),
-          leading: const Icon(Icons.add),
-          title: const Text('Add deck'),
+        Column(
+          children: [
+            ListTile(
+              onTap: () => onAddDeck(context),
+              leading: const Icon(Icons.add),
+              title: const Text('Add deck'),
+            ),
+            ListTile(
+              onTap: () => onAddDeckWithAI(context),
+              leading: const Icon(Icons.add),
+              title: const Text('Add deck with AI'),
+            ),
+          ],
         )
       ],
     );
@@ -160,7 +175,6 @@ class DeckSelection extends StatelessWidget {
                     icon: icon,
                   ),
                 );
-
                 Navigator.pop(context, 'OK');
               },
               child: const Text('OK'),
@@ -170,7 +184,85 @@ class DeckSelection extends StatelessWidget {
       },
     );
   }
+
+
+
+  void onAddDeckWithAI(BuildContext context) async {
+    BuildContext oldContext = context;
+
+
+    DeckCreationViewModel deckCreationViewModel = DeckCreationViewModel();
+    final List<dynamic> result = await creationDeckDialog(oldContext, deckCreationViewModel);
+    //final List<dynamic> result = await showDeckDialog(context);
+
+    String response="";
+    if (result.isNotEmpty && result[0] == 'OK') {
+
+      // Accesso ai parametri selezionati
+      final String name = result[1];
+      final String descriptionForGPT = result[2];
+      final int numberOfFlashcard = result[3];
+      final String languageForGPT = result[4];
+      final IconData iconFromDialog = result[5];
+
+
+      LoadingDialog.isLoading=true;
+
+      showLoadingMessage(context);
+
+      String message= constructionOfTheMessage(name, descriptionForGPT,numberOfFlashcard,languageForGPT);
+
+      try {
+        response= await ApiService.sendMessageToChatGPT(message);
+        if( LoadingDialog.isLoading ) {
+          dialogResponseArrived(response, context);
+          await Future.delayed(const Duration(seconds: 1));
+          Navigator.pop(context);
+
+          //TODO prima di mettere l'add del deck verificare che il response passi tutta una serie di parametri
+          showInfoMessage(
+              context, "Now will be displayed the flashcard created by the AI");
+          await Future.delayed(const Duration(seconds: 3));
+          Navigator.pop(context);
+          await Future.delayed(const Duration(seconds: 2));
+
+          try {
+            dynamic deckCreatedByAI = await insertionOfDeck(
+                context,
+                name,
+                descriptionForGPT,
+                numberOfFlashcard,
+                languageForGPT,
+                iconFromDialog,
+                subject);
+
+            await insertionOfTheFlashcard(context, deckCreatedByAI, response);
+
+            context.read<SubjectBloc>().add(SelectSubject(subject));
+          }catch (error)
+          {
+            context.read<SubjectBloc>().add(SelectSubject(subject));
+            badResponseUnexpected(error, context);
+          }
+        }
+
+      } catch (error) {
+        Navigator.pop(context);
+        badResponseHandling(error, context);
+        await Future.delayed(const Duration(seconds: 3));
+        Navigator.pop(context);
+      }
+
+      await Future.delayed(const Duration(seconds: 1));
+    }
+
+  }
+
+
 }
+
+
+
 
 
 // import 'package:flutter/material.dart';
