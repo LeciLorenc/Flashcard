@@ -34,7 +34,7 @@ class DeckModify extends StatelessWidget {
         for (Flashcard flashcard in deck.flashcards) ...[
           Padding(
             key: ValueKey(flashcard.id),
-            padding: const EdgeInsets.only(bottom: 16.0),
+            padding: const EdgeInsets.only(bottom: 42.0),
             child: AdaptableCardHolder(
               visualize: visualize,
               index: flashcard.index,

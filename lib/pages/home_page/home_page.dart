@@ -13,21 +13,23 @@ class HomePage extends StatefulWidget {
 
   @override
   State<HomePage> createState() => _HomePageState();
+
+  static var expanded=false;
 }
 
 class _HomePageState extends State<HomePage> {
-  bool expanded = false;
+
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SubjectBloc, SubjectState>(
       builder: (BuildContext context, SubjectState subjectState) {
         return AdaptablePage(
-          expanded: expanded,
+          expanded: HomePage.expanded,
           onExpand: onExpand,
           drawer: SubjectSelection(
             subjects: subjectState.subjects,
-            expanded: expanded,
+            expanded: HomePage.expanded,
           ),
           content: const HomeContent(),
           title: subjectState.subject == null
@@ -49,7 +51,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void onExpand() => setState(() => expanded = !expanded);
+  void onExpand() => setState(() => HomePage.expanded = !HomePage.expanded);
+
 
   void onDeleteSubject(Subject subject) {
     showDialog<String>(
@@ -65,10 +68,10 @@ class _HomePageState extends State<HomePage> {
           TextButton(
             onPressed: () {
               context.read<SubjectBloc>().add(
-                    DeleteSubject(
-                      subject: subject,
-                    ),
-                  );
+                DeleteSubject(
+                  subject: subject,
+                ),
+              );
 
               Navigator.pop(context, 'OK');
             },

@@ -28,6 +28,7 @@ dependencies:
   intl: any
   icon_picker: ^2.1.0
   firebase_storage: ^11.2.2
+  country_flags: ^2.2.0
 
 dev_dependencies:
   flutter_test:
