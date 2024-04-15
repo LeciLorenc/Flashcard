@@ -1,8 +1,8 @@
+/*
 import 'package:flashcard/authentication/authentication_screen.dart';
 import 'package:flashcard/bloc/play_bloc.dart';
 import 'package:flashcard/bloc/user/authentication_bloc.dart';
 import 'package:flashcard/bloc/user/user_bloc.dart' as user_bloc;
-import 'package:flashcard/constants.dart';
 import 'package:flashcard/firebase_options.dart';
 import 'package:flashcard/generated/l10n.dart';
 import 'package:flashcard/pages/home_page/home_content/home_content.dart';
@@ -14,7 +14,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flashcard/bloc/subject_bloc.dart'; // Import the SubjectBloc
+import 'package:flashcard/bloc/subject_bloc.dart';
+import 'constants.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -120,37 +121,41 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-// import 'package:flashcard/pages/home_page/home_page.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-//
-// import 'bloc/subject_bloc.dart';
-//
-// void main() {
-//   runApp(MultiBlocProvider(
-//     providers: [
-//       BlocProvider<SubjectBloc>(
-//         create: (BuildContext context) => SubjectBloc(),
-//       ),
-//
-//     ],
-//     child: const MyApp(),
-//   ));
-// }
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flashcard',
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amberAccent),
-//         useMaterial3: true,
-//       ),
-//       home: const HomePage(),
-//     );
-//   }
-// }
+
+
+
+*/
+import 'package:flashcard/pages/home_page/home_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'bloc/subject_bloc.dart';
+
+void main() {
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<SubjectBloc>(
+        create: (BuildContext context) => SubjectBloc(),
+      ),
+
+    ],
+    child: const MyApp(),
+  ));
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flashcard',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amberAccent),
+        useMaterial3: true,
+      ),
+      home: const HomePage(),
+    );
+  }
+}

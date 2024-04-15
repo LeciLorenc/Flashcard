@@ -1,8 +1,13 @@
+import 'package:flashcard/calendar_and_recap/playErrors/model/playedItems.dart';
+import 'package:flashcard/calendar_and_recap/playErrors/playedSavings.dart';
+import 'package:flashcard/calendar_and_recap/playErrors/model/incorrectItem.dart';
 import 'package:flashcard/model/flashcard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../../bloc/play_bloc.dart';
+import '../../calendar_and_recap/playErrors/view/showIncorrectWhenPlaying.dart';
 import '../../widget/adaptable_card/adaptable_card.dart';
 import '../../widget/flashcard_text_editing_controller/flashcard_text_editing_controller.dart';
 
@@ -95,6 +100,30 @@ class _PlayContentState extends State<PlayContent> {
           );
         }
         if (state is Finished) {
+
+          final incorrectFlashcards= context.read<PlayBloc>().getIncorrectFlashcards();
+          String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+          String currentTime = DateFormat.Hms().format(DateTime.now());
+
+          //ADD OF ERRORS
+          for(Flashcard wrongFlash in incorrectFlashcards)
+          {
+            IncorrectItem incorrectItem = PlayedSavings.createIncorrectItem(context.read<PlayBloc>(),
+                                                    wrongFlash, currentDate, currentTime);
+            PlayedSavings.addToErrorList(incorrectItem);
+          }
+          PlayedSavings.saveErrorList().then((value) => null);
+
+
+          //ADD OF PLAYED DECK
+          PlayedDeck playedDeck = PlayedSavings.createPlayedDeck(context.read<PlayBloc>(),
+                                                  currentDate,currentTime);
+          PlayedSavings.addToPlayedList(playedDeck);
+          PlayedSavings.savePlayedList().then((value) => null);
+
+
+
+
           return Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -131,6 +160,43 @@ class _PlayContentState extends State<PlayContent> {
                   ),
                 ),
                 const SizedBox(height: 16.0),
+
+
+                Visibility(
+                  visible: PlayedSavings.getErrorsFilteredByDateAndTime(currentDate, currentTime).isNotEmpty,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        barrierColor: Colors.black.withOpacity(0.3),
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Errors"),
+                            content: buildListOfErrors(PlayedSavings.getErrorsFilteredByDateAndTime(currentDate, currentTime)),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text("Close"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: const Text(
+                      'Show Errors',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+
+
+                const SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () => context.read<PlayBloc>().add(Play()),
                   child: const Text(
@@ -141,6 +207,7 @@ class _PlayContentState extends State<PlayContent> {
                     ),
                   ),
                 ),
+
               ],
             ),
           );

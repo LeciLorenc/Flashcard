@@ -7,6 +7,8 @@ import '../../model/subject.dart';
 import '../../presentation/education_icons.dart';
 import '../../service/local_repository_service.dart';
 import '../../widget/adaptable_button.dart';
+import '../enumParamountWidgets.dart';
+import 'home_page.dart';
 
 class SubjectSelection extends StatelessWidget {
   const SubjectSelection({
@@ -18,20 +20,44 @@ class SubjectSelection extends StatelessWidget {
   final List<Subject> subjects;
   final bool expanded;
 
+  void whenPressed(BuildContext context,EssentialWidgets choice)
+  {
+    context.read<SubjectBloc>().add(SelectSubject(null));
+    if(MediaQuery.of(context).orientation == Orientation.portrait) {
+      HomePage.expanded=false;
+    }
+    HomePage.bodyContent = choice;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
-      children: [
+      children:
+      [
+        AdaptableButton(
+          onPressed: () => { whenPressed(context, EssentialWidgets.welcome), },
+          icon: Icons.home,
+          title: 'Home',
+          expanded: expanded,
+        ),
+        const Divider(),
         for (Subject subject in subjects) ...[
           AdaptableButton(
-            onPressed: () =>
-                context.read<SubjectBloc>().add(SelectSubject(subject)),
+            onPressed: ()
+            {
+              context.read<SubjectBloc>().add(SelectSubject(subject));
+              if(MediaQuery.of(context).orientation == Orientation.portrait) {
+                HomePage.expanded=false;
+              }
+              HomePage.bodyContent = EssentialWidgets.subject;
+            },
             icon: subject.icon,
             title: subject.name,
             expanded: expanded,
             selected: context.read<SubjectBloc>().state.subject == subject,
           ),
         ],
+
         const Divider(),
         AdaptableButton(
           onPressed: () => onAddSubject(context),
@@ -52,6 +78,18 @@ class SubjectSelection extends StatelessWidget {
                 context.read<SubjectBloc>().add(DeleteAllSubjects()),
             icon: Icons.remove_outlined,
             title: 'Delete all subjects',
+            expanded: expanded,
+          ),
+          AdaptableButton(
+            onPressed: () => { whenPressed(context, EssentialWidgets.calendar), },
+            icon: Icons.access_time,
+            title: 'Calendar',
+            expanded: expanded,
+          ),
+          AdaptableButton(
+            onPressed: () => { whenPressed(context, EssentialWidgets.historyError),},
+            icon: Icons.add_chart,
+            title: 'History of progress',
             expanded: expanded,
           ),
         ]

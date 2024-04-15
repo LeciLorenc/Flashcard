@@ -1,3 +1,4 @@
+import 'package:flashcard/calendar_and_recap/playErrors/playedSavings.dart';
 import 'package:flashcard/model/flashcard.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -111,4 +112,15 @@ class PlayBloc extends Bloc<PlayEvent, PlayState> {
       ));
     }
   }
+
+  List<Flashcard> getIncorrectFlashcards() {
+    List<Flashcard> incorrectFlashcards = [];
+    for (var i = 0; i < (state as Finished).flashcards.length; i++) {
+      if ((state as Finished).flashcards[i].$1 != null && !(state as Finished).flashcards[i].$1!) {
+        incorrectFlashcards.add((state as Finished).flashcards[i].$2);
+      }
+    }
+    return incorrectFlashcards;
+  }
+
 }

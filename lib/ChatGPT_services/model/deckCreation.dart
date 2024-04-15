@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../presentation/education_icons.dart';
 
-import 'package:flashcard/ChatGPT_services/model-view/AI_dialog_widget.dart';
-
 class DeckCreationViewModel {
   late TextEditingController textEditingController;
   late TextEditingController textDescriptionController;
@@ -15,16 +13,7 @@ class DeckCreationViewModel {
   late String selectedLanguage;
   late IconData selectedIcon;
 
-  final Map<String, CountryFlag> languageIcons = {
-    'Italian': builderCountryIcon("it"),
-    'English': builderCountryIcon("gb"),
-    'Russian': builderCountryIcon("ru"),
-    'Spanish': builderCountryIcon("es"),
-    'Portuguese': builderCountryIcon("pt"),
-    'German': builderCountryIcon("de"),
-    'Chinese': builderCountryIcon("cn"),
-    // Add more languages and their respective flag icons here
-  };
+  late Map<String, CountryFlag> languageIcons; // Declare here
 
   DeckCreationViewModel() {
     textEditingController = TextEditingController();
@@ -34,5 +23,26 @@ class DeckCreationViewModel {
     iconDescription = EducationIcons.certificate;
     selectedLanguage = 'English';
     selectedIcon = Icons.book;
+
+    // Initialize languageIcons map here
+    languageIcons = {
+      'Italian': builderCountryIcon("it"),
+      'English': builderCountryIcon("gb"),
+      'Russian': builderCountryIcon("ru"),
+      'Spanish': builderCountryIcon("es"),
+      'Portuguese': builderCountryIcon("pt"),
+      'German': builderCountryIcon("de"),
+      'Chinese': builderCountryIcon("cn"),
+      // Add more languages and their respective flag icons here
+    };
+  }
+
+  CountryFlag builderCountryIcon(String language) {
+    return CountryFlag.fromCountryCode(
+      language,
+      height: 20,
+      width: 20,
+      borderRadius: 5,
+    );
   }
 }

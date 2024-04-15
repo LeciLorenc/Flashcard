@@ -42,11 +42,26 @@ class _PlayPageState extends State<PlayPage> {
           onHiddenAnswer: onHiddenAnswer,
         ),
         onExpand: onExpand,
-        title: 'Play : ${widget.subject.name} - ${widget.deck.name}',
+        title: titleCreatorAndTrimmer(),
       ),
     );
   }
 
+  String titleCreatorAndTrimmer()
+  {
+    final subjectName = widget.subject.name.length > 5
+        ? '${widget.subject.name.substring(0, 5)}...'
+        : widget.subject.name;
+
+    final deckName = widget.deck.name.length > 8
+        ? '${widget.deck.name.substring(0, 8)}...'
+        : widget.deck.name;
+
+    print(subjectName);
+    print(deckName);
+
+    return 'Play: $subjectName - $deckName';
+  }
   onExpand() => setState(() => expanded = !expanded);
 
   onHiddenAnswer(bool hiddenAnswer) =>
