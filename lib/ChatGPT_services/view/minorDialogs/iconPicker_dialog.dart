@@ -29,7 +29,6 @@ List<IconData> myIcons = [
   Icons.theaters,
   Icons.translate,
   Icons.create,
-  Icons.menu_book,
   Icons.library_books,
   Icons.edit,
   Icons.spellcheck,
@@ -127,7 +126,6 @@ class IconPickerDialog extends StatelessWidget {
     required this.icons,
     required this.onIconSelected,
   });
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -135,30 +133,38 @@ class IconPickerDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: SizedBox(
-        width: 100, // example width
-        height: 100,
-        child: Expanded(
-          child: SingleChildScrollView(
-            child: GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 10,
-              children: icons.map((icon) {
-                return GestureDetector(
-                  onTap: () {
-                    onIconSelected(icon);
-                    Navigator.pop(context);
-                  },
-                  child: SizedBox(
-                    width: 5, // larghezza dell'icona
-                    height: 5, // altezza dell'icona
-                    child: Icon(icon),
-                  ),
-                );
-              }).toList(),
-            ),
+        height: 190,
+        width: 200,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 8,
+                ),
+                itemCount: icons.length,
+                itemBuilder: (context, index) {
+                  final icon = icons[index];
+                  return GestureDetector(
+                    onTap: () {
+                      onIconSelected(icon);
+                      Navigator.pop(context);
+                    },
+                    child: SizedBox(
+                      width: 4, // Larghezza dell'icona
+                      height: 4, // Altezza dell'icona
+                      child: Icon(icon),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
     );
   }
+
 }

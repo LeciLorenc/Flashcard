@@ -9,8 +9,8 @@ import '../../../model/deck.dart';
 import '../../../model/subject.dart';
 import '../../../presentation/education_icons.dart';
 import '../../play_page/play_page.dart';
-import '../../../ChatGPT_services/view/creationDeckDialog.dart';
-import 'package:flashcard/ChatGPT_services/view/dialogs/loading_dialog.dart';
+import '../../../ChatGPT_services/view/creationWithAIDialog.dart';
+import 'package:flashcard/ChatGPT_services/view/minorDialogs/loading_dialog.dart';
 
 import 'package:flashcard/ChatGPT_services/model-view/api_service.dart';
 class DeckSelection extends StatelessWidget {
@@ -130,9 +130,11 @@ class DeckSelection extends StatelessWidget {
     IconData icon = EducationIcons.openBook;
 
     showDialog<String>(
+      barrierColor: Colors.black.withOpacity(0.3),
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+
           title: const Text('Create new deck'),
           content: Flex(
             direction: Axis.vertical,
@@ -192,8 +194,7 @@ class DeckSelection extends StatelessWidget {
 
 
     DeckCreationViewModel deckCreationViewModel = DeckCreationViewModel();
-    final List<dynamic> result = await creationDeckDialog(oldContext, deckCreationViewModel);
-    //final List<dynamic> result = await showDeckDialog(context);
+    final List<dynamic> result = await creationWithAIDialog(oldContext, deckCreationViewModel);
 
     String response="";
     if (result.isNotEmpty && result[0] == 'OK') {

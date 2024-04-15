@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../presentation/education_icons.dart';
 import '../model/deckCreation.dart';
 
-Future<List<dynamic>> creationDeckDialog(BuildContext context, DeckCreationViewModel deckCreationViewModel) async {
+Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationViewModel deckCreationViewModel) async {
 
   final result = await showDialog<List<dynamic>>(
     barrierColor: Colors.black.withOpacity(0.3),

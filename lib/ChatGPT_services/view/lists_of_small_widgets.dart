@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../presentation/education_icons.dart';
-import 'package:flashcard/ChatGPT_services/view/dialogs/iconPicker_dialog.dart';
+import 'package:flashcard/ChatGPT_services/view/minorDialogs/iconPicker_dialog.dart';
 import 'package:flashcard/ChatGPT_services/view/dropDown.dart';
 import 'package:flashcard/ChatGPT_services/model-view/number_manipulation.dart';
 import 'package:flashcard/ChatGPT_services/model/deckCreation.dart';

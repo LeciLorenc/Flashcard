@@ -7,19 +7,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/subject_bloc.dart';
 import '../../model/deck.dart';
 import '../../model/subject.dart';
-import 'package:flashcard/ChatGPT_services/view/dialogs/infoChat_dialog.dart';
-import 'package:flashcard/ChatGPT_services/view/dialogs/loading_dialog.dart';
+import 'package:flashcard/ChatGPT_services/view/minorDialogs/infoChat_dialog.dart';
+import 'package:flashcard/ChatGPT_services/view/minorDialogs/loading_dialog.dart';
 
 constructionOfTheMessage(String name, String description, int number, String language)
 {
   String message="Create a json file with this structure: "
-      "1-'question':'...' ,'answer' :'...', 2-'question':'...','answer':'...', 3- ecc... "
+      "{ '1': { 'question': '...', 'answer': '...' },"
+      "'2': { 'question': '...', 'answer': '...' }, ...}"
       "In particular it should be composed of $number questions with the corresponding answers"
       " on the topic with this name :'$name' and this description :'$description'"
       " and all the q&a must be in this language : $language"
       "NECESSARY CONDITION : In the response that you will send to me I want only a json file"
       "So I don't need any other explanatory or introducing section or sentence."
       "ONLY THE JSON FILE AND ONLY WITH THE STRUCTURE DESCRIBED BEFORE";
+
+
+
+
   return message;
 }
 
@@ -65,7 +70,8 @@ badResponseUnexpected(dynamic error, BuildContext context) async {
     context: context,
     barrierDismissible: true,
     builder: (BuildContext context) {
-      return InfoDialog(message: "Error in the communication with Chat GPT: $error");
+      return InfoDialog(message: "We are sorry, there is an error in the parsing of the reply from chatGpt.\n"
+                                  "We ask you kindly to retry. \n(That's the error: $error )");
     },
   );
 }
