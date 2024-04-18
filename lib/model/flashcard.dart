@@ -60,4 +60,19 @@ class Flashcard implements Comparable<Flashcard>{
   String toString() {
     return toJson().toString();
   }
+
+  //copyWith method
+  Flashcard copyWith({
+    String? id,
+    String? question,
+    String? answer,
+    int? index,
+  }) {
+    return Flashcard(
+      id: id ?? this.id,
+      question: question ?? this.question,
+      answer: answer ?? this.answer,
+      index: index ?? this.index,
+    );
+  }
 }

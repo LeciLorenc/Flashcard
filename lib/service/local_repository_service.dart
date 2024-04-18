@@ -11,6 +11,7 @@ import '../model/deck.dart';
 /// The entry __SUBJECTS__ contains a list of all the subjects
 /// The entry _<subject.id> contains a list of all the decks in that subject
 /// The entry *<deck.id> contains a list of all the flashcards in that deck
+///
 class LocalRepositoryService {
   static const String _subjectsEntry = '__SUBJECTS__';
 
@@ -360,4 +361,21 @@ class LocalRepositoryService {
 
     return subjects;
   }
+
+
+
+  /// Deletes a subject
+  static Future<void> deleteSubject(String subjectId) async {
+    var prefs = await _sharedPreferences;
+    List<String> subjects = (await getStringList(_subjectsEntry)) ?? [];
+    if (subjects.contains(subjectId)) {
+      subjects.remove(subjectId);
+      await prefs.setStringList(_subjectsEntry, subjects);
+      await prefs.remove(subjectId);
+    }
+  }
+
+
+
+
 }

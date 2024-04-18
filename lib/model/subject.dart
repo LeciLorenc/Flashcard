@@ -5,7 +5,7 @@ import '../utils.dart';
 import 'deck.dart';
 
 class Subject implements Comparable<Subject> {
-  final String id;
+  late final String id;
   final String name;
   final List<Deck> decks;
   final IconData icon;
@@ -70,6 +70,15 @@ class Subject implements Comparable<Subject> {
     data['icon'] = iconDataToJson(icon);
     return data;
   }
+  //set the id of the subject to the id of the document in firestore
+Subject copyWith({String? id}) {
+    return Subject(
+      id: id ?? this.id,
+      name: name,
+      decks: decks,
+      icon: icon,
+    );
+  }
 
   @override
   int compareTo(Subject other) {
@@ -80,4 +89,5 @@ class Subject implements Comparable<Subject> {
   String toString() {
     return toJson().toString();
   }
+
 }

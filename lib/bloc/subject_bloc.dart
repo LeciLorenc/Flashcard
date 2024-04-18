@@ -8,6 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../model/deck.dart';
 import '../model/flashcard.dart';
 import '../model/subject.dart';
+import '../service/firestore_service.dart';
+
+
+
 
 abstract class SubjectEvent {}
 
@@ -131,11 +135,15 @@ class SubjectState {
     this.deck,
     this.visualize
   });
+
+  get id => subject!.id;
 }
 
 class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
-  SubjectBloc() : super(SubjectState(subjects: [])) {
-    on<AddDeck>(_onAddDeck);
+  final FirestoreService firestoreService;
+
+
+  SubjectBloc({required this.firestoreService}) : super(SubjectState(subjects: [])) {    on<AddDeck>(_onAddDeck);
     on<SelectSubject>(_onSelectSubject);
     on<SelectDeck>(_onSelectDeck);
     on<DeleteDeck>(_onDeleteDeck);
@@ -151,6 +159,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
     add(_LoadLocal());
   }
 
+
+
   _onAddDeck(AddDeck event, Emitter<SubjectState> emit) async {
     if (state.subject == null) {
       return;
@@ -165,6 +175,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
     );
 
     Subject subject = state.subject!..decks.add(deck);
+
+    firestoreService.addDeck(deck);
 
     emit(SubjectState(
       subjects: state.subjects,
@@ -206,6 +218,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
 
     debugPrint('DeleteDeck');
 
+
+
     if (event.deck != null) {
       await LocalRepositoryService.removeDeck(event.deck!, state.subject!);
     } else if (state.deck != null) {
@@ -215,6 +229,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
     }
 
     Subject subject = state.subject!..decks.remove(event.deck);
+
+    firestoreService.deleteDeck(state.id,state.deck!.id);
 
     emit(SubjectState(
       subject: subject,
@@ -234,6 +250,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
         subjects.removeAt(i);
       }
     }
+
+    firestoreService.deleteSubject(event.subject.id);
 
     emit(SubjectState(
       subjects: subjects,
@@ -255,6 +273,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
     );
 
     state.deck!.flashcards.add(flashcard);
+
+    firestoreService.addFlashcard(flashcard,  state.deck!.id);
 
     emit(SubjectState(
       subject: state.subject,
@@ -283,6 +303,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       }
     }
 
+    firestoreService.updateFlashcard(flashcard, state.deck!.id);
+
     event.completer?.complete();
   }
 
@@ -306,15 +328,22 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
 
     List<Subject> subjects = [...state.subjects, subject];
 
+    String id = await firestoreService.addSubject(subject);
+    subject = subject.copyWith(id: id); // Update with Firestore ID
+
     emit(SubjectState(
       deck: state.deck,
       subject: state.subject,
       subjects: subjects,
     ));
+
+
   }
 
   _onDeleteAllSubject(DeleteAllSubjects event, Emitter<SubjectState> emit) {
     LocalRepositoryService.clear();
+
+    firestoreService.deleteAllSubjects();
 
     emit(SubjectState(subjects: []));
   }
@@ -399,6 +428,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
     );
 
     state.subject!.decks.add(deck);
+
+    firestoreService.deleteFlashcard(deck.id, deck.flashcards[event.index].id);
 
     emit(SubjectState(
       deck: deck,

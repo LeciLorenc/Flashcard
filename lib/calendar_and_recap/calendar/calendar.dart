@@ -7,7 +7,7 @@ import '../historyErrorList/CustomPlayedListItem.dart';
 import '../playErrors/playedSavings.dart';
 
 class CalendarWidget extends StatefulWidget {
-  const CalendarWidget({Key? key}) : super(key: key);
+  const CalendarWidget({super.key});
 
   @override
   _CalendarWidgetState createState() => _CalendarWidgetState();
@@ -118,8 +118,8 @@ class DatePickerWidget extends StatefulWidget {
   const DatePickerWidget({
     required this.initialDate,
     required this.onDateChanged,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _DatePickerWidgetState createState() => _DatePickerWidgetState();

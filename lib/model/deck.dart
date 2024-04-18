@@ -8,7 +8,7 @@ import 'flashcard.dart';
 /// A deck is a collection of flashcards
 /// It should contain all the flashcards for a particular topic of a subject
 class Deck implements Comparable<Deck> {
-  final String id;
+  late final String id;
   final List<Flashcard> flashcards;
   final String name;
   final IconData icon;
@@ -80,5 +80,15 @@ class Deck implements Comparable<Deck> {
   @override
   String toString() {
     return toJson().toString();
+  }
+
+  // set id of the deck to the id of the document in firestore
+  Deck copyWith({String? id}) {
+    return Deck(
+      id: id ?? this.id,
+      name: name,
+      flashcards: flashcards,
+      icon: icon,
+    );
   }
 }
