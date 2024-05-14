@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+
+import '../historyErrorViewModel.dart';
+typedef OrderingCallback = void Function(String ordering);
+class OrderMenu extends StatefulWidget {
+  final OrderingCallback orderingCallback;
+
+  const OrderMenu({Key? key, required this.orderingCallback}) : super(key: key);
+
+  @override
+  _OrderMenuState createState() => _OrderMenuState();
+}
+
+class _OrderMenuState extends State<OrderMenu> {
+  String? selectedOrdering = OrderingEnum.dateIncrease.toString();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        buildButton("By Subject Name (A-Z)", OrderingEnum.subjectNameAZ.toString()),
+        const SizedBox(height: 6),
+        buildButton("By Subject Name (Z-A)", OrderingEnum.subjectNameZA.toString()),
+        const SizedBox(height: 6),
+        buildButton("By Deck Name (A-Z)", OrderingEnum.deckNameAZ.toString()),
+        const SizedBox(height: 6),
+        buildButton("By Deck Name (Z-A)", OrderingEnum.deckNameZA.toString()),
+        const SizedBox(height: 6),
+        buildButton("By Date (Increasing)", OrderingEnum.dateIncrease.toString()),
+        const SizedBox(height: 6),
+        buildButton("By Date (Decreasing)", OrderingEnum.dateDecrease.toString()),
+      ],
+    );
+  }
+
+  Widget buildButton(String label, String ordering) {
+
+    const Color customLightPink = Color.fromRGBO(255, 220, 220, 1.0);
+
+
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          selectedOrdering = ordering;
+        });
+        widget.orderingCallback(ordering);
+      },
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+          if (selectedOrdering == ordering) {
+            return customLightPink; // Change to light blue when selected
+          } else {
+            return Colors.white; // Change to white when not selected
+          }
+        }),
+      ),
+      child: Row(
+        children: [
+          Text(label),
+        ],
+      ),
+    );
+  }
+}

@@ -1,18 +1,12 @@
 import 'package:flashcard/authentication/authentication_screen.dart';
-import 'package:flashcard/authentication/sign_in/sign_in_bloc.dart';
-import 'package:flashcard/authentication/sign_in/sign_in_screen.dart';
-import 'package:flashcard/authentication/sign_up/sign_up_bloc.dart';
-import 'package:flashcard/bloc/play_bloc.dart';
 import 'package:flashcard/bloc/user/authentication_bloc.dart';
 import 'package:flashcard/bloc/user/user_bloc.dart' as user_bloc;
 import 'package:flashcard/constants.dart';
 import 'package:flashcard/firebase_options.dart';
 import 'package:flashcard/generated/l10n.dart';
-import 'package:flashcard/pages/home_page/home_content/home_content.dart';
 import 'package:flashcard/pages/home_page/home_page.dart';
 import 'package:flashcard/service/firestore_service.dart';
 import 'package:flashcard/loading_screen.dart';
-import 'package:flashcard/service/local_repository_service.dart';
 import 'package:flashcard/utils/scroll_behavior.dart';
 import 'package:flashcard/utils/utils.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flashcard/bloc/subject_bloc.dart'; // Import the SubjectBloc
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'bloc/subject_block_online.dart';
@@ -40,32 +33,32 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
     providers: [
+      BlocProvider(
+      lazy: false,
+      create: (BuildContext context) => AuthenticationBloc(),
+    ),
     BlocProvider(
-    lazy: false,
-    create: (BuildContext context) => AuthenticationBloc(),
-  ),
-  BlocProvider(
-  create: (BuildContext context) => user_bloc.UserBloc(),
-  ),
-  // Include the SubjectBloc provider
-  BlocProvider(
-  create: (BuildContext context) => SubjectBloc(firestoreService: FirestoreService()),
-  ),
-      BlocProvider<SubjectBlocFirebase>(  // Adding the Firestore version of SubjectBloc
-        create: (BuildContext context) => SubjectBlocFirebase(FirestoreService()),
+      create: (BuildContext context) => user_bloc.UserBloc(),
       ),
-  // Add other BlocProviders here
-  // BlocProvider(
-  //   create: (BuildContext context) => OfferBloc(),
-  // ),
-  // BlocProvider(
-  //   create: (BuildContext context) => LocationBloc(),
-  // ),
-  // BlocProvider(
-  //   create: (BuildContext context) => OrderBloc(),
-  // ),
-  ],
-  child: const MyApp(),));
+    // Include the SubjectBloc provider
+    BlocProvider(
+    create: (BuildContext context) => SubjectBloc(firestoreService: FirestoreService()),
+    ),
+        BlocProvider<SubjectBlocFirebase>(  // Adding the Firestore version of SubjectBloc
+          create: (BuildContext context) => SubjectBlocFirebase(FirestoreService()),
+        ),
+    // Add other BlocProviders here
+    // BlocProvider(
+    //   create: (BuildContext context) => OfferBloc(),
+    // ),
+    // BlocProvider(
+    //   create: (BuildContext context) => LocationBloc(),
+    // ),
+    // BlocProvider(
+    //   create: (BuildContext context) => OrderBloc(),
+    // ),
+    ],
+    child: const MyApp(),));
 
 }
 

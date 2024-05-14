@@ -1,5 +1,3 @@
-import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/storage/NewFilters.dart';
 import 'package:intl/intl.dart';
 
 class UtilitiesStorage
@@ -13,7 +11,43 @@ class UtilitiesStorage
     return DateFormat('HH:mm:ss').format(selectedDate);
   }
 
-  
+  static String getDayFromDate(String date)
+  {
+    DateTime itemDate = DateTime.parse(date);
+    return itemDate.day.toString();
+  }
+  static String getMonthFromDate(String date)
+  {
+    DateTime itemDate = DateTime.parse(date);
+    return itemDate.month.toString();
+  }
+  static String getYearFromDate(String date)
+  {
+    DateTime itemDate = DateTime.parse(date);
+    return itemDate.year.toString();
+  }
+
+  static String getOnlyDateFromStringDate(String date)
+  {
+    String year = UtilitiesStorage.getYearFromDate(date);
+    String month = UtilitiesStorage.getMonthFromDate(date);
+    String day = UtilitiesStorage.getDayFromDate(date);
+    String finalDate = "";
+
+    if(int.parse(month)<10) {
+      finalDate = "$year-0$month-$day";
+    } else {
+      finalDate = "$year-$month-$day";
+    }
+
+    return finalDate;
+  }
+
+
+
+
+
+
   /*
   static List<PlayedDeck> calculatePlayedListWithOnlyDate(DateTime selectedDate)
   {
@@ -21,11 +55,7 @@ class UtilitiesStorage
     getPlayedItemsFilteredByDate(getOnlyDateFromSelectedDate(selectedDate));
   }
  */
-  static List<NewObject> calculatePlayedListWithOnlyDate(DateTime selectedDate)
-  {
-    return NewFiltersStorage.
-    getSavingsFilteredByDate(getOnlyDateFromSelectedDate(selectedDate));
-  }
+
 
   /*
   static List<IncorrectItem> calculateNumberOfErrors(String time, DateTime selectedDate, String subject, String deck)

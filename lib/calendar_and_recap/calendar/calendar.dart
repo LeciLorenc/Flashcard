@@ -1,11 +1,9 @@
 import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
-import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/playedItems.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/storage/utilitiesStorage.dart';
+import 'package:flashcard/calendar_and_recap/playErrors/storage/NewFilters.dart';
 import 'package:flutter/material.dart';
 
 import 'CustomPlayedListItem.dart';
-import '../---TO_BE_DISCARDED---/incorrectItem.dart';
-import 'DataPicker.dart';
+import 'calendarDataPicker.dart';
 
 class CalendarWidget extends StatefulWidget {
   const CalendarWidget({super.key});
@@ -42,7 +40,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   List<NewObject> calculateListOfPlayed()
   {
-     return UtilitiesStorage.calculatePlayedListWithOnlyDate(_selectedDate);
+     return NewFiltersStorage.calculatePlayedListWithOnlyDate(_selectedDate);
   }
 
 

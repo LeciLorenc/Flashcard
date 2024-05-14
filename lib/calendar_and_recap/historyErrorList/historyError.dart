@@ -1,69 +1,25 @@
 import 'package:flashcard/calendar_and_recap/historyErrorList/CustomErrorListItem.dart';
+import 'package:flashcard/calendar_and_recap/historyErrorList/view/orderMenuWidget.dart';
+import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
 import 'package:flashcard/calendar_and_recap/playErrors/storage/NewSavings.dart';
-//import 'package:flashcard/calendar_and_recap/playErrors/storage/storageData.dart';
+import 'package:flashcard/calendar_and_recap/playErrors/storage/utilitiesStorage.dart';
 import 'package:flutter/material.dart';
+
+import 'historyErrorViewModel.dart';
+import 'historyFitering.dart';
 
 
 class HistoryError extends StatefulWidget {
-  const HistoryError({super.key});
+  final HistoryErrorViewModel viewModel;
+  const HistoryError({Key? key, required this.viewModel}) : super(key: key);
 
   @override
   _HistoryErrorState createState() => _HistoryErrorState();
 }
 
 class _HistoryErrorState extends State<HistoryError> {
-  bool _isExpanded = false;
-/*
-  @override
-  Widget build(BuildContext context) {
-    return StatefulBuilder(
-      builder: (context, setState)
-      {
-        return Center
-          (
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children:
-            [
-              const SizedBox(height: 16), // Spazio tra il testo e il ListView
-              Expanded(
-                child: ListView.builder(
-                  itemCount: StorageData.errorList.length,
-                  itemBuilder: (context, index) {
-                    final error = StorageData. errorList[StorageData.errorList.length-1-index];
-
-                      return CustomErrorListItem(
-                        item: error,
-                      );
-                  },
-                ),
-              ),
-
-              ElevatedButton(
-                onPressed: () {
-                  StorageData.deleteAll().then((_) {setState(() {});});
-                },
-                child: const SizedBox(
-                  width: 170,
-                  child: Center(
-                    child: Row(
-                      children: [
-                        Icon(Icons.delete), // Removed 'const' from IconData
-                        SizedBox(width: 8), // Added SizedBox for spacing
-                        Text("Delete all the records"),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-
-            ],
-          ),
-        );
-      },
-    );
-  }*/
+  bool _isFilterExpanded = false;
+  bool _isOrderExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +32,11 @@ class _HistoryErrorState extends State<HistoryError> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FilterButton(),
+                const SizedBox(height: 8),
+                orderButton(),
                 const SizedBox(height: 16),
                 savingList(),
-                deleteAllButton(),
+                deleteAllButton(context),
               ],
             ),
           ),
@@ -88,46 +46,86 @@ class _HistoryErrorState extends State<HistoryError> {
   }
 
 
+  Widget FilterButton()
+  {
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          _isFilterExpanded = !_isFilterExpanded;
+        });
+      },
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20), // Specifica il raggio del bordo desiderato
+        ),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Icon (Icons.filter_alt),
+              Text(_isFilterExpanded ? "Hide Filters" : "Filters"),
+            ],
+          ),
+          Row(
+            children : [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: _isFilterExpanded ? 50 : 0, // Change the height as needed
+                child: _isFilterExpanded ? filteringMenu() : const SizedBox.shrink(),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+
+
+
   Widget filteringMenu() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-
         // Filtraggio per deck
         DropdownButton<String>(
-          hint: const Text('Select Deck'),
-          onChanged: (String? newValue) {
-            // Modificato il tipo del parametro
-            // Implementa la logica per filtrare per deck
-          },
-          items: <String>['Deck 1', 'Deck 2', 'Deck 3']
-              .map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+            hint: const Text('Select Subject'),
+            onChanged: (String? newValue) {
+              setState(() {
+                widget.viewModel.updateSubjectFilter(newValue!);
+              });
+            },
+            value: widget.viewModel.subjectFilter!='' ? widget.viewModel.subjectFilter: null,
+            items: computeItemsForSubject(context),
         ),
 
         // Filtraggio per subject
         DropdownButton<String>(
-          hint: const Text('Select Subject'),
-          onChanged: (String? newValue) { // Modificato il tipo del parametro
-            // Implementa la logica per filtrare per subject
+          hint: const Text('Select Deck'),
+          onChanged: (String? newValue) {
+            setState(() {
+              widget.viewModel.updateDeckFilter(newValue!);
+            });
           },
-          items: <String>['Subject 1', 'Subject 2', 'Subject 3']
-              .map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+          value: widget.viewModel.deckFilter!='' ? widget.viewModel.deckFilter: null,
+          items: computeItemsForDeck(context),
         ),
 
         // Filtraggio per data
         ElevatedButton(
-          onPressed: () {
-            // Implementa la logica per filtrare per data
+          onPressed: () async {
+            final DateTime? picked = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2015, 8),
+              lastDate: DateTime(2101),
+            );
+            if (picked != null) {
+              setState(() {
+                widget.viewModel.updateDateFilter( UtilitiesStorage.getOnlyDateFromSelectedDate(picked) );
+              });
+            }
           },
           child: const Row(
             children: [
@@ -136,11 +134,153 @@ class _HistoryErrorState extends State<HistoryError> {
             ],
           ),
         ),
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              widget.viewModel.removeAllFilters();
+            });
+          },
+          child: const Row(
+            children: [
+              Icon(Icons.highlight_remove),
+              Text("Remove Filters"),
+            ],
+          ),
+        ),
       ],
     );
   }
 
 
+  Widget orderButton()
+  {
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          _isOrderExpanded = !_isOrderExpanded;
+        });
+      },
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20), // Specifica il raggio del bordo desiderato
+        ),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Icon (Icons.filter_alt),
+              Text(_isOrderExpanded ? "Hide Order" : "Order"),
+            ],
+          ),
+          Row(
+            children : [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: _isOrderExpanded ? 250 : 0, // Change the height as needed
+                width: 200,
+                child: _isOrderExpanded ? OrderMenu(orderingCallback: updateOrdering) : const SizedBox.shrink(),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  void updateOrdering(String newOrdering) {
+    setState(() {
+      widget.viewModel.orderingVariable = newOrdering;
+    });
+  }
+
+
+  Widget savingList()
+  {
+    List<NewObject> results = widget.viewModel.getFilteredSavings(NewSavings.savings);
+    results = widget.viewModel.getOrderedSavings(results);
+
+    //TODO here i'm still considering all the items each time -> todo maintain a state of the one already filtered
+    return Expanded(
+        child: buildList(results, results.length)
+    );
+  }
+
+
+  Widget buildList(List list, int length)
+  {
+    return ListView.builder(
+      itemCount: length,
+      itemBuilder: (context, index)
+      {
+        // Inverti l'ordine
+        final error = list[length - 1 - index];
+
+        return Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: CustomErrorListItem(
+            item: error,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget deleteAllButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Delete All Records"),
+              content: const Text("Are you sure you want to delete all records?"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: const Text("Cancel"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    // Delete all records
+                    NewSavings.deleteAll().then((_) {
+                      setState(() {});
+                      Navigator.of(context).pop(); // Close the dialog after deletion
+                    });
+                  },
+                  child: const Text("Delete"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: const SizedBox(
+        width: 170,
+        child: Center(
+          child: Row(
+            children: [
+              Icon(Icons.delete),
+              SizedBox(width: 8),
+              Text("Delete all the records"),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+}
+
+
+
+
+
+
+
+/*
   Widget FilterButton()
   {
     return ElevatedButton(
@@ -166,7 +306,8 @@ class _HistoryErrorState extends State<HistoryError> {
             children : [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                height: _isExpanded ? 50 : 0, // Change the height as needed
+                height: _isExpanded ? 50 : 0,
+                width: MediaQuery.of(context).size.width*0.85,
                 child: _isExpanded ? filteringMenu() : const SizedBox.shrink(),
               ),
             ],
@@ -174,49 +315,101 @@ class _HistoryErrorState extends State<HistoryError> {
         ],
       ),
     );
-  }
+  }*/
+/*
+  Widget filteringMenu() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const buttonWidth = 100.0; // Width of each button
+        final availableWidth = constraints.maxWidth;
+        final maxButtonsPerRow = (availableWidth / buttonWidth).floor();
 
-  Widget savingList()
-  {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: NewSavings.savings.length,
-        itemBuilder: (context, index)
-        {
-          // Inverti l'ordine
-          final error = NewSavings.savings[NewSavings.savings.length - 1 - index];
-
-          return Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: CustomErrorListItem(
-              item: error,
-            ),
-          );
-        },
-      ),
+        if (maxButtonsPerRow >= 4) {
+          return _buildButtonsRow(4);
+        } else if (maxButtonsPerRow >= 2) {
+          return _buildButtonsRow(2);
+        } else {
+          return _buildButtonsRow(1);
+        }
+      },
     );
   }
 
-  Widget deleteAllButton()
-  {
-    return ElevatedButton(
-      onPressed: () {
-        NewSavings.deleteAll().then((_) {
-          setState(() {});
-        });
-      },
-      child: const SizedBox(
-        width: 170,
-        child: Center(
-          child: Row(
+  Widget _buildButtonsRow(int buttonsCount) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: List.generate(buttonsCount, (index) {
+        switch (index) {
+          case 0:
+            return Expanded(
+              child: DropdownButton<String>(
+                hint: const Text('Select Subject'),
+                onChanged: (String? newValue) {
+                  widget.viewModel.updateSubjectFilter(newValue!);
+                },
+                items: computeItemsForDeck(context),
+              ),
+            );
+          case 1:
+            return Expanded(
+              child: DropdownButton<String>(
+                hint: const Text('Select Deck'),
+                onChanged: (String? newValue) {
+                  widget.viewModel.updateDeckFilter(newValue!);
+                },
+                items: computeItemsForSubjects(context),
+              ),
+            );
+          case 2:
+            return Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  // Implement your logic here
+                },
+                child: const Row(
+                  children: [
+                    Icon(Icons.calendar_today),
+                    Text("Filter by Date"),
+                  ],
+                ),
+              ),
+            );
+          case 3:
+            return Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    widget.viewModel.getFilteredSavings(NewSavings.savings);
+                  });
+                },
+                child: const Row(
+                  children: [
+                    Icon(Icons.search),
+                    Text("Search"),
+                  ],
+                ),
+              ),
+            );
+          default:
+            return const SizedBox.shrink();
+        }
+      }),
+    );
+  }*/
+
+//SEARCH BUTTON
+/*ElevatedButton(
+        onPressed: () {
+          setState(() {
+            widget.viewModel.getFilteredSavings(NewSavings.savings);
+            });
+          },
+          child: const Row(
             children: [
-              Icon(Icons.delete), // Removed 'const' from IconData
-              SizedBox(width: 8), // Added SizedBox for spacing
-              Text("Delete all the records"),
+              Icon(Icons.search),
+              Text("Search"),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
+        ),*/
+
+

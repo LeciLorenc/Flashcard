@@ -1,5 +1,6 @@
 import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
 import 'package:flashcard/calendar_and_recap/playErrors/storage/NewSavings.dart';
+import 'package:flashcard/calendar_and_recap/playErrors/storage/utilitiesStorage.dart';
 
 
 class NewFiltersStorage{
@@ -60,22 +61,9 @@ class NewFiltersStorage{
     return itemsWithMonthAndYear;
   }
 
-
-  static String getDayFromDate(String date)
+  static List<NewObject> calculatePlayedListWithOnlyDate(DateTime selectedDate)
   {
-    DateTime itemDate = DateTime.parse(date);
-    return itemDate.day.toString();
+    return NewFiltersStorage.
+    getSavingsFilteredByDate(UtilitiesStorage.getOnlyDateFromSelectedDate(selectedDate));
   }
-  static String getMonthFromDate(String date)
-  {
-    DateTime itemDate = DateTime.parse(date);
-    return itemDate.month.toString();
-  }
-  static String getYearFromDate(String date)
-  {
-    DateTime itemDate = DateTime.parse(date);
-    return itemDate.year.toString();
-  }
-
-
 }

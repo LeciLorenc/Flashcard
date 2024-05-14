@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../calendar_and_recap/calendar/calendar.dart';
+import '../../calendar_and_recap/historyErrorList/historyErrorViewModel.dart';
 import '../../calendar_and_recap/welcome/welcomeWidget.dart';
 import '../../model/subject.dart';
 import '../../widget/adaptable_button.dart';
@@ -90,7 +91,7 @@ class _HomePageState extends State<HomePage> {
       return const CalendarWidget();
     }
     else if(HomePage.bodyContent == EssentialWidgets.historyError){
-      return const HistoryError();
+      return HistoryError(viewModel: HistoryErrorViewModel());
     }
     else
     {

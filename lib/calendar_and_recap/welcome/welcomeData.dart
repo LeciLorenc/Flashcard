@@ -1,5 +1,3 @@
-import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/playedItems.dart';
-import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/filters.dart';
 import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
 import 'package:flashcard/calendar_and_recap/playErrors/storage/utilitiesStorage.dart';
 import 'package:intl/intl.dart';
@@ -12,8 +10,8 @@ class WelcomeData
 
     int dayInTheMonth =
     retrieveNumberOfDaysInAMonth(
-        int.parse(NewFiltersStorage.getMonthFromDate(selectedDate.toString())),
-        int.parse(NewFiltersStorage.getYearFromDate(selectedDate.toString())));
+        int.parse(UtilitiesStorage.getMonthFromDate(selectedDate.toString())),
+        int.parse(UtilitiesStorage.getYearFromDate(selectedDate.toString())));
 
     int playedInADay = 0;
     List<int> array = List<int>.filled(dayInTheMonth, 0);
@@ -54,8 +52,8 @@ class WelcomeData
 
     int dayInTheMonth =
     retrieveNumberOfDaysInAMonth(
-        int.parse(NewFiltersStorage.getMonthFromDate(selectedDate.toString())),
-        int.parse(NewFiltersStorage.getYearFromDate(selectedDate.toString())));
+        int.parse(UtilitiesStorage.getMonthFromDate(selectedDate.toString())),
+        int.parse(UtilitiesStorage.getYearFromDate(selectedDate.toString())));
 
     int playedInADay = 0;
     List<int> array = List<int>.filled(dayInTheMonth, 0);
