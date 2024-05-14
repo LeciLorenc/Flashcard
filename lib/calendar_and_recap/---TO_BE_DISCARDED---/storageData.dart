@@ -1,12 +1,14 @@
+/*
+
 import 'dart:convert';
 import 'package:flashcard/bloc/play_bloc.dart';
 import 'package:flashcard/model/flashcard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'model/incorrectItem.dart';
-import 'model/playedItems.dart';
+import '../../---TO_BE_DISCARDED---/incorrectItem.dart';
+import '../../---TO_BE_DISCARDED---/playedItems.dart';
 
-class PlayedSavings {
+class StorageData {
   static List<IncorrectItem> errorList=[];
   static List<PlayedDeck> playedList = [];
 
@@ -139,8 +141,6 @@ class PlayedSavings {
   }
 
 
-
-
   static Future<void> deleteAll() async
   {
     errorList.clear();
@@ -148,72 +148,7 @@ class PlayedSavings {
     prefs.setString('errorList', "");
   }
 
-
-
-
-  static List<IncorrectItem> getErrorsFilteredByDateAndTime(String date,String time) {
-    List<IncorrectItem> itemsWithDate = [];
-
-    for (var item in errorList) {
-      if (item.date == date && item.time==time) {
-        itemsWithDate.add(item);
-      }
-    }
-
-    return itemsWithDate;
-  }
-
-
-
-
-
-  static List<IncorrectItem> getErrorItemsFilteredByDate(String date) {
-    List<IncorrectItem> itemsWithDate = [];
-
-    for (var item in errorList) {
-      if (item.date == date) {
-        itemsWithDate.add(item);
-      }
-    }
-
-    return itemsWithDate;
-  }
-  static List<PlayedDeck> getPlayedItemsFilteredByDate(String date) {
-    List<PlayedDeck> itemsWithDate = [];
-
-    for (var item in playedList) {
-      if (item.date == date) {
-        itemsWithDate.add(item);
-      }
-    }
-
-    return itemsWithDate;
-  }
-
-
-
-  static List<IncorrectItem> getErrorItemsFilteredByDateSubjectDeck(String date, String time, String subject, String deck) {
-    List<IncorrectItem> itemsWithDate = [];
-
-    for (var item in errorList) {
-      if (item.date == date  &&  item.deck == deck  &&  item.subject == subject  &&  item.time == time) {
-        itemsWithDate.add(item);
-      }
-    }
-
-    return itemsWithDate;
-  }
-  static List<PlayedDeck> getPlayedItemsFilteredByDateSubjectDeck(String date, String subject, String deck) {
-    List<PlayedDeck> itemsWithDate = [];
-
-    for (var item in playedList) {
-      if (item.date == date  &&  item.deck == deck  &&  item.subject == subject) {
-        itemsWithDate.add(item);
-      }
-    }
-
-    return itemsWithDate;
-  }
 }
 
 
+*/

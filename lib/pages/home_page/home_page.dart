@@ -1,13 +1,13 @@
 import 'package:flashcard/bloc/subject_bloc.dart';
 import 'package:flashcard/calendar_and_recap/historyErrorList/historyError.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/playedSavings.dart';
+import 'package:flashcard/calendar_and_recap/playErrors/storage/NewSavings.dart';
 import 'package:flashcard/pages/enumParamountWidgets.dart';
 import 'package:flashcard/pages/home_page/home_content/home_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../calendar_and_recap/calendar/calendar.dart';
-import '../../calendar_and_recap/welcomeWidget.dart';
+import '../../calendar_and_recap/welcome/welcomeWidget.dart';
 import '../../model/subject.dart';
 import '../../widget/adaptable_button.dart';
 import '../../widget/adaptable_page.dart';
@@ -27,8 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   _HomePageState()
   {
-    PlayedSavings.loadErrorList().then((_) {});
-    PlayedSavings.loadPlayedList().then((_){});
+    NewSavings.loadNewObject().then((_) {});
   }
 
 
@@ -71,7 +70,7 @@ class _HomePageState extends State<HomePage> {
             ? 'Select subject'
             : '${subjectState.subject!.name}${subjectState.deck == null ? '' : ' - ${subjectState.deck!.name}'}';
       case EssentialWidgets.calendar:
-        return "calendar";
+        return "Calendar";
       case EssentialWidgets.historyError:
         return "History of all the errors";
       default:
@@ -85,7 +84,7 @@ class _HomePageState extends State<HomePage> {
       return const HomeContent();
     }
     else if(HomePage.bodyContent == EssentialWidgets.welcome){
-      return const WelcomeWidget();
+      return WelcomeWidget();
     }
     else if(HomePage.bodyContent == EssentialWidgets.calendar){
       return const CalendarWidget();

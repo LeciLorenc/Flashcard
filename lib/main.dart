@@ -157,7 +157,8 @@ class _MyAppState extends State<MyApp> {
            context.read<user_bloc.UserBloc>().add(user_bloc.InitUserBloc());
 
         // Trigger init events for other blocs here
-        }
+
+      }
 
       // Update the home widget state
           setState(() {
@@ -169,38 +170,45 @@ class _MyAppState extends State<MyApp> {
 
   }
 }
+/*
 
-// import 'package:flashcard/pages/home_page/home_page.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-//
-// import 'bloc/subject_bloc.dart';
-//
-// void main() {
-//   runApp(MultiBlocProvider(
-//     providers: [
-//       BlocProvider<SubjectBloc>(
-//         create: (BuildContext context) => SubjectBloc(),
-//       ),
-//
-//     ],
-//     child: const MyApp(),
-//   ));
-// }
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flashcard',
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amberAccent),
-//         useMaterial3: true,
-//       ),
-//       home: const HomePage(),
-//     );
-//   }
-// }
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flashcard/pages/home_page/home_page.dart';
+import 'package:flashcard/service/firestore_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/subject_bloc.dart';
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<SubjectBloc>(
+        create: (BuildContext context) => SubjectBloc(firestoreService: FirestoreService() ),
+      ),
+
+    ],
+    child: const MyApp(),
+  ));
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flashcard',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amberAccent),
+        useMaterial3: true,
+      ),
+      home: const HomePage(),
+    );
+  }
+}
+*/

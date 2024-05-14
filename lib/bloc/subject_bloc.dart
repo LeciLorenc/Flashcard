@@ -143,7 +143,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
   final FirestoreService firestoreService;
 
 
-  SubjectBloc({required this.firestoreService}) : super(SubjectState(subjects: [])) {    on<AddDeck>(_onAddDeck);
+  SubjectBloc({required this.firestoreService}) : super(SubjectState(subjects: [])) {
+    on<AddDeck>(_onAddDeck);
     on<SelectSubject>(_onSelectSubject);
     on<SelectDeck>(_onSelectDeck);
     on<DeleteDeck>(_onDeleteDeck);

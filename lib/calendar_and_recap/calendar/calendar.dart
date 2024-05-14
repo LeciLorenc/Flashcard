@@ -1,10 +1,11 @@
-import 'package:flashcard/calendar_and_recap/playErrors/model/incorrectItem.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/model/playedItems.dart';
+import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
+import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/playedItems.dart';
+import 'package:flashcard/calendar_and_recap/playErrors/storage/utilitiesStorage.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-import '../historyErrorList/CustomPlayedListItem.dart';
-import '../playErrors/playedSavings.dart';
+import 'CustomPlayedListItem.dart';
+import '../---TO_BE_DISCARDED---/incorrectItem.dart';
+import 'DataPicker.dart';
 
 class CalendarWidget extends StatefulWidget {
   const CalendarWidget({super.key});
@@ -28,32 +29,26 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     });
   }
 
-
-  String getDateFromSelectedDate()
+  /*PlayedDeck calculatePlayedItem(int index)
   {
-    return DateFormat('yyyy-MM-dd').format(_selectedDate).toString();
+    int indexToUse = UtilitiesStorage.calculatePlayedListWithOnlyDate(_selectedDate).length-1-index;
+    return UtilitiesStorage.calculatePlayedListWithOnlyDate(_selectedDate)[indexToUse];
   }
-
-  List<PlayedDeck> calculatePlayedListWithDate()
+  List<IncorrectItem> calculateErrors(PlayedDeck playedItem)
   {
-  return  PlayedSavings.
-            getPlayedItemsFilteredByDate(getDateFromSelectedDate());
+    return UtilitiesStorage.calculateNumberOfErrors(playedItem.time, _selectedDate ,playedItem.subject, playedItem.deck);
   }
+*/
 
-  List<IncorrectItem> calculateNumberOfErrors(String time, String subject, String deck)
+  List<NewObject> calculateListOfPlayed()
   {
-    return PlayedSavings.getErrorItemsFilteredByDateSubjectDeck(getDateFromSelectedDate(), time,subject, deck);
+     return UtilitiesStorage.calculatePlayedListWithOnlyDate(_selectedDate);
   }
-
-
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Calendar: '),
-      ),
       body: Column(
         children: [
           ConstrainedBox(
@@ -68,7 +63,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           ),
           Center(
            
-              child: ConstrainedBox(
+              /*child: ConstrainedBox(
                 constraints:  BoxConstraints(
                   maxWidth: MediaQuery.of(context).size.width / 1.2,
                   maxHeight: MediaQuery.of(context).size.height / 3.2,
@@ -87,12 +82,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height / 2,
                             child: ListView.builder(
-                              itemCount: calculatePlayedListWithDate().length,
+                              itemCount: UtilitiesStorage.calculatePlayedListWithOnlyDate(_selectedDate).length,
                               itemBuilder: (context, index) {
-                                final playedItem = calculatePlayedListWithDate()[calculatePlayedListWithDate().length-1-index];
+                                final playedItem = calculatePlayedItem(index);
                                 return CustomPlayedListItem(
                                   item: playedItem,
-                                  numberOfErrors: calculateNumberOfErrors(playedItem.time, playedItem.subject, playedItem.deck),
+                                  numberOfErrors: calculateErrors(playedItem),
                                 );
                               },
                             ),
@@ -107,50 +102,45 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             ),
         ],
       ),
-    );
-  }
-}
+    );*/
+            child: ConstrainedBox(
+              constraints:  BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width / 1.2,
+                maxHeight: MediaQuery.of(context).size.height / 3.2,
+              ),
+              child: Container(
+                margin: const EdgeInsets.all(3.0),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1.0, color: Colors.black),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 2,
+                          child: ListView.builder(
+                            itemCount: calculateListOfPlayed().length,
+                            itemBuilder: (context, index) {
+                              final playedItem = calculateListOfPlayed()[index];
+                              return CustomPlayedListItem(
+                                item: playedItem,
+                              );
+                            },
+                          ),
+                        ),
 
-class DatePickerWidget extends StatefulWidget {
-  final DateTime initialDate;
-  final ValueChanged<DateTime> onDateChanged;
-
-  const DatePickerWidget({
-    required this.initialDate,
-    required this.onDateChanged,
-    super.key,
-  });
-
-  @override
-  _DatePickerWidgetState createState() => _DatePickerWidgetState();
-}
-
-class _DatePickerWidgetState extends State<DatePickerWidget> {
-  late DateTime _selectedDate;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedDate = widget.initialDate;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CalendarDatePicker(
-          initialDate: widget.initialDate,
-          firstDate: DateTime(2015, 8),
-          lastDate: DateTime(2101),
-          onDateChanged: (date) {
-            setState(() {
-              _selectedDate = date;
-              widget.onDateChanged(date);
-            });
-          },
-        ),
-      ],
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

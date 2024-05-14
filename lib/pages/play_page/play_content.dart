@@ -1,12 +1,16 @@
-import 'package:flashcard/calendar_and_recap/playErrors/model/playedItems.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/playedSavings.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/model/incorrectItem.dart';
+import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
+import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/playedItems.dart';
+import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/filters.dart';
+//import 'package:flashcard/calendar_and_recap/playErrors/storage/storageData.dart';
+import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/incorrectItem.dart';
 import 'package:flashcard/model/flashcard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../bloc/play_bloc.dart';
+import '../../calendar_and_recap/playErrors/storage/NewFilters.dart';
+import '../../calendar_and_recap/playErrors/storage/NewSavings.dart';
 import '../../calendar_and_recap/playErrors/view/showIncorrectWhenPlaying.dart';
 import '../../widget/adaptable_card/adaptable_card.dart';
 import '../../widget/flashcard_text_editing_controller/flashcard_text_editing_controller.dart';
@@ -106,21 +110,26 @@ class _PlayContentState extends State<PlayContent> {
           String currentTime = DateFormat.Hms().format(DateTime.now());
 
           //ADD OF ERRORS
+          /*
           for(Flashcard wrongFlash in incorrectFlashcards)
           {
-            IncorrectItem incorrectItem = PlayedSavings.createIncorrectItem(context.read<PlayBloc>(),
+            IncorrectItem incorrectItem = StorageData.createIncorrectItem(context.read<PlayBloc>(),
                                                     wrongFlash, currentDate, currentTime);
-            PlayedSavings.addToErrorList(incorrectItem);
+            StorageData.addToErrorList(incorrectItem);
           }
-          PlayedSavings.saveErrorList().then((value) => null);
-
+          StorageData.saveErrorList().then((value) => null);
 
           //ADD OF PLAYED DECK
-          PlayedDeck playedDeck = PlayedSavings.createPlayedDeck(context.read<PlayBloc>(),
+          PlayedDeck playedDeck = StorageData.createPlayedDeck(context.read<PlayBloc>(),
                                                   currentDate,currentTime);
-          PlayedSavings.addToPlayedList(playedDeck);
-          PlayedSavings.savePlayedList().then((value) => null);
+          StorageData.addToPlayedList(playedDeck);
+          StorageData.savePlayedList().then((value) => null);
+          */
 
+                        //SUBSTITUTE
+          NewObject newObject = NewSavings.createNewObject(context.read<PlayBloc>(), incorrectFlashcards, currentDate, currentTime);
+          NewSavings.addToNewSavings(newObject);
+          NewSavings.saveNewObject().then((value) => null);
 
 
 
@@ -163,25 +172,36 @@ class _PlayContentState extends State<PlayContent> {
 
 
                 Visibility(
-                  visible: PlayedSavings.getErrorsFilteredByDateAndTime(currentDate, currentTime).isNotEmpty,
+                  //visible: FiltersStorage.getErrorsFilteredByDateAndTime(currentDate, currentTime).isNotEmpty,
+
+                  visible: isButtonVisible(currentDate,currentTime),
                   child: ElevatedButton(
                     onPressed: () {
                       showDialog(
                         context: context,
                         barrierColor: Colors.black.withOpacity(0.3),
                         builder: (context) {
-                          return AlertDialog(
-                            title: const Text("Errors"),
-                            content: buildListOfErrors(PlayedSavings.getErrorsFilteredByDateAndTime(currentDate, currentTime)),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text("Close"),
-                              ),
-                            ],
-                          );
+                          final specificSaving = NewFiltersStorage.getASpecificSaving(currentDate, currentTime);
+                          if (specificSaving != null)
+                          {
+                            return AlertDialog(
+                              title: const Text("Those are your errors"),
+                              //content: buildListOfErrors(FiltersStorage.getErrorsFilteredByDateAndTime(currentDate, currentTime)),
+                              content: buildListOfErrors(specificSaving),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text("Close"),
+                                ),
+                              ],
+                            );
+                          }
+                          else
+                          {
+                            return const SizedBox(child: Text("error parsing"),);
+                          }
                         },
                       );
                     },
@@ -215,5 +235,15 @@ class _PlayContentState extends State<PlayContent> {
         return const SizedBox();
       }),
     );
+  }
+
+  bool isButtonVisible(String currentDate, String currentTime)
+  {
+    NewObject? result = NewFiltersStorage.getASpecificSaving(currentDate, currentTime);
+    if( result != null && result.wrongQuestions.isNotEmpty && result.wrongAnswers.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
