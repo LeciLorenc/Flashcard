@@ -1,10 +1,7 @@
-import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../---TO_BE_DISCARDED---/incorrectItem.dart';
-import '../---TO_BE_DISCARDED---/playedItems.dart';
-import '../playErrors/view/customListItem.dart';
+import '../pastErrors/view/customListItem.dart';
 
 /*
 
@@ -145,13 +142,11 @@ class SpecificErrorWidget extends StatelessWidget {
 
   Widget goBackButton(BuildContext context)
   {
-    return Center(
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text("Go Back"),
-      ),
+    return ListTile(
+      leading: const Icon(Icons.arrow_back),
+      title: const Text('Go back'),
+      onTap: () => Navigator.pop(context),
     );
   }
+
 }

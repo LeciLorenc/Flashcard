@@ -1,8 +1,6 @@
 
 import 'package:flashcard/calendar_and_recap/calendar/specificError.dart';
-import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/incorrectItem.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
-import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/playedItems.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
 import 'package:flutter/material.dart';
 /*
 
@@ -176,7 +174,7 @@ class CustomPlayedListItem extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push
-                        (
+                      (
                         context, MaterialPageRoute(
                         //builder: (context) => SpecificErrorWidget(numberOfErrors: numberOfErrors, item:item),),
                           builder: (context) => SpecificErrorWidget(item:item),

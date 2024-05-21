@@ -89,7 +89,7 @@ badResponseHandling(dynamic error, BuildContext context) async {
 
 insertionOfDeck(BuildContext context, String name, String description, int number, String language, IconData iconFromDialog, Subject subject) async
 {
-  String nameOfTheDeck = '$name';
+  String nameOfTheDeck = name;
   context.read<SubjectBloc>().add(
     AddDeck(
       name: nameOfTheDeck,

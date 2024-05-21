@@ -1,8 +1,8 @@
 import 'package:flashcard/calendar_and_recap/historyErrorList/CustomErrorListItem.dart';
 import 'package:flashcard/calendar_and_recap/historyErrorList/view/orderMenuWidget.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/storage/NewSavings.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/storage/utilitiesStorage.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/storage/NewSavings.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/storage/utilitiesStorage.dart';
 import 'package:flutter/material.dart';
 
 import 'historyErrorViewModel.dart';
@@ -151,9 +151,7 @@ class _HistoryErrorState extends State<HistoryError> {
     );
   }
 
-
-  Widget orderButton()
-  {
+  Widget orderButton() {
     return ElevatedButton(
       onPressed: () {
         setState(() {
@@ -162,24 +160,29 @@ class _HistoryErrorState extends State<HistoryError> {
       },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20), // Specifica il raggio del bordo desiderato
+          borderRadius: BorderRadius.circular(20),
         ),
       ),
       child: Column(
         children: [
           Row(
             children: [
-              const Icon (Icons.filter_alt),
+              const Icon(Icons.filter_alt),
               Text(_isOrderExpanded ? "Hide Order" : "Order"),
             ],
           ),
           Row(
-            children : [
+            children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                height: _isOrderExpanded ? 250 : 0, // Change the height as needed
+                height: _isOrderExpanded ? 250 : 0,
                 width: 200,
-                child: _isOrderExpanded ? OrderMenu(orderingCallback: updateOrdering) : const SizedBox.shrink(),
+                child: _isOrderExpanded
+                    ? ListView(
+                      physics: NeverScrollableScrollPhysics(), // Disable scrolling
+                      children: [OrderMenu(orderingCallback: updateOrdering)],
+                )
+                    : const SizedBox.shrink(),
               ),
             ],
           )
@@ -187,6 +190,7 @@ class _HistoryErrorState extends State<HistoryError> {
       ),
     );
   }
+
 
   void updateOrdering(String newOrdering) {
     setState(() {

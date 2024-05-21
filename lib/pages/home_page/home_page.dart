@@ -1,6 +1,7 @@
 import 'package:flashcard/bloc/subject_bloc.dart';
 import 'package:flashcard/calendar_and_recap/historyErrorList/historyError.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/storage/NewSavings.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/storage/NewSavings.dart';
+import 'package:flashcard/calendar_and_recap/playWithErrors/pastErrorViewModel.dart';
 import 'package:flashcard/pages/enumParamountWidgets.dart';
 import 'package:flashcard/pages/home_page/home_content/home_content.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../calendar_and_recap/calendar/calendar.dart';
 import '../../calendar_and_recap/historyErrorList/historyErrorViewModel.dart';
+import '../../calendar_and_recap/playWithErrors/playWithErrors.dart';
 import '../../calendar_and_recap/welcome/welcomeWidget.dart';
 import '../../model/subject.dart';
 import '../../widget/adaptable_button.dart';
@@ -74,6 +76,8 @@ class _HomePageState extends State<HomePage> {
         return "Calendar";
       case EssentialWidgets.historyError:
         return "History of all the errors";
+      case EssentialWidgets.playWithError:
+        return "Play with past errors";
       default:
         return "error";
     }
@@ -92,6 +96,9 @@ class _HomePageState extends State<HomePage> {
     }
     else if(HomePage.bodyContent == EssentialWidgets.historyError){
       return HistoryError(viewModel: HistoryErrorViewModel());
+    }
+    else if(HomePage.bodyContent == EssentialWidgets.playWithError){
+      return  PlayWithPastErrors(viewModel: PastErrorsViewModel(), );
     }
     else
     {

@@ -1,5 +1,5 @@
-import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/storage/NewFilters.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/storage/NewFilters.dart';
 import 'package:flutter/material.dart';
 
 import 'CustomPlayedListItem.dart';
@@ -118,7 +118,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: MediaQuery.of(context).size.height / 2,
+                          height: MediaQuery.of(context).size.height *1,
                           child: ListView.builder(
                             itemCount: calculateListOfPlayed().length,
                             itemBuilder: (context, index) {

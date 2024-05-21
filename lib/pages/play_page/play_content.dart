@@ -1,4 +1,4 @@
-import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
 import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/playedItems.dart';
 import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/filters.dart';
 //import 'package:flashcard/calendar_and_recap/playErrors/storage/storageData.dart';
@@ -9,9 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../bloc/play_bloc.dart';
-import '../../calendar_and_recap/playErrors/storage/NewFilters.dart';
-import '../../calendar_and_recap/playErrors/storage/NewSavings.dart';
-import '../../calendar_and_recap/playErrors/view/showIncorrectWhenPlaying.dart';
+import '../../calendar_and_recap/pastErrors/storage/NewFilters.dart';
+import '../../calendar_and_recap/pastErrors/storage/NewSavings.dart';
+import '../../calendar_and_recap/pastErrors/view/showIncorrectWhenPlaying.dart';
 import '../../widget/adaptable_card/adaptable_card.dart';
 import '../../widget/flashcard_text_editing_controller/flashcard_text_editing_controller.dart';
 

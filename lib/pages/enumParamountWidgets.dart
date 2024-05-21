@@ -3,5 +3,6 @@ enum EssentialWidgets {
   subject,
   calendar,
   historyError,
+  playWithError,
   error,
 }

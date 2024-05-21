@@ -2,9 +2,6 @@ import 'package:flashcard/bloc/subject_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Filtering{
-
-}
 
 List<DropdownMenuItem<String>> computeItemsForSubject(BuildContext context)
 {

@@ -58,11 +58,30 @@ class SubjectSelection extends StatelessWidget {
           ),
         ],
 
-        const Divider(),
+
         AdaptableButton(
           onPressed: () => onAddSubject(context),
           icon: Icons.add,
           title: 'Add subject',
+          expanded: expanded,
+        ),
+        const Divider(),
+        AdaptableButton(
+          onPressed: () => { whenPressed(context, EssentialWidgets.calendar), },
+          icon: Icons.access_time,
+          title: 'Calendar',
+          expanded: expanded,
+        ),
+        AdaptableButton(
+          onPressed: () => { whenPressed(context, EssentialWidgets.playWithError),},
+          icon: Icons.error,
+          title: 'Play the errors',
+          expanded: expanded,
+        ),
+        AdaptableButton(
+          onPressed: () => { whenPressed(context, EssentialWidgets.historyError),},
+          icon: Icons.add_chart,
+          title: 'History of progress',
           expanded: expanded,
         ),
         if (kDebugMode) ...[
@@ -78,18 +97,6 @@ class SubjectSelection extends StatelessWidget {
                 context.read<SubjectBloc>().add(DeleteAllSubjects()),
             icon: Icons.remove_outlined,
             title: 'Delete all subjects',
-            expanded: expanded,
-          ),
-          AdaptableButton(
-            onPressed: () => { whenPressed(context, EssentialWidgets.calendar), },
-            icon: Icons.access_time,
-            title: 'Calendar',
-            expanded: expanded,
-          ),
-          AdaptableButton(
-            onPressed: () => { whenPressed(context, EssentialWidgets.historyError),},
-            icon: Icons.add_chart,
-            title: 'History of progress',
             expanded: expanded,
           ),
         ]

@@ -1,6 +1,6 @@
-import 'package:flashcard/calendar_and_recap/playErrors/model/newObject.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/storage/NewSavings.dart';
-import 'package:flashcard/calendar_and_recap/playErrors/storage/utilitiesStorage.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/storage/NewSavings.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/storage/utilitiesStorage.dart';
 
 
 class NewFiltersStorage{
