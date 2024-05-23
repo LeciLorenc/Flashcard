@@ -186,40 +186,47 @@ class CustomErrorListItem extends StatelessWidget {
 
 
           Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Column(
+              const Column(
                 children: [
-                  RichText(
-                    text: TextSpan(
-                      style: const TextStyle(color: Colors.black),
-                      children:
-                      [
-                        const TextSpan(
-                          text: "Subject: ",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(text: "${item.subject};   "),
-                      ],
-                    ),
-                  ),
+                  Text("Subject: ",style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),),
                 ],
               ),
-              Column(
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      style: const TextStyle(color: Colors.black),
-                      children:
-                      [
-                        const TextSpan(
-                          text: "Deck: ",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(text: "${item.deck};   "),
-                      ],
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                        overflow: TextOverflow.ellipsis,
+                        "${item.subject};"
                     ),
-                  ),
+                  ]
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Column(
+                children: [
+                  Text("Deck: ", style:
+                    TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),),
                 ],
+              ),
+              Expanded( // Use Expanded or Flexible to control the space taken by the Text widget
+                child: Column(
+                  children: [
+                    Text(
+                      "${item.deck};",
+                      overflow: TextOverflow.ellipsis, // Properly place the overflow property
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -232,7 +239,7 @@ class CustomErrorListItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Question: ${item.wrongQuestions[i]}"),
+                    Text("Question: ${item.wrongQuestions[i]}",),
                     Text("Answer: ${item.wrongAnswers[i]}"),
                     const SizedBox(height: 8.0),
                   ],

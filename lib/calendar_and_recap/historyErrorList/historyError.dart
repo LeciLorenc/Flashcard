@@ -3,7 +3,9 @@ import 'package:flashcard/calendar_and_recap/historyErrorList/view/orderMenuWidg
 import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/NewSavings.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/utilitiesStorage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'historyErrorViewModel.dart';
 import 'historyFitering.dart';
@@ -71,7 +73,7 @@ class _HistoryErrorState extends State<HistoryError> {
             children : [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                height: _isFilterExpanded ? 50 : 0, // Change the height as needed
+                height: _isFilterExpanded ? (MediaQuery.of(context).size.width > 620 ? 50: 600) : 0, // Change the height as needed
                 child: _isFilterExpanded ? filteringMenu() : const SizedBox.shrink(),
               ),
             ],
@@ -85,69 +87,121 @@ class _HistoryErrorState extends State<HistoryError> {
 
 
   Widget filteringMenu() {
-    return Row(
+    if(NewSavings.savings.isEmpty)
+    {
+      return const Center(
+        child: Text("No filters available"),
+      );
+    }
+    else {
+    if(MediaQuery.of(context).size.width > 620) {
+      return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // Filtraggio per deck
-        DropdownButton<String>(
-            hint: const Text('Select Subject'),
-            onChanged: (String? newValue) {
-              setState(() {
-                widget.viewModel.updateSubjectFilter(newValue!);
-              });
-            },
-            value: widget.viewModel.subjectFilter!='' ? widget.viewModel.subjectFilter: null,
-            items: computeItemsForSubject(context),
-        ),
-
         // Filtraggio per subject
-        DropdownButton<String>(
-          hint: const Text('Select Deck'),
-          onChanged: (String? newValue) {
-            setState(() {
-              widget.viewModel.updateDeckFilter(newValue!);
-            });
-          },
-          value: widget.viewModel.deckFilter!='' ? widget.viewModel.deckFilter: null,
-          items: computeItemsForDeck(context),
-        ),
-
+        filterSubject(),
+        // Filtraggio per deck
+        filterDeck(),
         // Filtraggio per data
-        ElevatedButton(
-          onPressed: () async {
-            final DateTime? picked = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2015, 8),
-              lastDate: DateTime(2101),
-            );
-            if (picked != null) {
-              setState(() {
-                widget.viewModel.updateDateFilter( UtilitiesStorage.getOnlyDateFromSelectedDate(picked) );
-              });
-            }
-          },
-          child: const Row(
-            children: [
-              Icon(Icons.calendar_today),
-              Text("Filter by Date"),
-            ],
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
+        filterDate(),
+        removeFilter(),
+        ],
+      );
+    }
+    else
+      {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            // Filtraggio per subject
+            filterSubject(),
+            // Filtraggio per deck
+            filterDeck(),
+            // Filtraggio per data
+            filterDate(),
+            removeFilter(),
+          ],
+        );
+      }
+    }
+  }
+  Widget filterSubject()
+  {
+    return SizedBox(
+      width: 140,
+      child: DropdownButton<String>(
+        hint: const Text('Select Subject'),
+        onChanged: (String? newValue) {
+          setState(() {
+            widget.viewModel.updateSubjectFilter(newValue!);
+          });
+        },
+        value: widget.viewModel.subjectFilter!='' ? widget.viewModel.subjectFilter: null,
+        items: computeItemsForSubject(context),
+      ),
+    );
+  }
+  Widget filterDeck()
+  {
+    return SizedBox(
+      width: 140,
+      child: DropdownButton<String>(
+        hint: const Text('Select Deck'),
+        onChanged: (String? newValue) {
+          setState(() {
+            widget.viewModel.updateDeckFilter(newValue!);
+          });
+        },
+        value: widget.viewModel.deckFilter!='' ? widget.viewModel.deckFilter: null,
+        items: computeItemsForDeck(context),
+      ),
+    );
+  }
+  Widget filterDate()
+  {
+    return SizedBox(
+      width: 140,
+      child: ElevatedButton(
+        onPressed: () async {
+          final DateTime? picked = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2015, 8),
+            lastDate: DateTime(2101),
+          );
+          if (picked != null) {
             setState(() {
-              widget.viewModel.removeAllFilters();
+              widget.viewModel.updateDateFilter( UtilitiesStorage.getOnlyDateFromSelectedDate(picked) );
             });
-          },
-          child: const Row(
-            children: [
-              Icon(Icons.highlight_remove),
-              Text("Remove Filters"),
-            ],
-          ),
+          }
+        },
+        child: const Row(
+          children: [
+            Icon(Icons.calendar_today),
+            Text("Filter Date"),
+          ],
         ),
-      ],
+      ),
+    );
+  }
+
+  Widget removeFilter()
+  {
+    return SizedBox(
+      width: 200,
+      child: ElevatedButton(
+        onPressed: () {
+          setState(() {
+            widget.viewModel.removeAllFilters();
+          });
+        },
+        child: const Row(
+          children: [
+            Icon(Icons.highlight_remove),
+            Text("Remove Filters"),
+          ],
+        ),
+      ),
     );
   }
 

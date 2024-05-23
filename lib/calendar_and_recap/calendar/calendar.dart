@@ -1,5 +1,7 @@
 import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/NewFilters.dart';
+import 'package:flashcard/calendar_and_recap/pastErrors/storage/utilitiesStorage.dart';
+import 'package:flashcard/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 
 import 'CustomPlayedListItem.dart';
@@ -27,17 +29,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     });
   }
 
-  /*PlayedDeck calculatePlayedItem(int index)
-  {
-    int indexToUse = UtilitiesStorage.calculatePlayedListWithOnlyDate(_selectedDate).length-1-index;
-    return UtilitiesStorage.calculatePlayedListWithOnlyDate(_selectedDate)[indexToUse];
-  }
-  List<IncorrectItem> calculateErrors(PlayedDeck playedItem)
-  {
-    return UtilitiesStorage.calculateNumberOfErrors(playedItem.time, _selectedDate ,playedItem.subject, playedItem.deck);
-  }
-*/
-
   List<NewObject> calculateListOfPlayed()
   {
      return NewFiltersStorage.calculatePlayedListWithOnlyDate(_selectedDate);
@@ -46,99 +37,131 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          ConstrainedBox(
-            constraints:  BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width / 1.2,
-              maxHeight: MediaQuery.of(context).size.height / 1,
-            ),
-              child: DatePickerWidget(
-                initialDate: _selectedDate,
-                onDateChanged: _updateSelectedDate,
-              ),
-          ),
-          Center(
-           
-              /*child: ConstrainedBox(
-                constraints:  BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width / 1.2,
-                  maxHeight: MediaQuery.of(context).size.height / 3.2,
-                ),
-                child: Container(
-                  margin: const EdgeInsets.all(3.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1.0, color: Colors.black),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height / 2,
-                            child: ListView.builder(
-                              itemCount: UtilitiesStorage.calculatePlayedListWithOnlyDate(_selectedDate).length,
-                              itemBuilder: (context, index) {
-                                final playedItem = calculatePlayedItem(index);
-                                return CustomPlayedListItem(
-                                  item: playedItem,
-                                  numberOfErrors: calculateErrors(playedItem),
-                                );
-                              },
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );*/
-            child: ConstrainedBox(
-              constraints:  BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width / 1.2,
-                maxHeight: MediaQuery.of(context).size.height / 3.2,
-              ),
-              child: Container(
-                margin: const EdgeInsets.all(3.0),
-                decoration: BoxDecoration(
-                  border: Border.all(width: 1.0, color: Colors.black),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height *1,
-                          child: ListView.builder(
-                            itemCount: calculateListOfPlayed().length,
-                            itemBuilder: (context, index) {
-                              final playedItem = calculateListOfPlayed()[index];
-                              return CustomPlayedListItem(
-                                item: playedItem,
-                              );
-                            },
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+    if(MediaQuery.of(context).orientation == Orientation.portrait) {
+      return Scaffold(
+        body: Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Colors.green, // Set the color for the selected date
             ),
           ),
-        ],
+          child: Column(
+            children: [
+              buildCalendarPicker(  MediaQuery.of(context).size.width *0.8,
+                                    MediaQuery.of(context).size.height * 0.5),
+              buildDate(),
+              buildListOfFilteredSavings( MediaQuery.of(context).size.width *0.8,
+                                          MediaQuery.of(context).size.height *0.35),
+            ],
+          ),
+        ),
+      );
+    }
+    else
+    {
+      return Scaffold(
+        body: Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Colors.green, // Set the color for the selected date
+            ),
+          ),
+          child: Row(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildCalendarPicker(MediaQuery.of(context).size.width *0.3,
+                                      MediaQuery.of(context).size.height * 0.9),
+                ],
+              ),
+              Column(
+                children: [
+                  buildDate(),
+                  buildListOfFilteredSavings(
+                                  HomePage.expanded ?  MediaQuery.of(context).size.width *0.4
+                                                    :   MediaQuery.of(context).size.width *0.6,
+                                  MediaQuery.of(context).size.height *0.8),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+
+  Widget buildListOfFilteredSavings(double width, double height)
+  {
+    return Center(
+      child: ConstrainedBox(
+        constraints:  BoxConstraints(
+          maxWidth: width,
+          maxHeight: height,
+        ),
+        child: Container(
+          margin: const EdgeInsets.all(3.0),
+          decoration: BoxDecoration(
+            border: Border.all(width: 1.0, color: Colors.black),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height *1,
+                    child: ListView.builder(
+                      itemCount: calculateListOfPlayed().length,
+                      itemBuilder: (context, index) {
+                        final playedItem = calculateListOfPlayed()[index];
+                        return CustomPlayedListItem(
+                          item: playedItem,
+                        );
+                      },
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
+    );
+  }
+
+
+  Widget buildCalendarPicker(double width, double height)
+  {
+    return ConstrainedBox(
+      constraints:  BoxConstraints(
+        maxWidth: width,
+        maxHeight: height,
+      ),
+      child: DatePickerWidget(
+        initialDate: _selectedDate,
+        onDateChanged: _updateSelectedDate,
+      ),
+    );
+  }
+
+  Widget buildDate()
+  {
+    String dateWithWords = UtilitiesStorage.fromDateFormatToDateWithWords(_selectedDate);
+    return Column(
+      children: [
+        const Text("Date selected: "),
+        Text(dateWithWords,
+          style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2.0,
+                        color: Color.fromARGB(232, 11, 161, 23),
+            ),),
+      ],
     );
   }
 }

@@ -43,6 +43,11 @@ class UtilitiesStorage
     return finalDate;
   }
 
+  static String fromDateFormatToDateWithWords(DateTime dateTime)
+  {
+    final DateFormat formatter = DateFormat('d MMMM yyyy');
+    return formatter.format(dateTime);
+  }
 
 
 

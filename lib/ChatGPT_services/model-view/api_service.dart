@@ -5,8 +5,7 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   static const String BASE_URL = "https://api.openai.com/v1";
-  static const String API_KEY = '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';
-  //static const String API_KEY = 'sk-ahahahhah';
+  static const String API_KEY = 'sk-proj-blXqo4xboTptYlbGB7z1T3BlbkFJpd7FTgHpf5YybvGWvqjN';
 
 
   static Future<String> sendMessageToChatGPT(String message) async {

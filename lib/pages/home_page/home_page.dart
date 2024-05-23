@@ -41,10 +41,14 @@ class _HomePageState extends State<HomePage> {
         return AdaptablePage(
           expanded: HomePage.expanded,
           onExpand: onExpand,
-          drawer: SubjectSelection(
-            subjects: subjectState.subjects,
-            expanded: HomePage.expanded,
-          ),
+          // drawer: Drawer(
+          //   backgroundColor: Colors.green,
+          //child: SubjectSelection(
+            drawer: SubjectSelection(
+              subjects: subjectState.subjects,
+              expanded: HomePage.expanded,
+            ),
+          // ),
           content: defineBodyWidget(),
           title: defineTitle(subjectState),
           actions: [
@@ -69,9 +73,7 @@ class _HomePageState extends State<HomePage> {
       case EssentialWidgets.welcome:
         return "Welcome";
       case EssentialWidgets.subject:
-        return subjectState.subject == null
-            ? 'Select subject'
-            : '${subjectState.subject!.name}${subjectState.deck == null ? '' : ' - ${subjectState.deck!.name}'}';
+        return defineStringTitleForSubject(subjectState);
       case EssentialWidgets.calendar:
         return "Calendar";
       case EssentialWidgets.historyError:
@@ -80,6 +82,57 @@ class _HomePageState extends State<HomePage> {
         return "Play with past errors";
       default:
         return "error";
+    }
+  }
+  String defineStringTitleForSubject(subjectState)
+  {
+    int maxLengthTotal= 25;
+    int maxTrimSubject = 10;
+
+    if(subjectState.subject == null){
+      return 'Select subject';
+    }
+    else
+    {
+      String subjName= '${subjectState.subject!.name}';
+      String deckName= subjectState.deck?.name ?? '';
+
+      if(deckName == '')
+      {
+        if(subjName.length>maxLengthTotal) {
+          return subjName.substring(0,maxLengthTotal);
+        }
+        else
+        {
+          return subjName;
+        }
+      }
+      else if(subjName=='')
+      {
+        if(deckName.length>maxLengthTotal-1) {
+          return '-${deckName.substring(0,maxLengthTotal-1)}';
+        }
+        else
+        {
+          return '-$deckName';
+        }
+      }
+      else
+      {
+        if(subjName.length + deckName.length > maxLengthTotal-1)
+        {
+          if(subjName.length> maxTrimSubject)
+          {
+            subjName = '${subjName.substring(0,maxTrimSubject-3)}...';
+          }
+          int remainingDeckSpace = maxLengthTotal-1-subjName.length-3;
+          if(deckName.length > remainingDeckSpace)
+          {
+            deckName = '${deckName.substring(0,remainingDeckSpace+1)}...';
+          }
+        }
+        return '$subjName-$deckName';
+      }
     }
   }
 

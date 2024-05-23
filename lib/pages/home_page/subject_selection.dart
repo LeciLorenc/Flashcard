@@ -52,7 +52,7 @@ class SubjectSelection extends StatelessWidget {
               HomePage.bodyContent = EssentialWidgets.subject;
             },
             icon: subject.icon,
-            title: subject.name,
+            title: subject.name.length>25? '${subject.name.substring(0,25)}...' : subject.name,
             expanded: expanded,
             selected: context.read<SubjectBloc>().state.subject == subject,
           ),
