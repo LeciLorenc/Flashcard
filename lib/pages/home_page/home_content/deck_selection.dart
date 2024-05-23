@@ -25,6 +25,7 @@ class DeckSelection extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return ListView(
+      shrinkWrap: true,
       children: [
         for (final Deck deck in subject.decks) ...[
           ListTile(

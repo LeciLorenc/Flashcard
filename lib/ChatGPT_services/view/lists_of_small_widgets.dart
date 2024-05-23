@@ -17,7 +17,7 @@ Widget buildDeckNameInput(BuildContext context, IconData iconName, DeckCreationV
       Expanded(
         child: TextField(
           decoration: const InputDecoration(
-            hintText: 'Enter the name of the deck',
+            hintText: "Enter the deck's name",
           ),
           controller: deckCreationViewModel.textEditingController,
         ),
@@ -99,7 +99,7 @@ Widget buildLabelForDescriptionOfFlashcards(DeckCreationViewModel deckCreationVi
   return Row(
     children: [
       const Icon(EducationIcons.openBook),
-      const SizedBox(width: 8),
+      const SizedBox(width: 8+16),
       Expanded(
         child: TextField(
           decoration: const InputDecoration(
@@ -144,4 +144,24 @@ Widget buildIconSelectionWidget(BuildContext context,DeckCreationViewModel deckC
       child: const Text('Change'),
     ),
   ]);
+}
+
+Widget okButtonAction(DeckCreationViewModel deckCreationViewModel, BuildContext context)
+{
+  return TextButton(
+    onPressed: () => Navigator.pop(context, ['OK',
+      deckCreationViewModel.textEditingController.text,
+      deckCreationViewModel.textDescriptionController.text,
+      deckCreationViewModel.number,
+      deckCreationViewModel.selectedLanguage,
+      deckCreationViewModel.selectedIcon]),
+    child: const Text('OK'),
+  );
+}
+Widget cancelButtonAction(BuildContext context)
+{
+  return TextButton(
+    onPressed: () => Navigator.pop(context, ['Cancel']),
+    child: const Text('Cancel'),
+  );
 }
