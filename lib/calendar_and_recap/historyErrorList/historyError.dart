@@ -3,6 +3,7 @@ import 'package:flashcard/calendar_and_recap/historyErrorList/view/orderMenuWidg
 import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/NewSavings.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/utilitiesStorage.dart';
+import 'package:flashcard/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -27,19 +28,26 @@ class _HistoryErrorState extends State<HistoryError> {
   Widget build(BuildContext context) {
     return StatefulBuilder(
       builder: (context, setState) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FilterButton(),
-                const SizedBox(height: 8),
-                orderButton(),
-                const SizedBox(height: 16),
-                savingList(),
-                deleteAllButton(context),
-              ],
+        return Theme(
+          data: Theme.of(context).copyWith(
+          colorScheme: const ColorScheme.light(
+            primary: primaryColor, // Set the color for the selected date
+          ),
+        ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FilterButton(),
+                  const SizedBox(height: 8),
+                  orderButton(),
+                  const SizedBox(height: 16),
+                  savingList(),
+                  deleteAllButton(context),
+                ],
+              ),
             ),
           ),
         );

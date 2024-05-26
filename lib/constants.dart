@@ -25,4 +25,7 @@ const double spaceBetweenWidgets = 20;
 const LatLng polimi = LatLng(45.47810857587293, 9.227247297082284);
 
 const Color primaryColor = Color(0xFF287762);
-const Color secondaryColor = Color(0xFFe5e1d5);
+const Color secondaryColor = Color(0xffa0faa9);
+const Color backGroundColor = Color(0xffeefdf2);
+
+const Color dividerColor = Color(0xffe1e7e1);

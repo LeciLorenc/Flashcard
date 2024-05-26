@@ -1,7 +1,8 @@
 import 'package:flashcard/calendar_and_recap/histogram.dart';
-import 'package:flashcard/calendar_and_recap/welcome/welcomeData.dart';
+import 'package:flashcard/calendar_and_recap/welcome/welcomeViewModel.dart';
 import 'package:flutter/material.dart';
 
+import '../../constants.dart';
 import 'monthAndYearPicker.dart';
 
 class WelcomeWidget extends StatefulWidget {
@@ -22,32 +23,38 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          const Text(
-            "WELCOME USER   (  :-)  )",
-            style: TextStyle(fontSize: 20),
-          ),
-          const Text(
-            "Here there is your monthly recap : ",
-            style: TextStyle(fontSize: 17),
-          ),
-          MonthYearPicker(
-            onChanged: (DateTime newDate) {
-              setState(() {
-                _selectedDate = newDate;
-              });
-            },
-            initialDate: _selectedDate,
-          ),
-          const SizedBox(height: 16),
-          Histogram(
-            data: WelcomeData.computeCorrectPoints(_selectedDate),
-            labels: WelcomeData.computeLabels(_selectedDate),
-            maxTotal: WelcomeData.computeTotalPoints(_selectedDate),
-          )
-        ],
+    return Theme(
+      data: Theme.of(context).copyWith(
+          colorScheme: const ColorScheme.light(
+            primary: primaryColor, // Set the color for the selected date
+          ),),
+      child: Center(
+        child: Column(
+          children: [
+            const Text(
+              "WELCOME USER   (  :-)  )",
+              style: TextStyle(fontSize: 20),
+            ),
+            const Text(
+              "Here there is your monthly recap : ",
+              style: TextStyle(fontSize: 17),
+            ),
+            MonthYearPicker(
+              onChanged: (DateTime newDate) {
+                setState(() {
+                  _selectedDate = newDate;
+                });
+              },
+              initialDate: _selectedDate,
+            ),
+            const SizedBox(height: 16),
+            Histogram(
+              data: WelcomeData.computeCorrectPoints(_selectedDate),
+              labels: WelcomeData.computeLabels(_selectedDate),
+              maxTotal: WelcomeData.computeTotalPoints(_selectedDate),
+            )
+          ],
+        ),
       ),
     );
   }

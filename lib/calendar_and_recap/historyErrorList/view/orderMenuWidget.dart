@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants.dart';
 import '../historyErrorViewModel.dart';
 
 
@@ -38,7 +39,7 @@ class _OrderMenuState extends State<OrderMenu> {
 
   Widget buildButton(String label, String ordering) {
 
-    const Color customLightPink = Color.fromRGBO(255, 220, 220, 1.0);
+    const Color customLightPink = secondaryColor;
 
 
     return ElevatedButton(

@@ -23,60 +23,83 @@ class _PlayWithPastErrors extends State<PlayWithPastErrors> {
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(builder: (context, setState) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width - 16,
-              height: MediaQuery.of(context).size.height - 16 - 56, //padding + appBar
-              child: ListView(
-                physics: const NeverScrollableScrollPhysics(), // Disable scrolling
-                children: [
-                  Visibility(
-                    visible: (widget.viewModel.phasePlayChoice == PhasePlayChoice.choice ||
-                        widget.viewModel.phasePlayChoice == PhasePlayChoice.play),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Choice(orderingCallback: updateChoice),
-                      ],
+      if (widget.viewModel.phasePlayChoice == PhasePlayChoice.choice ||
+          widget.viewModel.phasePlayChoice == PhasePlayChoice.play) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              SizedBox(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width - 16,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height - 16 - 56, //padding + appBar
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Choice(orderingCallback: updateChoice),
+
+                    Visibility(
+                      visible: !widget.areThereErrors,
+                      child: const Text(
+                        "No errors done till now",
+                        style: TextStyle(color: Colors.red),
+                      ),
                     ),
-                  ),
-                  Visibility(
-                    visible: (widget.viewModel.phasePlayChoice == PhasePlayChoice.subject ||
-                        widget.viewModel.phasePlayChoice == PhasePlayChoice.deck),
-                    child: FutureBuilder(
+                  ],
+                ),),
+            ],),);
+      }
+      else {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              SizedBox(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width - 16,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height - 16 - 56, //padding + appBar
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FutureBuilder(
                       future: Future.delayed(const Duration(seconds: 1)),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState
+                            .waiting) {
                           return Center(child: circularProgressWidget());
                         } else {
-                          if (widget.viewModel.phasePlayChoice == PhasePlayChoice.subject) {
+                          if (widget.viewModel.phasePlayChoice ==
+                              PhasePlayChoice.subject) {
                             return SubjectChoice(
-                                orderingCallback: updateSubject, pastErrorsViewModel: widget.viewModel);
+                                orderingCallback: updateSubject,
+                                pastErrorsViewModel: widget.viewModel);
                           } else {
                             return DeckChoice(
-                                orderingCallback: updateDeck, pastErrorsViewModel: widget.viewModel);
+                                orderingCallback: updateDeck,
+                                pastErrorsViewModel: widget.viewModel);
                           }
                         }
                       },
                     ),
-                  ),
-                  Visibility(
-                    visible: !widget.areThereErrors,
-                    child: const Text(
-                      "No errors done till now",
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      );
-    });
+            ],
+          ),
+        );
+      }
+    },
+    );
   }
 
   void updateChoice(String choice) {

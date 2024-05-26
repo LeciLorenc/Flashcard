@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/subject_bloc.dart';
+import '../../constants.dart';
 import '../../model/subject.dart';
 import '../../presentation/education_icons.dart';
 import '../../service/local_repository_service.dart';
@@ -31,76 +32,83 @@ class SubjectSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children:
-      [
-        AdaptableButton(
-          onPressed: () => { whenPressed(context, EssentialWidgets.welcome), },
-          icon: Icons.home,
-          title: 'Home',
-          expanded: expanded,
-        ),
-        const Divider(),
-        for (Subject subject in subjects) ...[
+    return Theme(
+      data : Theme.of(context).copyWith(
+          colorScheme: const ColorScheme.light(
+            primary: primaryColor,
+            background: secondaryColor
+          ),),
+      child: ListView(
+        children:
+        [
           AdaptableButton(
-            onPressed: ()
-            {
-              context.read<SubjectBloc>().add(SelectSubject(subject));
-              if(MediaQuery.of(context).orientation == Orientation.portrait) {
-                HomePage.expanded=false;
-              }
-              HomePage.bodyContent = EssentialWidgets.subject;
-            },
-            icon: subject.icon,
-            title: subject.name.length>25? '${subject.name.substring(0,25)}...' : subject.name,
+            onPressed: () => { whenPressed(context, EssentialWidgets.welcome), },
+            icon: Icons.home,
+            title: 'Home',
             expanded: expanded,
-            selected: context.read<SubjectBloc>().state.subject == subject,
           ),
-        ],
+          const Divider(),
+          for (Subject subject in subjects) ...[
+            AdaptableButton(
+              onPressed: ()
+              {
+                context.read<SubjectBloc>().add(SelectSubject(subject));
+                if(MediaQuery.of(context).orientation == Orientation.portrait) {
+                  HomePage.expanded=false;
+                }
+                HomePage.bodyContent = EssentialWidgets.subject;
+              },
+              icon: subject.icon,
+              title: subject.name.length>25? '${subject.name.substring(0,25)}...' : subject.name,
+              expanded: expanded,
+              selected: context.read<SubjectBloc>().state.subject == subject,
+            ),
+          ],
 
 
-        AdaptableButton(
-          onPressed: () => onAddSubject(context),
-          icon: Icons.add,
-          title: 'Add subject',
-          expanded: expanded,
-        ),
-        const Divider(),
-        AdaptableButton(
-          onPressed: () => { whenPressed(context, EssentialWidgets.calendar), },
-          icon: Icons.access_time,
-          title: 'Calendar',
-          expanded: expanded,
-        ),
-        AdaptableButton(
-          onPressed: () => { whenPressed(context, EssentialWidgets.playWithError),},
-          icon: Icons.error,
-          title: 'Play the errors',
-          expanded: expanded,
-        ),
-        AdaptableButton(
-          onPressed: () => { whenPressed(context, EssentialWidgets.historyError),},
-          icon: Icons.add_chart,
-          title: 'History of progress',
-          expanded: expanded,
-        ),
-        if (kDebugMode) ...[
+          AdaptableButton(
+            onPressed: () => onAddSubject(context),
+            icon: Icons.add,
+            title: 'Add subject',
+            expanded: expanded,
+          ),
           const Divider(),
           AdaptableButton(
-            onPressed: () => LocalRepositoryService.debug(),
-            icon: Icons.info_outline,
-            title: 'Debug info',
+            onPressed: () => { whenPressed(context, EssentialWidgets.calendar), },
+            icon: Icons.access_time,
+            title: 'Calendar',
             expanded: expanded,
           ),
           AdaptableButton(
-            onPressed: () =>
-                context.read<SubjectBloc>().add(DeleteAllSubjects()),
-            icon: Icons.remove_outlined,
-            title: 'Delete all subjects',
+            onPressed: () => { whenPressed(context, EssentialWidgets.playWithError),},
+            icon: Icons.error,
+            title: 'Play the errors',
             expanded: expanded,
           ),
-        ]
-      ],
+          AdaptableButton(
+            onPressed: () => { whenPressed(context, EssentialWidgets.historyError),},
+            icon: Icons.add_chart,
+            title: 'History of progress',
+            expanded: expanded,
+          ),
+          if (kDebugMode) ...[
+            const Divider(),
+            AdaptableButton(
+              onPressed: () => LocalRepositoryService.debug(),
+              icon: Icons.info_outline,
+              title: 'Debug info',
+              expanded: expanded,
+            ),
+            AdaptableButton(
+              onPressed: () =>
+                  context.read<SubjectBloc>().add(DeleteAllSubjects()),
+              icon: Icons.remove_outlined,
+              title: 'Delete all subjects',
+              expanded: expanded,
+            ),
+          ]
+        ],
+      ),
     );
   }
 
