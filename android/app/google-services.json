@@ -1,26 +1,79 @@
 {
   "project_info": {
-    "project_number": "952259925562",
-    "project_id": "try1-f3948",
-    "storage_bucket": "try1-f3948.appspot.com"
+    "project_number": "1031360482945",
+    "project_id": "dimadb-9b14f",
+    "storage_bucket": "dimadb-9b14f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:952259925562:android:8ceed06b2c9f8cded34703",
+        "mobilesdk_app_id": "1:1031360482945:android:3e6f95751b7beddd970780",
         "android_client_info": {
           "package_name": "com.buba.flashcard"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1031360482945-js9p9jedk2buthdk49qs2pi8l276c2le.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAQX4cryPGrqHOhpguvDADtF6J9-Zk9S8c"
+          "current_key": "AIzaSyBf3YbIHgGJz51OSWM3ak8t83m2-yH13_0"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1031360482945-js9p9jedk2buthdk49qs2pi8l276c2le.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1031360482945-nkksb0htoc4n3np4pnh38qun9uf0h2qh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "it.polimi.dima.nicolovincenzo.dimaProject.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1031360482945:android:6eb60c33272075b4970780",
+        "android_client_info": {
+          "package_name": "it.polimi.dima.nicolovincenzo.dima_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1031360482945-js9p9jedk2buthdk49qs2pi8l276c2le.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf3YbIHgGJz51OSWM3ak8t83m2-yH13_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1031360482945-js9p9jedk2buthdk49qs2pi8l276c2le.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1031360482945-nkksb0htoc4n3np4pnh38qun9uf0h2qh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "it.polimi.dima.nicolovincenzo.dimaProject.RunnerTests"
+              }
+            }
+          ]
         }
       }
     }
