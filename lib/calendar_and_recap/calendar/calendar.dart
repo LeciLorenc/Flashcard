@@ -106,29 +106,26 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             border: Border.all(width: 1.0, color: Colors.black),
             borderRadius: BorderRadius.circular(8.0),
           ),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height *1,
-                    child: ListView.builder(
-                      itemCount: calculateListOfPlayed().length,
-                      itemBuilder: (context, index) {
-                        final playedItem = calculateListOfPlayed()[index];
-                        return CustomPlayedListItem(
-                          item: playedItem,
-                        );
-                      },
-                    ),
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: calculateListOfPlayed().length,
+                    itemBuilder: (context, index) {
+                      final playedItem = calculateListOfPlayed()[index];
+                      return CustomPlayedListItem(
+                        item: playedItem,
+                      );
+                    },
                   ),
-
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
+
       ),
     );
   }

@@ -24,8 +24,10 @@ class _HistoryErrorState extends State<HistoryError> {
   bool _isFilterExpanded = false;
   bool _isOrderExpanded = false;
 
+
   @override
   Widget build(BuildContext context) {
+
     return StatefulBuilder(
       builder: (context, setState) {
         return Theme(
@@ -81,8 +83,10 @@ class _HistoryErrorState extends State<HistoryError> {
             children : [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                height: _isFilterExpanded ? (MediaQuery.of(context).size.width > 620 ? 50: 600) : 0, // Change the height as needed
-                child: _isFilterExpanded ? filteringMenu() : const SizedBox.shrink(),
+                height: _isFilterExpanded ? (MediaQuery.of(context).size.width > 720 ? 50: 200) : 0, // Change the height as needed
+                child: _isFilterExpanded ?
+                SingleChildScrollView(
+                    child: filteringMenu()) : const SizedBox.shrink(),
               ),
             ],
           )
@@ -197,21 +201,35 @@ class _HistoryErrorState extends State<HistoryError> {
   {
     return SizedBox(
       width: 200,
-      child: ElevatedButton(
-        onPressed: () {
-          setState(() {
-            widget.viewModel.removeAllFilters();
-          });
-        },
-        child: const Row(
-          children: [
-            Icon(Icons.highlight_remove),
-            Text("Remove Filters"),
-          ],
-        ),
+      child: Row(
+        children: [
+          const SizedBox(width: 27),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                widget.viewModel.removeAllFilters();
+              });
+            },
+            child: const Row(
+              children: [
+                Icon(Icons.highlight_remove),
+                Text("Remove Filters"),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
+
+
+
+
+
+
+
+
+
 
   Widget orderButton() {
     return ElevatedButton(
@@ -237,7 +255,7 @@ class _HistoryErrorState extends State<HistoryError> {
             children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                height: _isOrderExpanded ? 250 : 0,
+                height: _isOrderExpanded ? 320 : 0,
                 width: 200,
                 child: _isOrderExpanded
                     ? ListView(

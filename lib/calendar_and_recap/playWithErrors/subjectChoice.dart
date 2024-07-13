@@ -31,39 +31,35 @@ class _SubjectChoice extends State<SubjectChoice> {
         ),
       ),
       width: MediaQuery.of(context).size.width - 16,
-      height: MediaQuery.of(context).size.height - 16 - 56,
+      height: MediaQuery.of(context).size.height - 16 - 56 -34,
       child: Column(
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Which subject would you like to review again?"),
-                      SizedBox(height: 6),
-                    ],
-                  ),
-                  buildCheckBox(),
-                  const SizedBox(height: 15),
-                  SizedBox(
-                    width: 200,
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            buildListViewOfSubjects(),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 15),
+                  Text("Which subject would you like to review again?"),
+                  SizedBox(height: 6),
                 ],
               ),
-            ),
+              buildCheckBox(),
+              const SizedBox(height: 15),
+              SizedBox(
+                width: 200,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        buildListViewOfSubjects(),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15),
+            ],
           ),
           buildGoBackButton(),
         ],
@@ -122,103 +118,38 @@ class _SubjectChoice extends State<SubjectChoice> {
   Widget buildListViewOfSubjects()
   {
     return Expanded(
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: widget.possibleSubjects.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: ElevatedButton(
-              onPressed: () {
-                widget.orderingCallback(widget.possibleSubjects[index]);
-                widget.pastErrorsViewModel.createAllStuff();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => PlayPage(
-                      subject: widget.pastErrorsViewModel.subject,
-                      deck: widget.pastErrorsViewModel.deck,
-                    ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: widget.possibleSubjects.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      widget.orderingCallback(widget.possibleSubjects[index]);
+                      widget.pastErrorsViewModel.createAllStuff();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => PlayPage(
+                            subject: widget.pastErrorsViewModel.subject,
+                            deck: widget.pastErrorsViewModel.deck,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text(widget.possibleSubjects[index]),
                   ),
                 );
               },
-              child: Text(widget.possibleSubjects[index]),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
 }
-
-
-/*class SubjectChoice extends StatefulWidget {
-  final OrderingCallback orderingCallback;
-
-  const SubjectChoice({Key? key, required this.orderingCallback}) : super(key: key);
-
-  @override
-  _SubjectChoice createState() => _SubjectChoice();
-}
-
-class _SubjectChoice extends State<SubjectChoice> {
-  String? choice = '';
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const Text("What you would like to review again?"),
-        buildButton("Choose Sub1", 'Sub1 sdcleta'),
-        const SizedBox(height: 6),
-        buildButton("Choose Sub2", 'Sub2 scelat'),
-        const SizedBox(height: 6),
-        buildGoBackButton(),
-      ],
-    );
-  }
-
-  Widget buildButton(String label, String ordering) {
-
-    const Color customLightPink = Color.fromRGBO(255, 220, 220, 1.0);
-
-
-    return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          choice = ordering;
-        });
-        widget.orderingCallback(ordering);
-      },
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-          if (choice == ordering) {
-            return customLightPink; // Change to light blue when selected
-          } else {
-            return Colors.white; // Change to white when not selected
-          }
-        }),
-      ),
-      child: Row(
-        children: [
-          Text(label),
-        ],
-      ),
-    );
-  }
-
-
-  Widget buildGoBackButton() {
-    return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          choice = '';
-        });
-        widget.orderingCallback('');
-      },
-      child: const Text("Go back"),
-    );
-  }
-}*/

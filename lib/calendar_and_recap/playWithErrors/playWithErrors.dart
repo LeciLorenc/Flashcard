@@ -37,7 +37,7 @@ class _PlayWithPastErrors extends State<PlayWithPastErrors> {
                 height: MediaQuery
                     .of(context)
                     .size
-                    .height - 16 - 56, //padding + appBar
+                    .height - 16 - 56-34, //padding + appBar
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -67,31 +67,34 @@ class _PlayWithPastErrors extends State<PlayWithPastErrors> {
                 height: MediaQuery
                     .of(context)
                     .size
-                    .height - 16 - 56, //padding + appBar
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FutureBuilder(
-                      future: Future.delayed(const Duration(seconds: 1)),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState
-                            .waiting) {
-                          return Center(child: circularProgressWidget());
-                        } else {
-                          if (widget.viewModel.phasePlayChoice ==
-                              PhasePlayChoice.subject) {
-                            return SubjectChoice(
-                                orderingCallback: updateSubject,
-                                pastErrorsViewModel: widget.viewModel);
+                    .height - 16 - 56 -34, //padding + appBar
+                child: Transform.translate(
+                  offset: const Offset(0,0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FutureBuilder(
+                        future: Future.delayed(const Duration(seconds: 1)),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState
+                              .waiting) {
+                            return Center(child: circularProgressWidget());
                           } else {
-                            return DeckChoice(
-                                orderingCallback: updateDeck,
-                                pastErrorsViewModel: widget.viewModel);
+                            if (widget.viewModel.phasePlayChoice ==
+                                PhasePlayChoice.subject) {
+                              return SubjectChoice(
+                                  orderingCallback: updateSubject,
+                                  pastErrorsViewModel: widget.viewModel);
+                            } else {
+                              return DeckChoice(
+                                  orderingCallback: updateDeck,
+                                  pastErrorsViewModel: widget.viewModel);
+                            }
                           }
-                        }
-                      },
-                    ),
-                  ],
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -142,120 +145,4 @@ class _PlayWithPastErrors extends State<PlayWithPastErrors> {
     );
   }
 }
-
-
-
-  /*
-  @override
-  Widget build(BuildContext context) {
-
-    print("Here we go with the context ");
-    context.read<SubjectBloc>().state.subjects.map((x) {
-      print(x);
-    }).toList();
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child:
-            Center(
-              child: Column(
-                children: [
-                  const Text("Hello, here you can choose which past error you want to revise : ",
-                    style: TextStyle(
-                    fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.purple,),),
-
-
-
-                  ElevatedButton(
-                    onPressed: () {
-                      widget.choiceViewModel.selectChoice(Choice.Subject);
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                        if (widget.choiceViewModel._selectedChoice == Choice.Subject) {
-                          return Colors.lightGreenAccent; // Change to light blue when selected
-                        } else {
-                          return Colors.white; // Change to white when not selected
-                        }
-                      }),
-                    ),
-                    child: const Text("Subject"),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      widget.choiceViewModel.selectChoice(Choice.Deck);
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                        if (widget.choiceViewModel._selectedChoice == Choice.Deck) {
-                          return Colors.lightGreenAccent; // Change to light blue when selected
-                        } else {
-                          return Colors.white; // Change to white when not selected
-                        }
-                      }),
-                    ),
-                    child: const Text("Deck"),
-                  ),
-                  const SizedBox(height: 16),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 500),
-                    child: widget.choiceViewModel.selectedChoice != null
-                        ? Text(
-                      widget.choiceViewModel.selectedChoice == Choice.Subject ? "Subject Selected" : "Deck Selected",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                        : const SizedBox.shrink(),
-                  ),
-
-
-
-
-
-
-                  IconButton(
-                    tooltip: 'Play',
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => PlayPage(
-                          subject: Subject(id: '', name: '', decks: [], icon: Icons.android_outlined,),
-                          deck: PastErrorsViewModel().deck,
-                        ),
-                      ),
-                    ),
-                    icon: const Icon(Icons.play_arrow_outlined),
-                  ),
-                ],
-              ),
-            ),
-          );
-      },
-    );
-  }
-}
-*/
-
-
-/*
-
-
-  Navigator.push(
-  context,
-  MaterialPageRoute(
-  builder: (BuildContext context) =>
-  PlayPage(
-  subject: Subject(id: '', name: '', decks: [], icon: Icons.android_outlined,),
-  deck: PastErrorsViewModel().deck,
-  ),
-  ),
-  );
-*/
 

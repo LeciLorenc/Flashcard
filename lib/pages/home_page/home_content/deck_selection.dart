@@ -27,58 +27,10 @@ class DeckSelection extends StatelessWidget {
     return ListView(
       shrinkWrap: true,
       children: [
-        for (final Deck deck in subject.decks) ...[
-          ListTile(
-            leading: Icon(deck.icon),
-            title: Text(deck.name),
-            subtitle: Text('${deck.flashcards.length} cards'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  tooltip: 'Play',
-                  onPressed: deck.flashcards.isEmpty
-                      ? null
-                      : () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => PlayPage(
-                        subject: subject,
-                        deck: deck,
-                      ),
-                    ),
-                  ),
-                  icon: const Icon(Icons.play_arrow_outlined),
-                ),
-                const SizedBox(width: 16.0),
-                IconButton(
-                  tooltip: 'View',
-                  icon: const Icon(Icons.visibility_outlined),
-                  onPressed: () => context.read<SubjectBloc>().add(SelectDeck(
-                    deck,
-                    visualize: true,
-                  )),
-                ),
-                const SizedBox(width: 16.0),
-                IconButton(
-                  tooltip: 'Edit',
-                  icon: const Icon(Icons.edit_outlined),
-                  onPressed: () => context.read<SubjectBloc>().add(SelectDeck(
-                    deck,
-                    visualize: false,
-                  )),
-                ),
-                const SizedBox(width: 16.0),
-                IconButton(
-                  tooltip: 'Delete',
-                  icon: const Icon(Icons.delete_outlined),
-                  onPressed: () => onDeleteDeck(context, deck),
-                ),
-              ],
-            ),
-          ),
-          const Divider(),
-        ],
+        if(MediaQuery.of(context).size.width < 600)
+          widgetPortraitOrientation(context)
+         else
+          widgetLandscapeOrientation(context),
         Column(
           children: [
             ListTile(
@@ -97,6 +49,96 @@ class DeckSelection extends StatelessWidget {
     );
   }
 
+  Widget widgetPortraitOrientation(BuildContext context) {
+    return Column(
+      children: subject.decks.map((deck) => Column(
+        children: [
+          ListTile(
+            leading: Icon(deck.icon),
+            title: Text(deck.name),
+            subtitle: Text('${deck.flashcards.length} cards'),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              widgetForEachDeck(deck, context),
+            ],
+          ),
+          const Divider(),
+        ],
+      )).toList(),
+    );
+  }
+
+  Widget widgetLandscapeOrientation(BuildContext context) {
+    return Column(
+      children: subject.decks.map((deck) => Column(
+        children: [
+          ListTile(
+            leading: Icon(deck.icon),
+            title: Text(deck.name),
+            subtitle: Text('${deck.flashcards.length} cards'),
+            trailing: widgetForEachDeck(deck, context),
+          ),
+          const Divider(),
+        ],
+      )).toList(),
+    );
+  }
+
+  //MediaQuery.of(context).size.height > 700
+  Widget widgetForEachDeck(Deck deck, BuildContext context)
+  {
+      return  StatefulBuilder(
+        builder: (BuildContext context, Function setState)
+        {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              tooltip: 'Play',
+              onPressed: deck.flashcards.isEmpty
+                  ? null
+                  : () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => PlayPage(
+                    subject: subject,
+                    deck: deck,
+                  ),
+                ),
+              ),
+              icon: const Icon(Icons.play_arrow_outlined),
+            ),
+            const SizedBox(width: 16.0),
+            IconButton(
+              tooltip: 'View',
+              icon: const Icon(Icons.visibility_outlined),
+              onPressed: () => context.read<SubjectBloc>().add(SelectDeck(
+                deck,
+                visualize: true,
+              )),
+            ),
+            const SizedBox(width: 16.0),
+            IconButton(
+              tooltip: 'Edit',
+              icon: const Icon(Icons.edit_outlined),
+              onPressed: () => context.read<SubjectBloc>().add(SelectDeck(
+                deck,
+                visualize: false,
+              )),
+            ),
+            const SizedBox(width: 16.0),
+           IconButton(
+              tooltip: 'Delete',
+              icon: const Icon(Icons.delete_outlined),
+              onPressed: () => setState(() {  onDeleteDeck(context, deck); }),
+                  ),
+        ],);
+        }
+      );
+  }
+
   void onDeleteDeck(BuildContext context, Deck deck) {
     showDialog<String>(
       context: context,
@@ -109,7 +151,8 @@ class DeckSelection extends StatelessWidget {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
+
               context.read<SubjectBloc>().add(
                 DeleteDeck(
                   deck: deck,
@@ -127,62 +170,85 @@ class DeckSelection extends StatelessWidget {
 
   void onAddDeck(BuildContext context) {
     TextEditingController textEditingController = TextEditingController();
-
+    String errorMessage = '';
     IconData icon = EducationIcons.openBook;
 
     showDialog<String>(
       barrierColor: Colors.black.withOpacity(0.3),
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (BuildContext context, Function setState) {
+              return AlertDialog(
 
-          title: const Text('Create new deck'),
-          content: Flex(
-            direction: Axis.vertical,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
+              title: const Text('Create new deck'),
+              content: Flex(
+                direction: Axis.vertical,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(
-                    icon: Icon(icon),
-                    onPressed: () async {
-                      // Implement your custom icon picker logic here
-                      // Example: You can show a dialog with a list of icons to choose from
-                      // After the user selects an icon, update the 'icon' variable
-                      // You can use IconData to represent the selected icon
-                    },
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Enter the name of the deck',
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(icon),
+                        onPressed: () async {
+                        },
                       ),
-                      controller: textEditingController,
-                    ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            TextField(
+                              decoration: const InputDecoration(
+                                hintText: 'Enter the name of the deck',
+                              ),
+                              controller: textEditingController,
+                            ),
+                            if (errorMessage.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  errorMessage,
+                                  style: const TextStyle(color: Colors.red),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.read<SubjectBloc>().add(
-                  AddDeck(
-                    name: textEditingController.text,
-                    icon: icon,
-                  ),
-                );
-                Navigator.pop(context, 'OK');
-              },
-              child: const Text('OK'),
-            ),
-          ],
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+
+                    String newSubjectName = textEditingController.text.trim();
+                    String? validationResult = validateDeckName(context, newSubjectName);
+
+                    if (validationResult != null) {
+                      setState(() {
+                        errorMessage = validationResult;
+                      });
+                      return;
+                    }
+
+                    context.read<SubjectBloc>().add(
+                      AddDeck(
+                        name: textEditingController.text,
+                        icon: icon,
+                      ),
+                    );
+                    Navigator.pop(context, 'OK');
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          }
         );
       },
     );
@@ -260,190 +326,17 @@ class DeckSelection extends StatelessWidget {
 
   }
 
+  String? validateDeckName(BuildContext context, String name) {
+    if (name.isEmpty) {
+      return 'Subject name cannot be empty';
+    }
+
+    List<String> existingDecks = subject.decks.map((deck) => deck.name).toList();
+    if (existingDecks.contains(name)) {
+      return 'Subject name already exists';
+    }
+
+    return null; // No validation errors
+  }
 
 }
-
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_iconpicker/flutter_iconpicker.dart';
-//
-// import '../../../bloc/subject_bloc.dart';
-// import '../../../model/deck.dart';
-// import '../../../model/subject.dart';
-// import '../../../presentation/education_icons.dart';
-// import '../../../widget/adaptable_button.dart';
-// import '../../play_page/play_page.dart';
-//
-// class DeckSelection extends StatelessWidget {
-//   const DeckSelection({
-//     super.key,
-//     required this.subject,
-//   });
-//
-//   final Subject subject;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView(
-//       children: [
-//         for (final Deck deck in subject.decks) ...[
-//           ListTile(
-//             leading: Icon(deck.icon),
-//             title: Text(deck.name),
-//             subtitle: Text('${deck.flashcards.length} cards'),
-//             trailing: Row(
-//               mainAxisSize: MainAxisSize.min,
-//               children: [
-//                 IconButton(
-//                   tooltip: 'Play',
-//                   onPressed: deck.flashcards.isEmpty
-//                       ? null
-//                       : () => Navigator.push(
-//                             context,
-//                             MaterialPageRoute(
-//                               builder: (BuildContext context) => PlayPage(
-//                                 subject: subject,
-//                                 deck: deck,
-//                               ),
-//                             ),
-//                           ),
-//                   icon: const Icon(Icons.play_arrow_outlined),
-//                 ),
-//                 const SizedBox(width: 16.0),
-//                 IconButton(
-//                   tooltip: 'View',
-//                   icon: const Icon(Icons.visibility_outlined),
-//                   onPressed: () => context.read<SubjectBloc>().add(SelectDeck(
-//                         deck,
-//                         visualize: true,
-//                       )),
-//                 ),
-//                 const SizedBox(width: 16.0),
-//                 IconButton(
-//                   tooltip: 'Edit',
-//                   icon: const Icon(Icons.edit_outlined),
-//                   onPressed: () => context.read<SubjectBloc>().add(SelectDeck(
-//                         deck,
-//                         visualize: false,
-//                       )),
-//                 ),
-//                 const SizedBox(width: 16.0),
-//                 IconButton(
-//                   tooltip: 'Delete',
-//                   icon: const Icon(Icons.delete_outlined),
-//                   onPressed: () => onDeleteDeck(context, deck),
-//                 ),
-//               ],
-//             ),
-//           ),
-//           const Divider(),
-//         ],
-//         ListTile(
-//           onTap: () => onAddDeck(context),
-//           leading: const Icon(Icons.add),
-//           title: const Text('Add deck'),
-//         )
-//       ],
-//     );
-//   }
-//
-//   void onDeleteDeck(BuildContext context, Deck deck) {
-//     showDialog<String>(
-//       context: context,
-//       builder: (BuildContext context) => AlertDialog(
-//         title: const Text('Delete deck'),
-//         content: const Text('Are you sure you want to delete this deck?'),
-//         actions: <Widget>[
-//           TextButton(
-//             onPressed: () => Navigator.pop(context, 'Cancel'),
-//             child: const Text('Cancel'),
-//           ),
-//           TextButton(
-//             onPressed: () {
-//               context.read<SubjectBloc>().add(
-//                     DeleteDeck(
-//                       deck: deck,
-//                     ),
-//                   );
-//
-//               Navigator.pop(context, 'OK');
-//             },
-//             child: const Text('OK'),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   void onAddDeck(BuildContext context) {
-//     TextEditingController textEditingController = TextEditingController();
-//
-//     showDialog<String>(
-//       context: context,
-//       builder: (BuildContext context) {
-//         IconData icon = EducationIcons.openBook;
-//
-//         return StatefulBuilder(
-//           builder: (BuildContext context, Function setState) {
-//             return AlertDialog(
-//               title: const Text('Create new deck'),
-//               content: Flex(
-//                 direction: Axis.vertical,
-//                 mainAxisSize: MainAxisSize.min,
-//                 children: [
-//                   AdaptableButton(
-//                     onPressed: () async {
-//                       IconData? newIcon =
-//                           await FlutterIconPicker.showIconPicker(context,
-//                               iconPackModes: [IconPack.custom],
-//                               customIconPack: EducationIcons.icons);
-//
-//                       setState(() {
-//                         icon = newIcon;
-//                       });
-//                                         },
-//                     icon: icon,
-//                     expanded: true,
-//                     title: 'Select icon',
-//                   ),
-//                   const SizedBox(
-//                     height: 8,
-//                   ),
-//                   TextField(
-//                     decoration: const InputDecoration(
-//                       hintText: 'Enter the name of the deck',
-//                     ),
-//                     controller: textEditingController,
-//                   ),
-//                 ],
-//               ),
-//               actions: <Widget>[
-//                 TextButton(
-//                   onPressed: () => Navigator.pop(context, 'Cancel'),
-//                   child: const Text('Cancel'),
-//                 ),
-//                 TextButton(
-//                   onPressed: () {
-//                     context.read<SubjectBloc>().add(
-//                           AddDeck(
-//                             name: textEditingController.text,
-//                             icon: icon,
-//                           ),
-//                         );
-//
-//                     Navigator.pop(context, 'OK');
-//                   },
-//                   child: const Text('OK'),
-//                 ),
-//               ],
-//             );
-//           },
-//         );
-//       },
-//     );
-//   }
-// }

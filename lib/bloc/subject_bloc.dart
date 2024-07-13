@@ -219,25 +219,29 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
 
     debugPrint('DeleteDeck');
 
+    Deck? deckToDelete = event.deck ?? state.deck;
 
-
-    if (event.deck != null) {
-      await LocalRepositoryService.removeDeck(event.deck!, state.subject!);
-    } else if (state.deck != null) {
-      assert(state.subject!.decks.contains(event.deck));
-
-      await LocalRepositoryService.removeDeck(state.deck!, state.subject!);
+    if (deckToDelete == null) {
+      debugPrint('No deck to delete');
+      return;
     }
 
-    Subject subject = state.subject!..decks.remove(event.deck);
+    await LocalRepositoryService.removeDeck(deckToDelete, state.subject!);
 
-    firestoreService.deleteDeck(state.id,state.deck!.id);
+    Subject subject = state.subject!..decks.remove(deckToDelete);
+
+    if (state.id != null && deckToDelete.id != null) {
+      await firestoreService.deleteDeck(state.id!, deckToDelete.id!);
+    } else {
+      debugPrint('Unable to delete deck from Firestore: Missing state.id or deck.id');
+    }
 
     emit(SubjectState(
       subject: subject,
       subjects: state.subjects,
     ));
   }
+
 
   _onDeleteSubject(DeleteSubject event, Emitter<SubjectState> emit) async {
     debugPrint('DeleteSubject');

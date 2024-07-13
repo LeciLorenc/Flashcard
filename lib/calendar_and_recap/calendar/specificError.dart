@@ -73,14 +73,12 @@ class SpecificErrorWidget extends StatelessWidget {
           children: [
             rowSubject(),
             rowDeck(),
-            const SizedBox(height: 10,),
-            const Text("Those are all the errors made :"),
-            SizedBox(
-              height: item.wrongAnswers.length*90,
+            const SizedBox(height: 10),
+            const Text("These are all the errors made:"),
+            Expanded(
               child: ListView.builder(
                 itemCount: item.wrongAnswers.length,
-                itemBuilder: (context, index)
-                {
+                itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: CustomListItemInErrorDialog(
@@ -91,10 +89,14 @@ class SpecificErrorWidget extends StatelessWidget {
                 },
               ),
             ),
-            goBackButton(context),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: goBackButton(context),
+            ),
           ],
         ),
       ),
+
     );
   }
 

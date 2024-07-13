@@ -40,6 +40,11 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       emit(AuthenticatedState());
     }
   }
+
+  void logout() {
+    _signOutOnStart();
+  }
+
 }
 
 

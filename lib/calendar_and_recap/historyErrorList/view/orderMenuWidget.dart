@@ -15,7 +15,7 @@ class OrderMenu extends StatefulWidget {
 }
 
 class _OrderMenuState extends State<OrderMenu> {
-  String? selectedOrdering = OrderingEnum.dateIncrease.toString();
+  String? selectedOrdering = OrderingEnum.dateDecrease.toString();
 
   @override
   Widget build(BuildContext context) {
