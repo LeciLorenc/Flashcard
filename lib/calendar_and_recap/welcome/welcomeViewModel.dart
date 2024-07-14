@@ -1,7 +1,10 @@
 import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/utilitiesStorage.dart';
+import '../../main.dart';
 import '../pastErrors/storage/NewFilters.dart';
 import 'package:intl/intl.dart';
+
+import '../pastErrors/storage/NewSavings.dart';
 
 class WelcomeData
 {
@@ -19,7 +22,7 @@ class WelcomeData
     {
       playedInADay = 0;
       String dateIteration= constructDate(selectedDate.toString(), i+1);
-      List<NewObject> listOfPlayedInTheDay = NewFiltersStorage.getSavingsFilteredByDate(dateIteration);
+      List<NewObject> listOfPlayedInTheDay = NewFiltersStorage.getSavingsFilteredByDate(dateIteration, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
 
       for(int j=0;j<listOfPlayedInTheDay.length;j++)
       {
@@ -61,7 +64,7 @@ class WelcomeData
     {
       playedInADay = 0;
       String dateIteration= constructDate(selectedDate.toString(), i+1);
-      List<NewObject> listOfPlayedInTheDay = NewFiltersStorage.getSavingsFilteredByDate(dateIteration);
+      List<NewObject> listOfPlayedInTheDay = NewFiltersStorage.getSavingsFilteredByDate(dateIteration,NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
 
       for(int j=0;j<listOfPlayedInTheDay.length;j++)
       {

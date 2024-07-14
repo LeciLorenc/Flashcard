@@ -31,7 +31,8 @@ class NewSavings {
       if(inTheList.deck == newObject.deck &&
           inTheList.subject == newObject.subject &&
           inTheList.date == newObject.date &&
-          inTheList.time == newObject.time
+          inTheList.time == newObject.time &&
+          inTheList.user_id == newObject.user_id
       )
       {
         return true;
@@ -44,8 +45,9 @@ class NewSavings {
 
 
 
-  static NewObject createNewObject(PlayBloc context, List<Flashcard> incorrectFlashcard, String date, String time)
+  static NewObject createNewObject(String user_id,PlayBloc context, List<Flashcard> incorrectFlashcard, String date, String time)
   {
+    String userId = user_id;
     String subject = context.subject.name;
     String deck = context.deck.name;
     String length = context.deck.flashcards.length.toString();
@@ -57,7 +59,7 @@ class NewSavings {
       questions.add(incorrectFlashcard[i].question);
       answers.add(incorrectFlashcard[i].answer);
     }
-    return NewObject(subject: subject, deck: deck, date: date, time: time, numberOfTotalFlashcards: length, wrongQuestions: questions,wrongAnswers: answers);
+    return NewObject(user_id: userId, subject: subject, deck: deck, date: date, time: time, numberOfTotalFlashcards: length, wrongQuestions: questions,wrongAnswers: answers);
   }
 
 

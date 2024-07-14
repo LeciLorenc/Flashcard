@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flashcard/main.dart';
 import 'package:flashcard/model/flashcard.dart';
 import 'package:flutter/material.dart';
 import '../../model/deck.dart';
@@ -23,13 +24,13 @@ class PastErrorsViewModel extends ChangeNotifier {
   {
     createListFlashcard();
     List<Deck> temp=[];
-    createSubject("0",subjectChosen, temp, Icons.add_call);
+    createSubject(globalUserId,"0",subjectChosen, temp, Icons.add_call);
     createDeck("0",deckChosen, Icons.accessible, flashcards);
   }
 
-  void createSubject(id,name,decks,icon)
+  void createSubject(user_id,id,name,decks,icon)
   {
-    subject= Subject(id: id, name: name, decks: decks, icon: icon);
+    subject= Subject(id: id, name: name, decks: decks, icon: icon, user_id: user_id);
   }
   void createDeck(id,name,icon,flashcards)
   {

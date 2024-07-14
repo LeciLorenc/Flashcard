@@ -29,7 +29,7 @@ class DeckSelection extends StatelessWidget {
       children: [
         if(MediaQuery.of(context).size.width < 600)
           widgetPortraitOrientation(context)
-         else
+        else
           widgetLandscapeOrientation(context),
         Column(
           children: [
@@ -89,54 +89,54 @@ class DeckSelection extends StatelessWidget {
   //MediaQuery.of(context).size.height > 700
   Widget widgetForEachDeck(Deck deck, BuildContext context)
   {
-      return  StatefulBuilder(
+    return  StatefulBuilder(
         builder: (BuildContext context, Function setState)
         {
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              tooltip: 'Play',
-              onPressed: deck.flashcards.isEmpty
-                  ? null
-                  : () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => PlayPage(
-                    subject: subject,
-                    deck: deck,
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                tooltip: 'Play',
+                onPressed: deck.flashcards.isEmpty
+                    ? null
+                    : () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => PlayPage(
+                      subject: subject,
+                      deck: deck,
+                    ),
                   ),
                 ),
+                icon: const Icon(Icons.play_arrow_outlined),
               ),
-              icon: const Icon(Icons.play_arrow_outlined),
-            ),
-            const SizedBox(width: 16.0),
-            IconButton(
-              tooltip: 'View',
-              icon: const Icon(Icons.visibility_outlined),
-              onPressed: () => context.read<SubjectBloc>().add(SelectDeck(
-                deck,
-                visualize: true,
-              )),
-            ),
-            const SizedBox(width: 16.0),
-            IconButton(
-              tooltip: 'Edit',
-              icon: const Icon(Icons.edit_outlined),
-              onPressed: () => context.read<SubjectBloc>().add(SelectDeck(
-                deck,
-                visualize: false,
-              )),
-            ),
-            const SizedBox(width: 16.0),
-           IconButton(
-              tooltip: 'Delete',
-              icon: const Icon(Icons.delete_outlined),
-              onPressed: () => setState(() {  onDeleteDeck(context, deck); }),
-                  ),
-        ],);
+              const SizedBox(width: 16.0),
+              IconButton(
+                tooltip: 'View',
+                icon: const Icon(Icons.visibility_outlined),
+                onPressed: () => context.read<SubjectBloc>().add(SelectDeck(
+                  deck,
+                  visualize: true,
+                )),
+              ),
+              const SizedBox(width: 16.0),
+              IconButton(
+                tooltip: 'Edit',
+                icon: const Icon(Icons.edit_outlined),
+                onPressed: () => context.read<SubjectBloc>().add(SelectDeck(
+                  deck,
+                  visualize: false,
+                )),
+              ),
+              const SizedBox(width: 16.0),
+              IconButton(
+                tooltip: 'Delete',
+                icon: const Icon(Icons.delete_outlined),
+                onPressed: () => setState(() {  onDeleteDeck(context, deck); }),
+              ),
+            ],);
         }
-      );
+    );
   }
 
   void onDeleteDeck(BuildContext context, Deck deck) {
@@ -176,79 +176,79 @@ class DeckSelection extends StatelessWidget {
     showDialog<String>(
       barrierColor: Colors.black.withOpacity(0.3),
       context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(
+      builder: (BuildContext context) {
+        return StatefulBuilder(
             builder: (BuildContext context, Function setState) {
               return AlertDialog(
 
-              title: const Text('Create new deck'),
-              content: Flex(
-                direction: Axis.vertical,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(icon),
-                        onPressed: () async {
-                        },
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            TextField(
-                              decoration: const InputDecoration(
-                                hintText: 'Enter the name of the deck',
-                              ),
-                              controller: textEditingController,
-                            ),
-                            if (errorMessage.isNotEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Text(
-                                  errorMessage,
-                                  style: const TextStyle(color: Colors.red),
-                                ),
-                              ),
-                          ],
+                title: const Text('Create new deck'),
+                content: Flex(
+                  direction: Axis.vertical,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(icon),
+                          onPressed: () async {
+                          },
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              TextField(
+                                decoration: const InputDecoration(
+                                  hintText: 'Enter the name of the deck',
+                                ),
+                                controller: textEditingController,
+                              ),
+                              if (errorMessage.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                    errorMessage,
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+
+                      String newSubjectName = textEditingController.text.trim();
+                      String? validationResult = validateDeckName(context, newSubjectName);
+
+                      if (validationResult != null) {
+                        setState(() {
+                          errorMessage = validationResult;
+                        });
+                        return;
+                      }
+
+                      context.read<SubjectBloc>().add(
+                        AddDeck(
+                          name: textEditingController.text,
+                          icon: icon,
+                        ),
+                      );
+                      Navigator.pop(context, 'OK');
+                    },
+                    child: const Text('OK'),
                   ),
                 ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'Cancel'),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-
-                    String newSubjectName = textEditingController.text.trim();
-                    String? validationResult = validateDeckName(context, newSubjectName);
-
-                    if (validationResult != null) {
-                      setState(() {
-                        errorMessage = validationResult;
-                      });
-                      return;
-                    }
-
-                    context.read<SubjectBloc>().add(
-                      AddDeck(
-                        name: textEditingController.text,
-                        icon: icon,
-                      ),
-                    );
-                    Navigator.pop(context, 'OK');
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          }
+              );
+            }
         );
       },
     );

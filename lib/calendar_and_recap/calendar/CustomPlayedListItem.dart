@@ -80,11 +80,11 @@ class CustomPlayedListItem extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push
-                      (
+                        (
                         context, MaterialPageRoute(
                         //builder: (context) => SpecificErrorWidget(numberOfErrors: numberOfErrors, item:item),),
-                          builder: (context) => SpecificErrorWidget(item:item),
-                        ),
+                        builder: (context) => SpecificErrorWidget(item:item),
+                      ),
                       );
                     },
                     child: const Center(child: Text('See errors')),),

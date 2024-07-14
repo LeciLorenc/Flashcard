@@ -6,19 +6,23 @@ import 'deck.dart';
 
 class Subject implements Comparable<Subject> {
   late final String id;
+  final String user_id;
   final String name;
   final List<Deck> decks;
   final IconData icon;
 
   Subject({
     required this.id,
+    required this.user_id,
     required this.name,
     required this.decks,
     required this.icon,
   });
 
   static Subject fromJson(Map<String, dynamic> json) {
-    if (json['name'] == null ||
+    if (json['user_id'] == null ||
+        json['user_id'] is! String ||
+        json['name'] == null ||
         json['name'] is! String ||
         json['decks'] == null ||
         json['decks'] is! List ||
@@ -28,6 +32,7 @@ class Subject implements Comparable<Subject> {
           json,
           'Subject:{'
           ' "id": String?,'
+          ' "user_id": String?,'
           ' "name": String,'
           ' "decks": List<Deck>,'
           ' "icon": IconData'
@@ -40,6 +45,7 @@ class Subject implements Comparable<Subject> {
     }
     return Subject(
       id: json['id'],
+      user_id: json['user_id'],
       name: json['name'],
       decks: decks,
       icon: iconDataFromJson(
@@ -56,6 +62,7 @@ class Subject implements Comparable<Subject> {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = user_id;
     data['decks'] = decks.map((deck) => deck.toJson()).toList();
     data['name'] = name;
     data['icon'] = iconDataToJson(icon);
@@ -65,6 +72,7 @@ class Subject implements Comparable<Subject> {
 
   Map<String, dynamic> toJsonIdFriendly() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['user_id'] = user_id;
     data['id'] = id;
     data['name'] = name;
     data['icon'] = iconDataToJson(icon);
@@ -74,6 +82,7 @@ class Subject implements Comparable<Subject> {
 Subject copyWith({String? id}) {
     return Subject(
       id: id ?? this.id,
+      user_id: user_id,
       name: name,
       decks: decks,
       icon: icon,

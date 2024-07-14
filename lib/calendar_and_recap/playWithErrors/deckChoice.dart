@@ -116,7 +116,7 @@ class _DeckChoice extends State<DeckChoice> {
                       {
                         widget.orderingCallback(widget.possibleDecks[index]);
                         widget.pastErrorsViewModel.createAllStuff();
-            
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(

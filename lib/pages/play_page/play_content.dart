@@ -12,6 +12,7 @@ import '../../bloc/play_bloc.dart';
 import '../../calendar_and_recap/pastErrors/storage/NewFilters.dart';
 import '../../calendar_and_recap/pastErrors/storage/NewSavings.dart';
 import '../../calendar_and_recap/pastErrors/view/showIncorrectWhenPlaying.dart';
+import '../../main.dart';
 import '../../widget/adaptable_card/adaptable_card.dart';
 import '../../widget/flashcard_text_editing_controller/flashcard_text_editing_controller.dart';
 
@@ -127,7 +128,7 @@ class _PlayContentState extends State<PlayContent> {
           */
 
                         //SUBSTITUTE
-          NewObject newObject = NewSavings.createNewObject(context.read<PlayBloc>(), incorrectFlashcards, currentDate, currentTime);
+          NewObject newObject = NewSavings.createNewObject(globalUserId, context.read<PlayBloc>(), incorrectFlashcards, currentDate, currentTime);
           NewSavings.addToNewSavings(newObject);
           NewSavings.saveNewObject().then((value) => null);
 
@@ -181,7 +182,7 @@ class _PlayContentState extends State<PlayContent> {
                         context: context,
                         barrierColor: Colors.black.withOpacity(0.3),
                         builder: (context) {
-                          final specificSaving = NewFiltersStorage.getASpecificSaving(currentDate, currentTime);
+                          final specificSaving = NewFiltersStorage.getASpecificSaving(currentDate, currentTime, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
                           if (specificSaving != null)
                           {
                             return AlertDialog(
@@ -239,7 +240,7 @@ class _PlayContentState extends State<PlayContent> {
 
   bool isButtonVisible(String currentDate, String currentTime)
   {
-    NewObject? result = NewFiltersStorage.getASpecificSaving(currentDate, currentTime);
+    NewObject? result = NewFiltersStorage.getASpecificSaving(currentDate, currentTime, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
     if( result != null && result.wrongQuestions.isNotEmpty && result.wrongAnswers.isNotEmpty) {
       return true;
     } else {

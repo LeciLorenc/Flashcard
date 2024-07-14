@@ -44,10 +44,10 @@ class _HomePageState extends State<HomePage> {
           // drawer: Drawer(
           //   backgroundColor: Colors.green,
           //child: SubjectSelection(
-            drawer: SubjectSelection(
-              subjects: subjectState.subjects,
-              expanded: HomePage.expanded,
-            ),
+          drawer: SubjectSelection(
+            subjects: subjectState.subjects,
+            expanded: HomePage.expanded,
+          ),
           // ),
           content: defineBodyWidget(),
           title: defineTitle(subjectState),

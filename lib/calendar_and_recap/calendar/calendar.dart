@@ -4,6 +4,8 @@ import 'package:flashcard/calendar_and_recap/pastErrors/storage/utilitiesStorage
 import 'package:flashcard/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../main.dart';
+import '../pastErrors/storage/NewSavings.dart';
 import 'CustomPlayedListItem.dart';
 import 'calendarDataPicker.dart';
 
@@ -31,7 +33,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   List<NewObject> calculateListOfPlayed()
   {
-     return NewFiltersStorage.calculatePlayedListWithOnlyDate(_selectedDate);
+    return NewFiltersStorage.calculatePlayedListWithOnlyDate(_selectedDate, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
   }
 
 
@@ -48,10 +50,10 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           child: Column(
             children: [
               buildCalendarPicker(  MediaQuery.of(context).size.width *0.8,
-                                    MediaQuery.of(context).size.height * 0.5),
+                  MediaQuery.of(context).size.height * 0.5),
               buildDate(),
               buildListOfFilteredSavings( MediaQuery.of(context).size.width *0.8,
-                                          MediaQuery.of(context).size.height *0.35),
+                  MediaQuery.of(context).size.height *0.35),
             ],
           ),
         ),
@@ -72,16 +74,16 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   buildCalendarPicker(MediaQuery.of(context).size.width *0.3,
-                                      MediaQuery.of(context).size.height * 0.9),
+                      MediaQuery.of(context).size.height * 0.9),
                 ],
               ),
               Column(
                 children: [
                   buildDate(),
                   buildListOfFilteredSavings(
-                                  HomePage.expanded ?  MediaQuery.of(context).size.width *0.4
-                                                    :   MediaQuery.of(context).size.width *0.6,
-                                  MediaQuery.of(context).size.height *0.8),
+                      HomePage.expanded ?  MediaQuery.of(context).size.width *0.4
+                          :   MediaQuery.of(context).size.width *0.6,
+                      MediaQuery.of(context).size.height *0.8),
                 ],
               ),
             ],
@@ -153,11 +155,11 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         const Text("Date selected: "),
         Text(dateWithWords,
           style: const TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2.0,
-                        color: Color.fromARGB(232, 11, 161, 23),
-            ),),
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2.0,
+            color: Color.fromARGB(232, 11, 161, 23),
+          ),),
       ],
     );
   }

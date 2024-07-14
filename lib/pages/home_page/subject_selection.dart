@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/subject_bloc.dart';
 import '../../bloc/user/authentication_bloc.dart';
 import '../../constants.dart';
+import '../../main.dart';
 import '../../model/subject.dart';
 import '../../presentation/education_icons.dart';
 import '../../service/local_repository_service.dart';
@@ -27,10 +28,10 @@ class SubjectSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data : Theme.of(context).copyWith(
-          colorScheme: const ColorScheme.light(
+        colorScheme: const ColorScheme.light(
             primary: primaryColor,
             background: secondaryColor
-          ),),
+        ),),
       child: ListView(
         children:
         [
@@ -41,7 +42,7 @@ class SubjectSelection extends StatelessWidget {
             expanded: expanded,
           ),
           const Divider(),
-          for (Subject subject in subjects) ...[
+          for (Subject subject in computeListSubjectToShow(subjects)) ...[
             AdaptableButton(
               onPressed: ()
               {
@@ -198,6 +199,7 @@ class SubjectSelection extends StatelessWidget {
                       AddSubject(
                         name: textEditingController.text,
                         icon: icon,
+                        user_id: globalUserId,
                       ),
                     );
 
@@ -225,5 +227,16 @@ class SubjectSelection extends StatelessWidget {
     }
 
     return null; // No validation errors
+  }
+  List<Subject> computeListSubjectToShow(List<Subject> list)
+  { List<Subject> listFilteredByUser=[];
+  for(Subject s in list)
+  {
+    if(s.user_id == globalUserId)
+    {
+      listFilteredByUser.add(s);
+    }
+  }
+  return listFilteredByUser;
   }
 }

@@ -52,8 +52,10 @@ class ReorderFlashcard extends SubjectEvent {
 class AddSubject extends SubjectEvent {
   final String name;
   final IconData icon;
+  final String user_id;
 
   AddSubject({
+    required this.user_id,
     required this.name,
     required this.icon,
   });
@@ -327,6 +329,7 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
     debugPrint('AddSubject');
 
     Subject subject = await LocalRepositoryService.addNewSubject(
+      user_id: event.user_id,
       name: event.name,
       icon: event.icon,
     );
@@ -364,7 +367,7 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
     }
 
     assert(
-        state.deck!.flashcards.length >= max(event.newIndex, event.oldIndex));
+    state.deck!.flashcards.length >= max(event.newIndex, event.oldIndex));
 
     debugPrint('ReorderFlashcard');
 
@@ -378,8 +381,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
     flashcards.insert(event.newIndex, flashcard);
 
     for (int i = min(event.newIndex, event.oldIndex);
-        i <= max(event.newIndex, event.oldIndex);
-        i++) {
+    i <= max(event.newIndex, event.oldIndex);
+    i++) {
       flashcards[i] = await LocalRepositoryService.updateFlashcard(
         flashcard: flashcards[i],
         index: i,

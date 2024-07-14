@@ -31,24 +31,24 @@ class _Choice extends State<Choice> {
           Transform.translate(
             offset: const Offset(0,-34),
             child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.blue, // Set the border color to blue
-                width: 1, // Set the border width
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.blue, // Set the border color to blue
+                  width: 1, // Set the border width
+                ),
               ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
                   const Text("Would like to review again?"),
                   const SizedBox(height: 2),
                   buildButton("Review a subject", 'Subject'),
                   const SizedBox(height: 6),
                   buildButton("Review a deck", 'Deck'),
-              ],
+                ],
+              ),
             ),
-                    ),
           ),],
       ),
     );
@@ -85,7 +85,7 @@ class _Choice extends State<Choice> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children:[
-                    Text(label),
+                  Text(label),
                 ],
               ),
             ],

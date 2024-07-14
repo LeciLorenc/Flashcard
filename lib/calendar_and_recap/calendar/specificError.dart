@@ -56,7 +56,7 @@ class SpecificErrorWidget extends StatelessWidget {
 
 
 class SpecificErrorWidget extends StatelessWidget {
- final NewObject item;
+  final NewObject item;
 
   const SpecificErrorWidget({Key? key, required this.item}) : super(key: key);
 

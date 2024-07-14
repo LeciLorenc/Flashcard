@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flashcard/authentication/authentication_screen.dart';
 import 'package:flashcard/bloc/user/authentication_bloc.dart';
 import 'package:flashcard/bloc/user/user_bloc.dart' as user_bloc;
@@ -87,6 +88,9 @@ Future<void> main() async {
 //   }
 // }
 
+
+String globalUserId = '';
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -149,7 +153,7 @@ class _MyAppState extends State<MyApp> {
            newHome = const HomePage();
            context.read<user_bloc.UserBloc>().add(user_bloc.InitUserBloc());
 
-        // Trigger init events for other blocs here
+           globalUserId = FirebaseAuth.instance.currentUser!.uid;
 
       }
 

@@ -32,10 +32,10 @@ class _HistoryErrorState extends State<HistoryError> {
       builder: (context, setState) {
         return Theme(
           data: Theme.of(context).copyWith(
-          colorScheme: const ColorScheme.light(
-            primary: primaryColor, // Set the color for the selected date
+            colorScheme: const ColorScheme.light(
+              primary: primaryColor, // Set the color for the selected date
+            ),
           ),
-        ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
@@ -106,21 +106,21 @@ class _HistoryErrorState extends State<HistoryError> {
       );
     }
     else {
-    if(MediaQuery.of(context).size.width > 620) {
-      return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        // Filtraggio per subject
-        filterSubject(),
-        // Filtraggio per deck
-        filterDeck(),
-        // Filtraggio per data
-        filterDate(),
-        removeFilter(),
-        ],
-      );
-    }
-    else
+      if(MediaQuery.of(context).size.width > 620) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            // Filtraggio per subject
+            filterSubject(),
+            // Filtraggio per deck
+            filterDeck(),
+            // Filtraggio per data
+            filterDate(),
+            removeFilter(),
+          ],
+        );
+      }
+      else
       {
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -259,8 +259,8 @@ class _HistoryErrorState extends State<HistoryError> {
                 width: 200,
                 child: _isOrderExpanded
                     ? ListView(
-                      physics: NeverScrollableScrollPhysics(), // Disable scrolling
-                      children: [OrderMenu(orderingCallback: updateOrdering)],
+                  physics: NeverScrollableScrollPhysics(), // Disable scrolling
+                  children: [OrderMenu(orderingCallback: updateOrdering)],
                 )
                     : const SizedBox.shrink(),
               ),

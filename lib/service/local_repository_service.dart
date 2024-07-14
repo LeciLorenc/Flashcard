@@ -135,6 +135,7 @@ class LocalRepositoryService {
   /// UPDATES
   static Future<Subject> updateSubject({
     required Subject subject,
+    String? user_id,
     String? name,
     IconData? icon,
   }) async {
@@ -143,6 +144,7 @@ class LocalRepositoryService {
 
     Subject updatedSubject = Subject(
       id: subject.id,
+      user_id: subject.user_id,
       name: name ?? subject.name,
       icon: icon ?? subject.icon,
       decks: subject.decks,
@@ -196,6 +198,7 @@ class LocalRepositoryService {
 
   /// ADD NEW
   static Future<Subject> addNewSubject({
+    required String user_id,
     required String name,
     required IconData icon,
   }) async {
@@ -211,6 +214,7 @@ class LocalRepositoryService {
     await setStringList(_subjectsEntry, subjectIDs);
 
     Subject subject = Subject(
+      user_id: user_id,
       id: id,
       name: name,
       decks: [],

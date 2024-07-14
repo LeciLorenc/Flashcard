@@ -1,4 +1,5 @@
 class NewObject {
+  final String user_id;
   final String subject;
   final String deck;
   final String date;
@@ -8,6 +9,7 @@ class NewObject {
   final List<String> wrongAnswers;
 
   NewObject({
+    required this.user_id,
     required this.subject,
     required this.deck,
     required this.date,
@@ -22,6 +24,7 @@ class NewObject {
     List<String> answerList = List<String>.from(json['answers']);
 
     return NewObject(
+      user_id: json['user_id'],
       deck: json['deck'],
       subject: json['subject'],
       date: json['date'],
@@ -34,6 +37,7 @@ class NewObject {
 
   Map<String, dynamic> toJson() {
     return {
+      'user_id': user_id,
       'subject': subject,
       'deck': deck,
       'date': date,
