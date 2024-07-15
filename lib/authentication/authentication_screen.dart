@@ -15,10 +15,31 @@ class AuthenticationScreen extends StatelessWidget {
       body: Theme(
 
         data: Theme.of(context).copyWith(
-                colorScheme: const ColorScheme.light(
-                  primary: primaryColor,
-                  background: backGroundColor// Set the color for the selected date
-                ),),
+            primaryColor: primaryColor,
+          hintColor: secondaryColor,
+          scaffoldBackgroundColor: backGroundColor,
+          buttonTheme: const ButtonThemeData(
+            buttonColor: primaryColor,
+            textTheme: ButtonTextTheme.primary,
+          ), colorScheme: const ColorScheme(
+              primary: primaryColor,
+              secondary: secondaryColor,
+              background: backGroundColor,
+              surface: surfaceColor,
+              error: errorColor,
+              onPrimary: onPrimaryColor,
+              onSecondary: onSecondaryColor,
+              onBackground: onBackgroundColor,
+              onSurface: onSurfaceColor,
+              onError: Colors.white,
+              brightness: Brightness.light,
+            ).copyWith(background: backGroundColor)
+
+
+          ,),
+
+
+
         child: Center(
           child: SizedBox(
             width: 300,
@@ -57,7 +78,9 @@ class AuthenticationScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(builder: (context) => SignInScreen()),
                         ),
+                        primary: false,
                         text: S.of(context).signIn,
+
                       ),
                       const SizedBox(
                         height: 50,

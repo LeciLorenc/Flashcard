@@ -24,8 +24,25 @@ List<Map<String, String>> defaultActivities(BuildContext context) => [
 const double spaceBetweenWidgets = 20;
 const LatLng polimi = LatLng(45.47810857587293, 9.227247297082284);
 
-const Color primaryColor = Color(0xFF287762);
-const Color secondaryColor = Color(0xffa0faa9);
-const Color backGroundColor = Color(0xffeefdf2);
+
+const Color primaryColor = Color(0xFF007AFF);
+const Color secondaryColor =  Color(0xFFFF9500);
+const Color backGroundColor = Color(0xFFF5F5F5);
+const Color surfaceColor = Color(0xFFFFFFFF);
+const Color errorColor = Color(0xFFFF3B30);
+const Color onPrimaryColor = Color(0xFFFFFFFF);
+const Color onSecondaryColor = Color(0xFFFFFFFF);
+const Color onBackgroundColor = Color(0xFF000000);
+const Color onSurfaceColor = Color(0xFF000000);
+
+
+//
+// const Color primaryColor = Color(0xFF287762);
+// const Color secondaryColor = Colors.red;
+//
+//
+// // const Color secondaryColor = Color(0xffa0faa9);
+// const Color backGroundColor = Color(0xffeefdf2);
+
 
 const Color dividerColor = Color(0xffe1e7e1);

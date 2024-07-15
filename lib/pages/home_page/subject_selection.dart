@@ -85,6 +85,7 @@ class SubjectSelection extends StatelessWidget {
             title: 'History of progress',
             expanded: expanded,
           ),
+
           if (kDebugMode) ...[
             const Divider(),
             AdaptableButton(

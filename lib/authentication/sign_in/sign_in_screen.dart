@@ -23,13 +23,14 @@ class SignInScreen extends StatelessWidget {
       body: BlocBuilder<SignInBloc, SignInState>(
         bloc: signInBloc,
         builder: (BuildContext context, SignInState state) {
-          return ScrollExpandable(
+          return SingleChildScrollView(
             child: Center(
               child: SizedBox(
                 width: 300,
                 child: Column(
                   children: [
-                    Expanded(
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.4,
                       child: Column(
                         children: [
                           const Spacer(
@@ -50,12 +51,13 @@ class SignInScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Expanded(
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.6,
                       child: Column(
                         children: [
                           if (state is GenericErrorState)
                             Text(
-                              S.of(context).genericError,
+                              state.message,
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.error,
                                 fontWeight: FontWeight.bold,
@@ -83,6 +85,7 @@ class SignInScreen extends StatelessWidget {
                           ),
                           Button(
                             key: const Key('sign_in_button'),
+
                             onPressed: () => signInBloc.add(
                               EmailPasswordSignInEvent(
                                 email: email.text,
@@ -90,6 +93,14 @@ class SignInScreen extends StatelessWidget {
                               ),
                             ),
                             text: S.of(context).signIn,
+                          ),
+                          const SizedBox(
+                            height: spaceBetweenWidgets,
+                          ),
+                          Button(
+                            key: const Key('google_sign_in_button'),
+                            onPressed: () => signInBloc.add(GoogleSignInEvent()),
+                            text: S.of(context).signInWithGoogle,
                           ),
                           const Spacer(),
                         ],

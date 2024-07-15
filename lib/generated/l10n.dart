@@ -25,6 +25,8 @@ class S {
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
+
+
   static Future<S> load(Locale locale) {
     final name = (locale.countryCode?.isEmpty ?? false)
         ? locale.languageCode
@@ -309,6 +311,17 @@ class S {
       args: [],
     );
   }
+
+  /// `Sign in`
+  String get signInWithGoogle {
+    return Intl.message(
+      'Sign in',
+      name: 'signInWithGoogle',
+      desc: '',
+      args: [],
+    );
+  }
+
 
   /// `Loading`
   String get loading {
