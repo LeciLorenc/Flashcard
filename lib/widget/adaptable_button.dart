@@ -8,6 +8,8 @@ class AdaptableButton extends StatelessWidget {
   final IconData? iconExpanded;
   final String? titleExpanded;
   final bool selected;
+  final Color textColor;
+  final Color iconColor;
 
   const AdaptableButton({
     super.key,
@@ -18,6 +20,8 @@ class AdaptableButton extends StatelessWidget {
     this.iconExpanded,
     this.titleExpanded,
     this.selected = false,
+    required this.textColor,
+    required this.iconColor,
   });
 
   @override
@@ -26,34 +30,37 @@ class AdaptableButton extends StatelessWidget {
       height: 50,
       child: expanded
           ? ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                foregroundColor: Colors.black,
-                backgroundColor: selected ? Colors.black12 : Colors.transparent,
-              ),
-              onPressed: () => onPressed(),
-              child: Row(
-                children: [
-                  Icon(iconExpanded ?? icon),
-                  const SizedBox(width: 8.0),
-                  Text(titleExpanded ?? title),
-                ],
-              ))
-          : IconButton(
-              style: IconButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                backgroundColor: selected ? Colors.black12 : Colors.transparent,
-              ),
-              tooltip: title,
-              icon: Icon(icon),
-              onPressed: () => onPressed(),
-              // selected: selected,
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
+          foregroundColor: textColor,
+          backgroundColor: selected ? Colors.black12 : Colors.transparent,
+        ),
+        onPressed: () => onPressed(),
+        child: Row(
+          children: [
+            Icon(iconExpanded ?? icon, color: iconColor),
+            const SizedBox(width: 8.0),
+            Text(
+              titleExpanded ?? title,
+              style: TextStyle(color: textColor),
             ),
+          ],
+        ),
+      )
+          : IconButton(
+        style: IconButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
+          ),
+          backgroundColor: selected ? Colors.black12 : Colors.transparent,
+        ),
+        tooltip: title,
+        icon: Icon(icon, color: iconColor),
+        onPressed: () => onPressed(),
+      ),
     );
   }
 }

@@ -9,37 +9,44 @@ import 'sign_in/sign_in_screen.dart';
 class AuthenticationScreen extends StatelessWidget {
   const AuthenticationScreen({super.key});
 
+
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    final primaryColor = isDarkMode ? darkPrimaryColor : lightPrimaryColor;
+    final secondaryColor = isDarkMode ? darkSecondaryColor : lightSecondaryColor;
+    final backgroundColor = isDarkMode ? darkBackgroundColor : lightBackgroundColor;
+    final surfaceColor = isDarkMode ? darkSurfaceColor : lightSurfaceColor;
+    final onPrimaryColor = isDarkMode ? darkOnPrimaryColor : lightOnPrimaryColor;
+    final onSecondaryColor = isDarkMode ? darkOnSecondaryColor : lightOnSecondaryColor;
+    final onBackgroundColor = isDarkMode ? darkOnBackgroundColor : lightOnBackgroundColor;
+    final onSurfaceColor = isDarkMode ? darkOnSurfaceColor : lightOnSurfaceColor;
+
     return Scaffold(
       body: Theme(
-
         data: Theme.of(context).copyWith(
-            primaryColor: primaryColor,
+          primaryColor: primaryColor,
           hintColor: secondaryColor,
-          scaffoldBackgroundColor: backGroundColor,
-          buttonTheme: const ButtonThemeData(
+          scaffoldBackgroundColor: backgroundColor,
+          buttonTheme: ButtonThemeData(
             buttonColor: primaryColor,
             textTheme: ButtonTextTheme.primary,
-          ), colorScheme: const ColorScheme(
-              primary: primaryColor,
-              secondary: secondaryColor,
-              background: backGroundColor,
-              surface: surfaceColor,
-              error: errorColor,
-              onPrimary: onPrimaryColor,
-              onSecondary: onSecondaryColor,
-              onBackground: onBackgroundColor,
-              onSurface: onSurfaceColor,
-              onError: Colors.white,
-              brightness: Brightness.light,
-            ).copyWith(background: backGroundColor)
-
-
-          ,),
-
-
-
+          ),
+          colorScheme: ColorScheme(
+            primary: primaryColor,
+            secondary: secondaryColor,
+            background: backgroundColor,
+            surface: surfaceColor,
+            error: errorColor,
+            onPrimary: onPrimaryColor,
+            onSecondary: onSecondaryColor,
+            onBackground: onBackgroundColor,
+            onSurface: onSurfaceColor,
+            onError: Colors.white,
+            brightness: isDarkMode ? Brightness.dark : Brightness.light,
+          ).copyWith(background: backgroundColor),
+        ),
         child: Center(
           child: SizedBox(
             width: 300,
@@ -47,7 +54,7 @@ class AuthenticationScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: Column(
-                    children:  [
+                    children: [
                       const Spacer(
                         flex: 2,
                       ),
@@ -56,8 +63,8 @@ class AuthenticationScreen extends StatelessWidget {
                           fit: BoxFit.fitWidth,
                           child: Text(
                             S.of(context).FlashCard,
-                            style: const TextStyle(
-                              color: Colors.black,
+                            style: TextStyle(
+                              color: onBackgroundColor,
                               fontSize: 140,
                               fontFamily: 'Pacifico',
                             ),
@@ -80,7 +87,6 @@ class AuthenticationScreen extends StatelessWidget {
                         ),
                         primary: false,
                         text: S.of(context).signIn,
-
                       ),
                       const SizedBox(
                         height: 50,
@@ -94,7 +100,6 @@ class AuthenticationScreen extends StatelessWidget {
                         text: S.of(context).signUp,
                         primary: false,
                       ),
-
                       const Spacer(),
                     ],
                   ),

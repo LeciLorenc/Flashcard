@@ -39,7 +39,7 @@ class _OrderMenuState extends State<OrderMenu> {
 
   Widget buildButton(String label, String ordering) {
 
-    const Color customLightPink = secondaryColor;
+    const Color customLightPink = Colors.pinkAccent;
 
 
     return ElevatedButton(

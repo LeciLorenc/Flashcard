@@ -1,3 +1,4 @@
+import 'package:flashcard/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'adaptable_button.dart';
@@ -78,7 +79,7 @@ class DesktopPage extends StatelessWidget {
                       icon: expanded
                           ? Icons.keyboard_double_arrow_left
                           : Icons.keyboard_double_arrow_right,
-                      title: expanded ? 'Collapse' : 'Expand',
+                      title: expanded ? 'Collapse' : 'Expand', textColor: primaryColor, iconColor: primaryColor,
                     ),
                     const Divider(),
                     Expanded(
@@ -139,7 +140,7 @@ class MobilePage extends StatelessWidget {
                 onPressed: () => Navigator.of(context).maybePop(),
                 title: 'Back',
                 icon: Icons.arrow_back,
-                expanded: false,
+                expanded: false, textColor: primaryColor, iconColor: primaryColor
               ),
               const SizedBox(width: 8),
             ],
@@ -153,7 +154,7 @@ class MobilePage extends StatelessWidget {
           icon: expanded
               ? Icons.keyboard_double_arrow_left
               : Icons.keyboard_double_arrow_right,
-          expanded: false,
+          expanded: false, textColor: primaryColor, iconColor: primaryColor
         ),
       ),
       body: expanded

@@ -2,15 +2,18 @@ import 'package:flashcard/bloc/subject_bloc.dart';
 import 'package:flashcard/calendar_and_recap/historyErrorList/historyError.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/NewSavings.dart';
 import 'package:flashcard/calendar_and_recap/playWithErrors/pastErrorViewModel.dart';
+import 'package:flashcard/constants.dart';
 import 'package:flashcard/pages/enumParamountWidgets.dart';
 import 'package:flashcard/pages/home_page/home_content/home_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../calendar_and_recap/calendar/calendar.dart';
 import '../../calendar_and_recap/historyErrorList/historyErrorViewModel.dart';
 import '../../calendar_and_recap/playWithErrors/playWithErrors.dart';
 import '../../calendar_and_recap/welcome/welcomeWidget.dart';
+import '../../main.dart';
 import '../../model/subject.dart';
 import '../../widget/adaptable_button.dart';
 import '../../widget/adaptable_page.dart';
@@ -34,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   }
 
 
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SubjectBloc, SubjectState>(
@@ -46,7 +50,10 @@ class _HomePageState extends State<HomePage> {
           //child: SubjectSelection(
           drawer: SubjectSelection(
             subjects: subjectState.subjects,
-            expanded: HomePage.expanded,
+            onThemeChanged: (isDarkMode) {
+              MyApp.of(context)!.toggleTheme(isDarkMode);
+            },
+            // expanded: HomePage.expanded, onThemeChanged: (bool ) {  },
           ),
           // ),
           content: defineBodyWidget(),
@@ -58,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () => onDeleteSubject(subjectState.subject!),
                   title: 'Delete subject',
                   icon: Icons.delete_outline,
-                  expanded: false,
+                  expanded: false, textColor: primaryColor, iconColor: primaryColor,
                 ),
               ),
           ],

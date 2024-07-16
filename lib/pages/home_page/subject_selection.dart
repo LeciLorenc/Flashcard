@@ -19,116 +19,142 @@ class SubjectSelection extends StatelessWidget {
     super.key,
     required this.subjects,
     this.expanded = true,
+    required this.onThemeChanged,
   });
 
   final List<Subject> subjects;
   final bool expanded;
+  final Function(bool) onThemeChanged;
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final backgroundColor = isDarkMode ? darkBackgroundColor : lightBackgroundColor;
+    final textColor = isDarkMode ? darkTextColor : lightTextColor;
+    final iconColor = isDarkMode ? darkIconColor : lightIconColor;
+    final dividerColor = isDarkMode ? Colors.white : Colors.black;
+
     return Theme(
-      data : Theme.of(context).copyWith(
-        colorScheme: const ColorScheme.light(
-            primary: primaryColor,
-            background: secondaryColor
-        ),),
-      child: ListView(
-        children:
-        [
-          AdaptableButton(
-            onPressed: () => { whenPressed(context, EssentialWidgets.welcome), },
-            icon: Icons.home,
-            title: 'Home',
-            expanded: expanded,
-          ),
-          const Divider(),
-          for (Subject subject in computeListSubjectToShow(subjects)) ...[
+      data: Theme.of(context).copyWith(
+        colorScheme: ColorScheme(
+          brightness: isDarkMode ? Brightness.dark : Brightness.light,
+          primary: primaryColor,
+          onPrimary: textColor,
+          secondary: isDarkMode ? darkSecondaryColor : lightSecondaryColor,
+          onSecondary: textColor,
+          surface: backgroundColor,
+          onSurface: textColor,
+          error: Colors.red,
+          onError: Colors.white,
+          background: backgroundColor,
+          onBackground: textColor,
+        ),
+        dividerColor: dividerColor,
+        textTheme: Theme.of(context).textTheme.apply(
+          bodyColor: textColor,
+          displayColor: textColor,
+        ),
+      ),
+      child: Container(
+        color: backgroundColor,
+        child: ListView(
+          children: [
             AdaptableButton(
-              onPressed: ()
-              {
-                context.read<SubjectBloc>().add(SelectSubject(subject));
-                if(MediaQuery.of(context).orientation == Orientation.portrait) {
-                  HomePage.expanded=false;
-                }
-                HomePage.bodyContent = EssentialWidgets.subject;
-              },
-              icon: subject.icon,
-              title: subject.name.length>25? '${subject.name.substring(0,25)}...' : subject.name,
-              expanded: expanded,
-              selected: context.read<SubjectBloc>().state.subject == subject,
+              onPressed: () => { whenPressed(context, EssentialWidgets.welcome) },
+              icon: Icons.home,
+              title: 'Home',
+              expanded: expanded, textColor: textColor, iconColor: iconColor,
             ),
-          ],
-
-
-          AdaptableButton(
-            onPressed: () => onAddSubject(context),
-            icon: Icons.add,
-            title: 'Add subject',
-            expanded: expanded,
-          ),
-          const Divider(),
-          AdaptableButton(
-            onPressed: () => { whenPressed(context, EssentialWidgets.calendar), },
-            icon: Icons.access_time,
-            title: 'Calendar',
-            expanded: expanded,
-          ),
-          AdaptableButton(
-            onPressed: () => { whenPressed(context, EssentialWidgets.playWithError),},
-            icon: Icons.error,
-            title: 'Play the errors',
-            expanded: expanded,
-          ),
-          AdaptableButton(
-            onPressed: () => { whenPressed(context, EssentialWidgets.historyError),},
-            icon: Icons.add_chart,
-            title: 'History of progress',
-            expanded: expanded,
-          ),
-
-          if (kDebugMode) ...[
-            const Divider(),
+            Divider(color: dividerColor),
+            for (Subject subject in computeListSubjectToShow(subjects)) ...[
+              AdaptableButton(
+                onPressed: () {
+                  context.read<SubjectBloc>().add(SelectSubject(subject));
+                  if (MediaQuery.of(context).orientation == Orientation.portrait) {
+                    HomePage.expanded = false;
+                  }
+                  HomePage.bodyContent = EssentialWidgets.subject;
+                },
+                icon: subject.icon,
+                title: subject.name.length > 25 ? '${subject.name.substring(0, 25)}...' : subject.name,
+                expanded: expanded,
+                selected: context.read<SubjectBloc>().state.subject == subject, textColor: textColor, iconColor: iconColor,
+              ),
+            ],
             AdaptableButton(
-              onPressed: () => LocalRepositoryService.debug(),
-              icon: Icons.info_outline,
-              title: 'Debug info',
-              expanded: expanded,
+              onPressed: () => onAddSubject(context),
+              icon: Icons.add,
+              title: 'Add subject',
+              expanded: expanded, textColor: textColor, iconColor: iconColor,
+            ),
+            Divider(color: dividerColor),
+            AdaptableButton(
+              onPressed: () => { whenPressed(context, EssentialWidgets.calendar) },
+              icon: Icons.access_time,
+              title: 'Calendar',
+              expanded: expanded, textColor: textColor, iconColor: iconColor,
             ),
             AdaptableButton(
-              onPressed: () =>
-                  context.read<SubjectBloc>().add(DeleteAllSubjects()),
-              icon: Icons.remove_outlined,
-              title: 'Delete all subjects',
-              expanded: expanded,
+              onPressed: () => { whenPressed(context, EssentialWidgets.playWithError) },
+              icon: Icons.error,
+              title: 'Play the errors',
+              expanded: expanded, textColor: textColor, iconColor: iconColor,
             ),
-          ],
+            AdaptableButton(
+              onPressed: () => { whenPressed(context, EssentialWidgets.historyError) },
+              icon: Icons.add_chart,
+              title: 'History of progress',
+              expanded: expanded, textColor: textColor, iconColor: iconColor,
+            ),
+            if (kDebugMode) ...[
+              Divider(color: dividerColor),
+              AdaptableButton(
+                onPressed: () => LocalRepositoryService.debug(),
+                icon: Icons.info_outline,
+                title: 'Debug info',
+                expanded: expanded, textColor: textColor, iconColor: iconColor,
+              ),
+              AdaptableButton(
+                onPressed: () => context.read<SubjectBloc>().add(DeleteAllSubjects()),
+                icon: Icons.remove_outlined,
+                title: 'Delete all subjects',
+                expanded: expanded, textColor: textColor, iconColor: iconColor,
 
-          Expanded(
-            flex: 3,
-            child: AdaptableButton(
+              ),
+              SwitchListTile(
+                title: Text('Dark Mode', style: TextStyle(color: textColor)),
+                value: isDarkMode,
+                onChanged: (bool value) {
+                  onThemeChanged(value);
+                },
+              ),
+            ],
+            AdaptableButton(
               onPressed: () {
                 context.read<AuthenticationBloc>().logout();
               },
               icon: Icons.logout,
               title: 'Logout',
-              expanded: expanded,
+              expanded: expanded, textColor: textColor, iconColor: iconColor,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  void whenPressed(BuildContext context,EssentialWidgets choice)
-  {
+  void whenPressed(BuildContext context, EssentialWidgets choice) {
     context.read<SubjectBloc>().add(SelectSubject(null));
-    if(MediaQuery.of(context).orientation == Orientation.portrait) {
-      HomePage.expanded=false;
+    if (MediaQuery.of(context).orientation == Orientation.portrait) {
+      HomePage.expanded = false;
     }
     HomePage.bodyContent = choice;
   }
 
   void onAddSubject(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDarkMode ? darkTextColor : lightTextColor;
+    final iconColor = isDarkMode ? darkIconColor : lightIconColor;
     TextEditingController textEditingController = TextEditingController();
     String errorMessage = '';
     IconData icon = EducationIcons.openBook;
@@ -139,7 +165,7 @@ class SubjectSelection extends StatelessWidget {
         return StatefulBuilder(
           builder: (BuildContext context, Function setState) {
             return AlertDialog(
-              title: const Text('Create new subject'),
+              title: Text('Create new subject', style: TextStyle(color: textColor)),
               content: Flex(
                 direction: Axis.vertical,
                 mainAxisSize: MainAxisSize.min,
@@ -147,27 +173,27 @@ class SubjectSelection extends StatelessWidget {
                   Row(
                     children: [
                       IconButton(
-                        icon: Icon(icon),
-                        onPressed: () async {
-                        },
+                        icon: Icon(icon, color: iconColor),
+                        onPressed: () async {},
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Column(
                           children: [
                             TextField(
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 hintText: 'Enter the name of the subject',
+                                hintStyle: TextStyle(color: textColor.withOpacity(0.5)),
                               ),
                               controller: textEditingController,
+                              style: TextStyle(color: textColor),
                             ),
-
                             if (errorMessage.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: Text(
                                   errorMessage,
-                                  style: const TextStyle(color: Colors.red),
+                                  style: TextStyle(color: errorColor),
                                 ),
                               ),
                           ],
@@ -180,11 +206,10 @@ class SubjectSelection extends StatelessWidget {
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.pop(context, 'Cancel'),
-                  child: const Text('Cancel'),
+                  child: Text('Cancel', style: TextStyle(color: textColor)),
                 ),
                 TextButton(
                   onPressed: () {
-
                     String newSubjectName = textEditingController.text.trim();
                     String? validationResult = validateSubjectName(context, newSubjectName);
 
@@ -194,7 +219,6 @@ class SubjectSelection extends StatelessWidget {
                       });
                       return;
                     }
-
 
                     context.read<SubjectBloc>().add(
                       AddSubject(
@@ -206,7 +230,7 @@ class SubjectSelection extends StatelessWidget {
 
                     Navigator.pop(context, 'OK');
                   },
-                  child: const Text('OK'),
+                  child: Text('OK', style: TextStyle(color: textColor)),
                 ),
               ],
             );
@@ -216,28 +240,27 @@ class SubjectSelection extends StatelessWidget {
     );
   }
 
-
   String? validateSubjectName(BuildContext context, String name) {
     if (name.isEmpty) {
       return 'Subject name cannot be empty';
     }
 
-    List<String> existingSubjects = context.read<SubjectBloc>().state.subjects.map((subject) => subject.name).toList();
+    List<String> existingSubjects =
+    context.read<SubjectBloc>().state.subjects.map((subject) => subject.name).toList();
     if (existingSubjects.contains(name)) {
       return 'Subject name already exists';
     }
 
     return null; // No validation errors
   }
-  List<Subject> computeListSubjectToShow(List<Subject> list)
-  { List<Subject> listFilteredByUser=[];
-  for(Subject s in list)
-  {
-    if(s.user_id == globalUserId)
-    {
-      listFilteredByUser.add(s);
+
+  List<Subject> computeListSubjectToShow(List<Subject> list) {
+    List<Subject> listFilteredByUser = [];
+    for (Subject subject in list) {
+      if (subject.user_id == globalUserId) {
+        listFilteredByUser.add(subject);
+      }
     }
-  }
-  return listFilteredByUser;
+    return listFilteredByUser;
   }
 }
