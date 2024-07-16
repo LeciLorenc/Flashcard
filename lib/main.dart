@@ -18,6 +18,7 @@ import 'package:flashcard/bloc/subject_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'ChatGPT_services/model-view/api_service.dart';
 import 'bloc/subject_block_online.dart';
 
 Future<void> main() async {
@@ -25,7 +26,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  await ApiService.instance.initializeApiKey();
   // Initialize locale data for DateFormat
   await initializeDateFormatting('en_US', null);
 

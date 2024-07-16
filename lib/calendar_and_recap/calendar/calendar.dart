@@ -39,12 +39,19 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
+    final isDarkMode = brightness == Brightness.dark;
+
     if(MediaQuery.of(context).orientation == Orientation.portrait) {
       return Scaffold(
         body: Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Colors.green, // Set the color for the selected date
+            colorScheme: isDarkMode
+                ? const ColorScheme.dark(
+              primary: Colors.green,
+            )
+                : const ColorScheme.light(
+              primary: Colors.green,
             ),
           ),
           child: Column(

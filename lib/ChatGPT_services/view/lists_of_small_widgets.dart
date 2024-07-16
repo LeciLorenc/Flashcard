@@ -81,7 +81,7 @@ Widget buildLanguageOfFlashcards(DeckCreationViewModel deckCreationViewModel, se
           child: DropdownLanguageSelector(
             selectedLanguage: deckCreationViewModel.selectedLanguage,
             onLanguageChanged: (String languageSelected) {
-                deckCreationViewModel.selectedLanguage = languageSelected;
+
                 setState(() {
                   deckCreationViewModel.selectedLanguage = languageSelected;
                 });
@@ -103,7 +103,7 @@ Widget buildLabelForDescriptionOfFlashcards(DeckCreationViewModel deckCreationVi
       Expanded(
         child: TextField(
           decoration: const InputDecoration(
-            hintText: 'Enter the description field',
+            hintText: 'Help AI with more details...',
           ),
           controller: deckCreationViewModel.textDescriptionController,
         ),

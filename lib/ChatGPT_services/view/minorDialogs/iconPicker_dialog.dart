@@ -133,36 +133,46 @@ class IconPickerDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: SizedBox(
-        height: 190,
+        height: 300,
         width: 200,
-        child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 8,
-                ),
-                itemCount: icons.length,
-                itemBuilder: (context, index) {
-                  final icon = icons[index];
-                  return GestureDetector(
-                    onTap: () {
-                      onIconSelected(icon);
-                      Navigator.pop(context);
-                    },
-                    child: SizedBox(
-                      width: 4, // Larghezza dell'icona
-                      height: 4, // Altezza dell'icona
-                      child: Icon(icon),
+              const Text("Choose your icon..."),
+              SizedBox(height: 10),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 6,
                     ),
-                  );
-                },
+                    itemCount: icons.length,
+                    itemBuilder: (context, index) {
+                      final icon = icons[index];
+                      return GestureDetector(
+                        onTap: () {
+                          onIconSelected(icon);
+                          Navigator.pop(context);
+                        },
+                        child: SizedBox(
+                          width: 48, // Width of the icon container
+                          height: 48, // Height of the icon container
+                          child: Icon(icon),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
             ],
           ),
         ),
+
+
       ),
     );
   }

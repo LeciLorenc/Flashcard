@@ -13,7 +13,7 @@ class DeckCreationViewModel {
   late String selectedLanguage;
   late IconData selectedIcon;
 
-  late Map<String, CountryFlag> languageIcons; // Declare here
+  late Map<String, dynamic> languageIcons; // Declare here
 
   DeckCreationViewModel() {
     textEditingController = TextEditingController();
@@ -33,11 +33,12 @@ class DeckCreationViewModel {
       'Portuguese': builderCountryIcon("pt"),
       'German': builderCountryIcon("de"),
       'Chinese': builderCountryIcon("cn"),
+      'Others': Icons.language,
       // Add more languages and their respective flag icons here
     };
   }
 
-  CountryFlag builderCountryIcon(String language) {
+  CountryFlag   builderCountryIcon(String language) {
     return CountryFlag.fromCountryCode(
       language,
       height: 20,

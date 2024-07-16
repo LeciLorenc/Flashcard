@@ -40,18 +40,20 @@ class SpecificErrorWidget extends StatelessWidget {
                 },
               ),
             ),
-            ElevatedButton(
-                onPressed: (){
-                  String messageToBeSent = constructionOfTheMessageForDetails(item.wrongQuestions, item.wrongAnswers);
-
-                  Navigator.push
-                    (
-                    context, MaterialPageRoute(
-                      builder: (context) => ErrorDescriptionWidget(messageToBeSent),
-                    ),
-                  );
-                },
-                child: const Text("Click here to ask to AI more details about those errors")),
+            Center(
+              child: ElevatedButton(
+                  onPressed: (){
+                    String messageToBeSent = constructionOfTheMessageForDetails(item.wrongQuestions, item.wrongAnswers);
+                    Navigator.push
+                      (
+                      context, MaterialPageRoute(
+                        builder: (context) => ErrorDescriptionWidget(messageToBeSent),
+                      ),
+                    );
+                  },
+                  child: const Text("Click here to ask to AI more \n details about those errors")),
+            ),
+            const SizedBox(height: 10),
             Align(
               alignment: Alignment.bottomCenter,
               child: goBackButton(context),

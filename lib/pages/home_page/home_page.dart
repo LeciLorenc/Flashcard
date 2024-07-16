@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../calendar_and_recap/calendar/calendar.dart';
 import '../../calendar_and_recap/historyErrorList/historyErrorViewModel.dart';
 import '../../calendar_and_recap/playWithErrors/playWithErrors.dart';
+import '../../calendar_and_recap/settings/settingsWidget.dart';
 import '../../calendar_and_recap/welcome/welcomeWidget.dart';
 import '../../main.dart';
 import '../../model/subject.dart';
@@ -87,6 +88,8 @@ class _HomePageState extends State<HomePage> {
         return "History of all the errors";
       case EssentialWidgets.playWithError:
         return "Play with past errors";
+      case EssentialWidgets.settings:
+        return "Settings";
       default:
         return "error";
     }
@@ -159,6 +162,11 @@ class _HomePageState extends State<HomePage> {
     }
     else if(HomePage.bodyContent == EssentialWidgets.playWithError){
       return  PlayWithPastErrors(viewModel: PastErrorsViewModel(), );
+    }
+    else if(HomePage.bodyContent == EssentialWidgets.settings){
+      return  SettingsWidget( onThemeChanged: (isDarkMode) {
+        MyApp.of(context)!.toggleTheme(isDarkMode);
+      }, );
     }
     else
     {

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../ChatGPT_services/view/minorDialogs/iconPicker_dialog.dart';
 import '../../bloc/subject_bloc.dart';
 import '../../bloc/user/authentication_bloc.dart';
 import '../../constants.dart';
@@ -15,7 +16,7 @@ import '../enumParamountWidgets.dart';
 import 'home_page.dart';
 
 class SubjectSelection extends StatelessWidget {
-  const SubjectSelection({
+  SubjectSelection({
     super.key,
     required this.subjects,
     this.expanded = true,
@@ -121,13 +122,14 @@ class SubjectSelection extends StatelessWidget {
                 expanded: expanded, textColor: textColor, iconColor: iconColor,
 
               ),
-              SwitchListTile(
-                title: Text('Dark Mode', style: TextStyle(color: textColor)),
-                value: isDarkMode,
-                onChanged: (bool value) {
-                  onThemeChanged(value);
-                },
+              AdaptableButton(
+                onPressed: () => { whenPressed(context, EssentialWidgets.settings) },
+                icon: Icons.settings,
+                title: 'Settings',
+                expanded: expanded, textColor: textColor, iconColor: iconColor,
+
               ),
+
             ],
             AdaptableButton(
               onPressed: () {
@@ -155,9 +157,11 @@ class SubjectSelection extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final textColor = isDarkMode ? darkTextColor : lightTextColor;
     final iconColor = isDarkMode ? darkIconColor : lightIconColor;
+
     TextEditingController textEditingController = TextEditingController();
     String errorMessage = '';
-    IconData icon = EducationIcons.openBook;
+    IconData icon = Icons.book;
+    IconData iconForSubject = EducationIcons.openBook;
 
     showDialog<String>(
       context: context,
@@ -178,29 +182,46 @@ class SubjectSelection extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Expanded(
-                        child: Column(
-                          children: [
-                            TextField(
-                              decoration: InputDecoration(
-                                hintText: 'Enter the name of the subject',
-                                hintStyle: TextStyle(color: textColor.withOpacity(0.5)),
-                              ),
-                              controller: textEditingController,
-                              style: TextStyle(color: textColor),
-                            ),
-                            if (errorMessage.isNotEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Text(
-                                  errorMessage,
-                                  style: TextStyle(color: errorColor),
-                                ),
-                              ),
-                          ],
+                        child: TextField(
+                          decoration:  InputDecoration(
+                            hintText: 'Enter the name of the subject',
+                            hintStyle: TextStyle(color: textColor.withOpacity(0.5)),
+                          ),
+                          controller: textEditingController,
+                          style: TextStyle(color: textColor),
                         ),
                       ),
+
                     ],
                   ),
+
+                  Row (mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(width: 8),
+                    Icon(iconForSubject),
+                    const SizedBox(width: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        showIconPickerDialog(context, (IconData newValue) {
+                          iconForSubject = newValue;
+                          setState(() {
+                            iconForSubject = newValue;
+                          });
+                        });
+                      },
+                      child: const Text('Change'),
+                    ),
+
+                  ]
+                  ),
+                  if (errorMessage.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        errorMessage,
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ),
                 ],
               ),
               actions: <Widget>[
@@ -210,6 +231,7 @@ class SubjectSelection extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
+
                     String newSubjectName = textEditingController.text.trim();
                     String? validationResult = validateSubjectName(context, newSubjectName);
 
@@ -220,10 +242,11 @@ class SubjectSelection extends StatelessWidget {
                       return;
                     }
 
+
                     context.read<SubjectBloc>().add(
                       AddSubject(
                         name: textEditingController.text,
-                        icon: icon,
+                        icon: iconForSubject,
                         user_id: globalUserId,
                       ),
                     );
@@ -239,6 +262,7 @@ class SubjectSelection extends StatelessWidget {
       },
     );
   }
+
 
   String? validateSubjectName(BuildContext context, String name) {
     if (name.isEmpty) {

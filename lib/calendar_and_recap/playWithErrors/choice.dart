@@ -37,16 +37,21 @@ class _Choice extends State<Choice> {
                   width: 1, // Set the border width
                 ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text("Would like to review again?"),
-                  const SizedBox(height: 2),
-                  buildButton("Review a subject", 'Subject'),
-                  const SizedBox(height: 6),
-                  buildButton("Review a deck", 'Deck'),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text("Would like to review again?", style: TextStyle(
+                      fontSize: 20.0,
+                    ),),
+                    const SizedBox(height: 10),
+                    buildButton("Review a subject", 'Subject'),
+                    const SizedBox(height: 6),
+                    buildButton("Review a deck", 'Deck'),
+                  ],
+                ),
               ),
             ),
           ),],

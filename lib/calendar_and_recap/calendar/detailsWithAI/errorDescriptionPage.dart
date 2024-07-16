@@ -27,31 +27,38 @@ class _ErrorDescriptionWidgetState extends State<ErrorDescriptionWidget> {
     super.initState();
     Future.microtask(() => sendAndReceive());
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details about the errors'),
       ),
-      body: Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              const Text("data"),
-              Text(responseFromGpt),
-              const Text("fine"),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: goBackButton(),
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  const Text("Here is your response:"),
+                  SizedBox(height: 10),
+                  widgetResponseAIWithALLSTUFF(context),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: goBackButton(),
+            ),
+          ),
+        ],
       ),
     );
   }
+
 
   Widget goBackButton() {
     return Padding(
@@ -81,7 +88,6 @@ class _ErrorDescriptionWidgetState extends State<ErrorDescriptionWidget> {
         showInfoMessage(context, "Now will be displayed the description of the answers created by the AI");
         await Future.delayed(const Duration(seconds: 3));
         Navigator.pop(context);
-        await Future.delayed(const Duration(seconds: 2));
       }
     } catch (error) {
       Navigator.pop(context);
@@ -102,5 +108,52 @@ class _ErrorDescriptionWidgetState extends State<ErrorDescriptionWidget> {
       descriptions.add(value['description']);
     });
     print("ciao");
+  }
+
+  Widget widgetResponseAIWithALLSTUFF(BuildContext context) {
+
+    return Expanded(
+      child: ListView.builder(
+        itemCount: questions.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 0.0, 10.0, 8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Item ${index + 1}"),
+                    Text('Question - :${questions[index]}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        )),
+                    const SizedBox(height: 4),
+                    Text('Answer - ${answers[index]}',
+                        style: const TextStyle(
+                          color: Colors.black54,
+                          fontSize: 14,
+                        )),
+                    const SizedBox(height: 4),
+                    Text('Description - ${descriptions[index]}',
+                        style: const TextStyle(
+                          color: Colors.black87,
+                          fontSize: 12,
+                        )),
+                    //const Divider(),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

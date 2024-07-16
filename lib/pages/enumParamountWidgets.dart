@@ -5,5 +5,6 @@ enum EssentialWidgets {
   historyError,
   playWithError,
   error,
+  settings,
   logout
 }

@@ -12,18 +12,20 @@ import 'package:flashcard/ChatGPT_services/view/minorDialogs/loading_dialog.dart
 
 constructionOfTheMessage(String name, String description, int number, String language)
 {
+  if(language== 'others') {
+    language="";
+  }
+
   String message="Create a json file with this structure: "
       "{ '1': { 'question': '...', 'answer': '...' },"
       "'2': { 'question': '...', 'answer': '...' }, ...}"
       "In particular it should be composed of $number questions with the corresponding answers"
       " on the topic with this name :'$name' and this description :'$description'"
-      " and all the q&a must be in this language : $language"
+      " and all the q&a must be in this language : $language. (if the language is not specified "
+      "assume the language used of the answers and questions"
       "NECESSARY CONDITION : In the response that you will send to me I want only a json file"
       "So I don't need any other explanatory or introducing section or sentence."
       "ONLY THE JSON FILE AND ONLY WITH THE STRUCTURE DESCRIBED BEFORE";
-
-
-
 
   return message;
 }
