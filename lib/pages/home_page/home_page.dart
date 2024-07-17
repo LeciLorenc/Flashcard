@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> {
   Widget defineBodyWidget()
   {
     if(HomePage.bodyContent == EssentialWidgets.subject) {
-      return const HomeContent();
+      return const SubjectContent();
     }
     else if(HomePage.bodyContent == EssentialWidgets.welcome){
       return WelcomeWidget();

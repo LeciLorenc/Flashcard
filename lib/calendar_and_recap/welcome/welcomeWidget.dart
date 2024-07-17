@@ -48,14 +48,19 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
               initialDate: _selectedDate,
             ),
             const SizedBox(height: 16),
-            Histogram(
-              data: WelcomeData.computeCorrectPoints(_selectedDate),
-              labels: WelcomeData.computeLabels(_selectedDate),
-              maxTotal: WelcomeData.computeTotalPoints(_selectedDate),
-            )
+            histogramWidget(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget histogramWidget()
+  {
+    return Histogram(
+      data: WelcomeData.computeCorrectPoints(_selectedDate),
+      labels: WelcomeData.computeLabels(_selectedDate),
+      maxTotal: WelcomeData.computeTotalPoints(_selectedDate),
     );
   }
 }

@@ -281,7 +281,7 @@ class _HistoryErrorState extends State<HistoryError> {
 
   Widget savingList()
   {
-    List<NewObject> results = widget.viewModel.getFilteredSavings(NewSavings.savings);
+    List<pastErrorsObject> results = widget.viewModel.getFilteredSavings(NewSavings.savings);
     results = widget.viewModel.getOrderedSavings(results);
 
     //TODO here i'm still considering all the items each time -> todo maintain a state of the one already filtered

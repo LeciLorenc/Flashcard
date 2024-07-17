@@ -26,7 +26,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await ApiService.instance.initializeApiKey();
+  await ApiService.instance.initializeApiKeys();
   // Initialize locale data for DateFormat
   await initializeDateFormatting('en_US', null);
 

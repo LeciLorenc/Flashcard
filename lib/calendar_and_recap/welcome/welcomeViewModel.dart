@@ -22,7 +22,7 @@ class WelcomeData
     {
       playedInADay = 0;
       String dateIteration= constructDate(selectedDate.toString(), i+1);
-      List<NewObject> listOfPlayedInTheDay = NewFiltersStorage.getSavingsFilteredByDate(dateIteration, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
+      List<pastErrorsObject> listOfPlayedInTheDay = NewFiltersStorage.getSavingsFilteredByDate(dateIteration, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
 
       for(int j=0;j<listOfPlayedInTheDay.length;j++)
       {
@@ -34,8 +34,8 @@ class WelcomeData
       array[i]=playedInADay;
     }
 
-    //return array;
-    return [1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1];
+    return array;
+    //return [1,2,1,1,2,1,1,1,1,1,1,1,1,1,1,1,2,1,1,2,1,1,1,1,1,1,1,1,1,1];
   }
 
   static List<String> computeLabels(DateTime selectedDate)
@@ -64,7 +64,7 @@ class WelcomeData
     {
       playedInADay = 0;
       String dateIteration= constructDate(selectedDate.toString(), i+1);
-      List<NewObject> listOfPlayedInTheDay = NewFiltersStorage.getSavingsFilteredByDate(dateIteration,NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
+      List<pastErrorsObject> listOfPlayedInTheDay = NewFiltersStorage.getSavingsFilteredByDate(dateIteration,NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
 
       for(int j=0;j<listOfPlayedInTheDay.length;j++)
       {
@@ -74,8 +74,8 @@ class WelcomeData
       array[i]=playedInADay;
     }
 
-    //return array;
-    return [2,3,4,1,5,2,2,2,2,2,3,3,3,3,3,8,8,8,8,8,2,2,2,2,2,3,3,3,3,3];
+    return array;
+    //return [2,3,4,1,5,2,2,2,2,2,3,3,3,3,3,8,8,8,8,8,2,2,2,2,2,3,3,3,3,3];
   }
 
 

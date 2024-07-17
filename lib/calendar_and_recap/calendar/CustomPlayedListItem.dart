@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 
 class CustomPlayedListItem extends StatelessWidget {
-  final NewObject item;
+  final pastErrorsObject item;
 
   const CustomPlayedListItem(
       {super.key,

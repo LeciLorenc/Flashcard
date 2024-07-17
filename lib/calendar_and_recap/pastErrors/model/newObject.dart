@@ -1,4 +1,4 @@
-class NewObject {
+class pastErrorsObject {
   final String user_id;
   final String subject;
   final String deck;
@@ -8,7 +8,7 @@ class NewObject {
   final List<String> wrongQuestions;
   final List<String> wrongAnswers;
 
-  NewObject({
+  pastErrorsObject({
     required this.user_id,
     required this.subject,
     required this.deck,
@@ -19,11 +19,11 @@ class NewObject {
     required this.wrongAnswers,
   });
 
-  factory NewObject.fromJson(Map<String, dynamic> json) {
+  factory pastErrorsObject.fromJson(Map<String, dynamic> json) {
     List<String> questionList = List<String>.from(json['questions']);
     List<String> answerList = List<String>.from(json['answers']);
 
-    return NewObject(
+    return pastErrorsObject(
       user_id: json['user_id'],
       deck: json['deck'],
       subject: json['subject'],

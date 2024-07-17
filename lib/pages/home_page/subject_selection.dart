@@ -61,7 +61,7 @@ class SubjectSelection extends StatelessWidget {
         child: ListView(
           children: [
             AdaptableButton(
-              onPressed: () => { whenPressed(context, EssentialWidgets.welcome) },
+              onPressed: () => { whenPressedSwitchEssentialWidgets(context, EssentialWidgets.welcome) },
               icon: Icons.home,
               title: 'Home',
               expanded: expanded, textColor: textColor, iconColor: iconColor,
@@ -90,19 +90,19 @@ class SubjectSelection extends StatelessWidget {
             ),
             Divider(color: dividerColor),
             AdaptableButton(
-              onPressed: () => { whenPressed(context, EssentialWidgets.calendar) },
+              onPressed: () => { whenPressedSwitchEssentialWidgets(context, EssentialWidgets.calendar) },
               icon: Icons.access_time,
               title: 'Calendar',
               expanded: expanded, textColor: textColor, iconColor: iconColor,
             ),
             AdaptableButton(
-              onPressed: () => { whenPressed(context, EssentialWidgets.playWithError) },
+              onPressed: () => { whenPressedSwitchEssentialWidgets(context, EssentialWidgets.playWithError) },
               icon: Icons.error,
               title: 'Play the errors',
               expanded: expanded, textColor: textColor, iconColor: iconColor,
             ),
             AdaptableButton(
-              onPressed: () => { whenPressed(context, EssentialWidgets.historyError) },
+              onPressed: () => { whenPressedSwitchEssentialWidgets(context, EssentialWidgets.historyError) },
               icon: Icons.add_chart,
               title: 'History of progress',
               expanded: expanded, textColor: textColor, iconColor: iconColor,
@@ -123,7 +123,7 @@ class SubjectSelection extends StatelessWidget {
 
               ),
               AdaptableButton(
-                onPressed: () => { whenPressed(context, EssentialWidgets.settings) },
+                onPressed: () => { whenPressedSwitchEssentialWidgets(context, EssentialWidgets.settings) },
                 icon: Icons.settings,
                 title: 'Settings',
                 expanded: expanded, textColor: textColor, iconColor: iconColor,
@@ -145,7 +145,7 @@ class SubjectSelection extends StatelessWidget {
     );
   }
 
-  void whenPressed(BuildContext context, EssentialWidgets choice) {
+  void whenPressedSwitchEssentialWidgets(BuildContext context, EssentialWidgets choice) {
     context.read<SubjectBloc>().add(SelectSubject(null));
     if (MediaQuery.of(context).orientation == Orientation.portrait) {
       HomePage.expanded = false;

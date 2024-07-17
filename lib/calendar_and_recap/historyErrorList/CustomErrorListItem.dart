@@ -123,7 +123,7 @@ class CustomErrorListItem extends StatelessWidget {
 
 
 class CustomErrorListItem extends StatelessWidget {
-  final NewObject item;
+  final pastErrorsObject item;
 
   const CustomErrorListItem(
       {super.key,

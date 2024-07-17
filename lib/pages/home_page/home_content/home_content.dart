@@ -5,8 +5,8 @@ import '../../../bloc/subject_bloc.dart';
 import 'deck_modify.dart';
 import 'deck_selection.dart';
 
-class HomeContent extends StatelessWidget {
-  const HomeContent({
+class SubjectContent extends StatelessWidget {
+  const SubjectContent({
     super.key,
   });
 

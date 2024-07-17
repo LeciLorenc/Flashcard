@@ -47,9 +47,9 @@ class HistoryErrorViewModel extends ChangeNotifier {
   }
 
   // Define method to get filtered savings based on filters
-  List<NewObject> getFilteredSavings(List<NewObject> allSavings)
+  List<pastErrorsObject> getFilteredSavings(List<pastErrorsObject> allSavings)
   {
-    List<NewObject> listFiltered = List<NewObject>.from(allSavings);
+    List<pastErrorsObject> listFiltered = List<pastErrorsObject>.from(allSavings);
 
     for(var item in allSavings){
 
@@ -77,9 +77,9 @@ class HistoryErrorViewModel extends ChangeNotifier {
 
 
 
-  List<NewObject>  getOrderedSavings(List<NewObject> allSavings)
+  List<pastErrorsObject>  getOrderedSavings(List<pastErrorsObject> allSavings)
   {
-    List<NewObject> listOrdered = List<NewObject>.from(allSavings);
+    List<pastErrorsObject> listOrdered = List<pastErrorsObject>.from(allSavings);
     switch (orderingVariable) {
       case "OrderingEnum.subjectNameAZ":
         listOrdered.sort((a, b) => b.subject.compareTo(a.subject));

@@ -31,7 +31,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     });
   }
 
-  List<NewObject> calculateListOfPlayed()
+  List<pastErrorsObject> calculateListOfPlayed()
   {
     return NewFiltersStorage.calculatePlayedListWithOnlyDate(_selectedDate, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
   }

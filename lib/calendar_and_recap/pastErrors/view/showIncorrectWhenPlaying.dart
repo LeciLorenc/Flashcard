@@ -31,7 +31,7 @@ Widget buildListOfErrors( List<IncorrectItem> incorrectFlashcards)
   );*/
 
 
-Widget buildListOfErrors( NewObject incorrectFlashcards)
+Widget buildListOfErrors( pastErrorsObject incorrectFlashcards)
 {
   return SingleChildScrollView(
     child: Column(

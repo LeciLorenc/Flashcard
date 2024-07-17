@@ -1,5 +1,8 @@
+import 'package:flashcard/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcard/ChatGPT_services/model-view/api_service.dart';
+
+import '../../main.dart';
 
 class SettingsWidget extends StatefulWidget {
   final Function(bool) onThemeChanged;
@@ -16,7 +19,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   @override
   void initState() {
     super.initState();
-    _newApiKey = ApiService.API_KEY; // Initialize with current API key
+    _newApiKey = ApiService.getApiKey(globalUserId); // Initialize with current API key
   }
 
   @override
@@ -56,7 +59,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               Text("API key: ", style: TextStyle(fontSize: 18),),
               Flexible(
                 child: Text(
-                  ApiService.API_KEY,
+                  _newApiKey,
                   style: TextStyle(color: textColor),
                 ),
               ),
@@ -111,7 +114,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               child: Text('Save'),
               onPressed: () {
                 setState(() {
-                  ApiService.instance.apiKey = _newApiKey; // Update API key
+                  ApiService.setApiKey(globalUserId, _newApiKey); // Update API key
                 });
                 Navigator.of(context).pop();
               },
