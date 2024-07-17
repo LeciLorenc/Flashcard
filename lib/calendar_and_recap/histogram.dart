@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 
 class Histogram extends StatelessWidget {
-  final List<int> data; // Lista dei punti di ogni giorno
+  final List<int> points; // Lista dei punti di ogni giorno
   final List<String> labels; // Etichette sull'asse delle ascisse
   final List<int> maxTotal; // Valore massimo sull'asse delle ordinate
 
-  Histogram({required this.data, required this.labels, required this.maxTotal});
+  Histogram({required this.points, required this.labels, required this.maxTotal});
 
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
       size: const Size(300, 300),
-      painter: HistogramPainter(data: data, labels: labels, maxTotal: maxTotal),
+      painter: HistogramPainter(pointsDone: points, labels: labels, maxTotal: maxTotal),
     );
   }
 }
 
 class HistogramPainter extends CustomPainter {
-  final List<int> data;
+  final List<int> pointsDone;
   final List<String> labels;
   final List<int> maxTotal;
 
 
-  HistogramPainter({required this.data, required this.labels, required this.maxTotal});
+  HistogramPainter({required this.pointsDone, required this.labels, required this.maxTotal});
 
 
 
@@ -49,7 +49,7 @@ class HistogramPainter extends CustomPainter {
     Paint columnPaint = Paint()..color = Colors.blue;
     Paint redColumnPaint = Paint()..color = Colors.orange;
     Paint linePaint = Paint()..color = Colors.black;
-    double columnWidth = size.width / data.length;
+    double columnWidth = size.width / pointsDone.length;
     double maxColumnHeight = size.height; // Altezza massima delle colonne
 
 
@@ -94,13 +94,13 @@ class HistogramPainter extends CustomPainter {
 
 
     double columnSpacing = 3.0; // Adjust this value to increase/decrease the space between columns
-    double totalSpacing = columnSpacing * (data.length - 1); // Total space taken by the gaps between columns
+    double totalSpacing = columnSpacing * (pointsDone.length - 1); // Total space taken by the gaps between columns
     double totalColumnWidth = size.width - totalSpacing; // Total width available for columns after considering the gaps
-    double finalColumnWidth = totalColumnWidth / data.length; // Adjusted width of each column
+    double finalColumnWidth = totalColumnWidth / pointsDone.length; // Adjusted width of each column
 
-    for (int i = 0; i < data.length; i++) {
+    for (int i = 0; i < pointsDone.length; i++) {
       double columnX = i * (finalColumnWidth + columnSpacing); // Adjusted X position for the column
-      double columnHeight = (data[i] / maxOfTheTotal()) * maxColumnHeight; // Altezza della colonna
+      double columnHeight = (pointsDone[i] / maxOfTheTotal()) * maxColumnHeight; // Altezza della colonna
 
       RRect columnRect = RRect.fromRectAndRadius(
         Rect.fromLTWH(columnX, size.height - columnHeight, finalColumnWidth, columnHeight),
@@ -108,7 +108,7 @@ class HistogramPainter extends CustomPainter {
       );
       canvas.drawRRect(columnRect, columnPaint);
 
-      double orangeColumnHeight = ((maxTotal[i] - data[i]) / maxOfTheTotal()) * maxColumnHeight;
+      double orangeColumnHeight = ((maxTotal[i] - pointsDone[i]) / maxOfTheTotal()) * maxColumnHeight;
       RRect orangeColumnRect = RRect.fromRectAndRadius(
         Rect.fromLTWH(columnX, size.height - (orangeColumnHeight + columnHeight), finalColumnWidth, orangeColumnHeight),
         Radius.circular(2.0), // Adjust the radius to change the roundness of the corners

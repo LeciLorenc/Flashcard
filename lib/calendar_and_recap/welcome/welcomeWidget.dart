@@ -58,7 +58,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
   Widget histogramWidget()
   {
     return Histogram(
-      data: WelcomeData.computeCorrectPoints(_selectedDate),
+      points: WelcomeData.computeCorrectPoints(_selectedDate),
       labels: WelcomeData.computeLabels(_selectedDate),
       maxTotal: WelcomeData.computeTotalPoints(_selectedDate),
     );
