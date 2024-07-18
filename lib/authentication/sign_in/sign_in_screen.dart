@@ -7,6 +7,8 @@ import 'package:flashcard/input/button.dart';
 import 'package:flashcard/input/text_input.dart';
 import 'package:flashcard/generated/l10n.dart';
 
+import '../../main.dart';
+
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
 
@@ -123,8 +125,8 @@ class SignInScreen extends StatelessWidget {
                                     fit: BoxFit.fitWidth,
                                     child: Text(
                                       S.of(context).signIn,
-                                      style: const TextStyle(
-                                        color: Colors.black,
+                                      style:  TextStyle(
+                                        color: isDark ? darkTextColor: lightTextColor,
                                         fontSize: 100,
                                         fontFamily: 'Pacifico',
                                       ),

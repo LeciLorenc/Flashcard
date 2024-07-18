@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
+import '../main.dart';
+
 class Histogram extends StatelessWidget {
   final List<int> points; // Lista dei punti di ogni giorno
   final List<String> labels; // Etichette sull'asse delle ascisse
@@ -44,10 +47,10 @@ class HistogramPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint backgroundPaint = Paint()..color = Colors.white;
+    Paint backgroundPaint = Paint()..color = isDark ? darkBackgroundColor : lightBackgroundColor;
     Paint columnPaint = Paint()..color = Colors.blue;
     Paint redColumnPaint = Paint()..color = Colors.orange;
-    Paint linePaint = Paint()..color = Colors.black;
+    Paint linePaint = Paint()..color = isDark ? lightTextColor : darkTextColor;
     double columnWidth = size.width / pointsDone.length;
     double maxColumnHeight = size.height; // Maximum column height
 
@@ -64,7 +67,7 @@ class HistogramPainter extends CustomPainter {
       if (!xLabels.contains(i)) continue; // Skip labels not in the xLabels list
 
       TextPainter textPainter = TextPainter(
-        text: TextSpan(text: labels[i], style: const TextStyle(fontSize: 10, color: Colors.black)),
+        text: TextSpan(text: labels[i], style:  TextStyle(fontSize: 10, color: isDark ? darkTextColor: lightTextColor)),
         textDirection: TextDirection.ltr,
       )..layout();
       textPainter.paint(canvas, Offset(i * columnWidth, size.height + 10));
@@ -77,7 +80,7 @@ class HistogramPainter extends CustomPainter {
 
     for (int i = 1; i <= maxIndexValue; i++) { // Start from 1 instead of 0
       TextPainter textPainter = TextPainter(
-        text: TextSpan(text: i.toString(), style: const TextStyle(fontSize: 10, color: Colors.black)),
+        text: TextSpan(text: i.toString(), style:  TextStyle(fontSize: 10, color: isDark ? darkTextColor: lightTextColor)),
         textDirection: TextDirection.ltr,
       )..layout();
       textPainter.paint(canvas, Offset(offsetForLeftAxisLabel, size.height - (i * maxColumnHeight / maxIndexValue) - 5));

@@ -49,6 +49,11 @@ const Color darkBackgroundColor = Color(0xD5121212);
 const Color lightSecondaryColor = Color(0xFFF5F5F5);
 const Color darkSecondaryColor = Color(0xFF1F1F1F);
 
+
+// Text Colors
+const Color lightTextColor = Color(0xFF000000);
+const Color darkTextColor = Color(0xFFFFFFFF);
+
 // Surface Colors
 const Color lightSurfaceColor = Color(0xFFE0E0E0);
 const Color darkSurfaceColor = Color(0xFF333333);
@@ -72,9 +77,6 @@ const Color lightAppBarColor = Color(0xFFFFFFFF);
 const Color darkAppBarColor = Color(0xFF121212);
 
 
-// Text Colors
-const Color lightTextColor = Color(0xFF000000);
-const Color darkTextColor = Color(0xFFFFFFFF);
 
 // Icon Colors
 const Color lightIconColor = Color(0xFF4FA95E);

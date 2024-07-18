@@ -8,6 +8,8 @@ import 'package:flashcard/input/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../main.dart';
+
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
 
@@ -39,8 +41,8 @@ class SignUpScreen extends StatelessWidget {
                               fit: BoxFit.fitWidth,
                               child: Text(
                                 S.of(context).signUp,
-                                style: const TextStyle(
-                                  color: Colors.black,
+                                style: TextStyle(
+                                  color: isDark ? darkTextColor: lightTextColor,
                                   fontSize: 110,
                                   fontFamily: 'Pacifico',
                                 ),

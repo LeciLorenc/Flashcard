@@ -1,5 +1,8 @@
 
+import 'package:flashcard/constants.dart';
 import 'package:flutter/material.dart';
+
+import '../../main.dart';
 
 class DatePickerWidget extends StatefulWidget {
   final DateTime initialDate;
@@ -26,21 +29,45 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CalendarDatePicker(
-          initialDate: widget.initialDate,
-          firstDate: DateTime(2015, 8),
-          lastDate: DateTime(2101),
-          onDateChanged: (date) {
-            setState(() {
-              _selectedDate = date;
-              widget.onDateChanged(date);
-            });
-          },
+
+
+    return Theme(
+      data: Theme.of(context).copyWith(
+        colorScheme: isDark
+            ? const ColorScheme.dark(
+          primary: primaryColor,
+          onPrimary: lightTextColor, //bianc
+          surface: darkTextColor, //nero
+          onSurface: darkTextColor, //nero
+        )
+            : ColorScheme.light(
+          primary: primaryColor,
+          onPrimary: darkTextColor,//nero   on primary colore font scritta light
+          surface: lightTextColor,//bianc
+          onSurface: lightTextColor,//bianc
         ),
-      ],
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: primaryColor, // Button text color
+          ),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CalendarDatePicker(
+            initialDate: widget.initialDate,
+            firstDate: DateTime(2015, 8),
+            lastDate: DateTime(2101),
+            onDateChanged: (date) {
+              setState(() {
+                _selectedDate = date;
+                widget.onDateChanged(date);
+              });
+            },
+          ),
+        ],
+      ),
     );
   }
 }
