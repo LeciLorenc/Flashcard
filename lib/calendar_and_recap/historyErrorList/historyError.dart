@@ -4,6 +4,7 @@ import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/NewSavings.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/utilitiesStorage.dart';
 import 'package:flashcard/constants.dart';
+import 'package:flashcard/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -70,6 +71,7 @@ class _HistoryErrorState extends State<HistoryError> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20), // Specifica il raggio del bordo desiderato
         ),
+
       ),
       child: Column(
         children: [
@@ -142,7 +144,7 @@ class _HistoryErrorState extends State<HistoryError> {
     return SizedBox(
       width: 140,
       child: DropdownButton<String>(
-        hint: const Text('Select Subject'),
+        hint: Text('Select Subject', style: TextStyle(color: isDark ?lightTextColor:  darkTextColor),),
         onChanged: (String? newValue) {
           setState(() {
             widget.viewModel.updateSubjectFilter(newValue!);
@@ -158,7 +160,7 @@ class _HistoryErrorState extends State<HistoryError> {
     return SizedBox(
       width: 140,
       child: DropdownButton<String>(
-        hint: const Text('Select Deck'),
+        hint:  Text('Select Deck',style: TextStyle(color: isDark ?lightTextColor:  darkTextColor),),
         onChanged: (String? newValue) {
           setState(() {
             widget.viewModel.updateDeckFilter(newValue!);
@@ -180,6 +182,7 @@ class _HistoryErrorState extends State<HistoryError> {
             initialDate: DateTime.now(),
             firstDate: DateTime(2015, 8),
             lastDate: DateTime(2101),
+
           );
           if (picked != null) {
             setState(() {
@@ -255,8 +258,8 @@ class _HistoryErrorState extends State<HistoryError> {
             children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                height: _isOrderExpanded ? 320 : 0,
-                width: 200,
+                height: _isOrderExpanded ? MediaQuery.of(context).orientation== Orientation.portrait ? 320: 100 : 0,
+                width: MediaQuery.of(context).orientation== Orientation.landscape? 600: 200,
                 child: _isOrderExpanded
                     ? ListView(
                   physics: NeverScrollableScrollPhysics(), // Disable scrolling

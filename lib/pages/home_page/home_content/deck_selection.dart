@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../ChatGPT_services/model/deckCreation.dart';
 import '../../../ChatGPT_services/model-view/processAImessage.dart';
 import '../../../bloc/subject_bloc.dart';
+import '../../../constants.dart';
+import '../../../main.dart';
 import '../../../model/deck.dart';
 import '../../../model/subject.dart';
 import '../../../presentation/education_icons.dart';
@@ -148,7 +150,7 @@ class DeckSelection extends StatelessWidget {
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('Cancel'),
+            child:  const Text('Cancel',  style: TextStyle(color: primaryColor),),
           ),
           TextButton(
             onPressed: () async {
@@ -161,7 +163,7 @@ class DeckSelection extends StatelessWidget {
 
               Navigator.pop(context, 'OK');
             },
-            child: const Text('OK'),
+            child: const Text('OK',  style: TextStyle(color: primaryColor),),
           ),
         ],
       ),
@@ -226,8 +228,8 @@ class DeckSelection extends StatelessWidget {
                   TextButton(
                     onPressed: () {
 
-                      String newSubjectName = textEditingController.text.trim();
-                      String? validationResult = validateDeckName(context, newSubjectName);
+                      String newDeckName = textEditingController.text.trim();
+                      String? validationResult = validateDeckName(context, newDeckName,subject);
 
                       if (validationResult != null) {
                         setState(() {
@@ -261,7 +263,7 @@ class DeckSelection extends StatelessWidget {
 
 
     DeckCreationViewModel deckCreationViewModel = DeckCreationViewModel();
-    final List<dynamic> result = await creationWithAIDialog(oldContext, deckCreationViewModel);
+    final List<dynamic> result = await creationWithAIDialog(oldContext, deckCreationViewModel, subject);
 
     String response="";
     if (result.isNotEmpty && result[0] == 'OK') {
@@ -272,6 +274,7 @@ class DeckSelection extends StatelessWidget {
       final int numberOfFlashcard = result[3];
       final String languageForGPT = result[4];
       final IconData iconFromDialog = result[5];
+
 
 
       LoadingDialog.isLoading=true;
@@ -326,14 +329,14 @@ class DeckSelection extends StatelessWidget {
 
   }
 
-  String? validateDeckName(BuildContext context, String name) {
+  static String? validateDeckName(BuildContext context, String name, Subject subject) {
     if (name.isEmpty) {
-      return 'Subject name cannot be empty';
+      return 'Deck name cannot be empty';
     }
 
     List<String> existingDecks = subject.decks.map((deck) => deck.name).toList();
     if (existingDecks.contains(name)) {
-      return 'Subject name already exists';
+      return 'Deck name already exists';
     }
 
     return null; // No validation errors

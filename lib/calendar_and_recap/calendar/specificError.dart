@@ -1,4 +1,5 @@
 import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
+import 'package:flashcard/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../pastErrors/view/customListItem.dart';
@@ -51,7 +52,10 @@ class SpecificErrorWidget extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Text("Click here to ask to AI more \n details about those errors")),
+                  child: const Text(
+                    "Click here to ask to AI more \n details about those errors",
+                    style: TextStyle(color: primaryColor),
+                  ),),
             ),
             const SizedBox(height: 10),
             Align(

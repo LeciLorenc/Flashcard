@@ -1,5 +1,7 @@
 
 import 'package:flashcard/calendar_and_recap/playWithErrors/pastErrorViewModel.dart';
+import 'package:flashcard/constants.dart';
+import 'package:flashcard/main.dart';
 import 'package:flutter/material.dart';
 
 import '../../pages/play_page/play_page.dart';
@@ -24,10 +26,8 @@ class _DeckChoice extends State<DeckChoice> {
     widget.possibleDecks = widget.pastErrorsViewModel.getDecks();
 
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.blue,
-        ),
+      decoration: const BoxDecoration(
+
       ),
       width: MediaQuery.of(context).size.width - 16,
       height: MediaQuery.of(context).size.height - 16 - 56 - 34-51,
@@ -112,6 +112,9 @@ class _DeckChoice extends State<DeckChoice> {
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 100),
                     child: ElevatedButton(
+                      /*style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(isDark? backgroundButtonColorDark: backgroundButtonColorLight),
+                      ),*/
                       onPressed: ()
                       {
                         widget.orderingCallback(widget.possibleDecks[index]);
@@ -127,7 +130,7 @@ class _DeckChoice extends State<DeckChoice> {
                           ),
                         );
                       },
-                      child: Text(widget.possibleDecks[index]),
+                      child: Text(widget.possibleDecks[index], style: TextStyle(color: primaryColor),),
                     ),
                   ),
                 );

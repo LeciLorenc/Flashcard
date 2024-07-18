@@ -1,6 +1,7 @@
 import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/NewFilters.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/utilitiesStorage.dart';
+import 'package:flashcard/constants.dart';
 import 'package:flashcard/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -48,10 +49,10 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           data: Theme.of(context).copyWith(
             colorScheme: isDarkMode
                 ? const ColorScheme.dark(
-              primary: Colors.green,
+              primary: primaryColor,
             )
                 : const ColorScheme.light(
-              primary: Colors.green,
+              primary: primaryColor,
             ),
           ),
           child: Column(
@@ -72,7 +73,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         body: Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Colors.green, // Set the color for the selected date
+              primary: primaryColor, // Set the color for the selected date
             ),
           ),
           child: Row(
@@ -107,7 +108,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       child: ConstrainedBox(
         constraints:  BoxConstraints(
           maxWidth: width,
-          maxHeight: height,
+          maxHeight: height*0.9,
         ),
         child: Container(
           margin: const EdgeInsets.all(3.0),
@@ -165,7 +166,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
             letterSpacing: 2.0,
-            color: Color.fromARGB(232, 11, 161, 23),
+            color: primaryColor,
           ),),
       ],
     );

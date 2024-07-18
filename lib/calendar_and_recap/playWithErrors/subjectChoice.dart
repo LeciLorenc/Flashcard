@@ -2,6 +2,7 @@
 import 'package:flashcard/calendar_and_recap/playWithErrors/pastErrorViewModel.dart';
 import 'package:flutter/material.dart';
 
+import '../../constants.dart';
 import '../../pages/play_page/play_page.dart';
 import '../historyErrorList/view/orderMenuWidget.dart';
 
@@ -24,43 +25,26 @@ class _SubjectChoice extends State<SubjectChoice> {
     widget.possibleSubjects = widget.pastErrorsViewModel.getSubjects();
 
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.blue, // Set the border color to blue
-          width: 1, // Set the border width
-        ),
+      decoration: const BoxDecoration(
+
       ),
       width: MediaQuery.of(context).size.width - 16,
-      height: MediaQuery.of(context).size.height - 16 - 56 -34,
+      height: MediaQuery.of(context).size.height - 16 - 56 - 34-51,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+          const SizedBox(height: 6),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Which subject would you like to review again?"),
-                  SizedBox(height: 6),
-                ],
-              ),
-              buildCheckBox(),
-              const SizedBox(height: 15),
-              SizedBox(
-                width: 200,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        buildListViewOfSubjects(),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 15),
+              Text("Which subject would you like to review again?"),
             ],
           ),
+          const SizedBox(height: 6),
+          buildCheckBox(),
+          const SizedBox(height: 15),
+          buildListViewOfSubjects(),
+          const SizedBox(height: 15),
           buildGoBackButton(),
         ],
       ),
@@ -127,22 +111,30 @@ class _SubjectChoice extends State<SubjectChoice> {
               itemCount: widget.possibleSubjects.length,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      widget.orderingCallback(widget.possibleSubjects[index]);
-                      widget.pastErrorsViewModel.createAllStuff();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => PlayPage(
-                            subject: widget.pastErrorsViewModel.subject,
-                            deck: widget.pastErrorsViewModel.deck,
+                  padding: const EdgeInsets.all(2.0),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 100),
+                    child: ElevatedButton(
+                      /*style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(isDark? backgroundButtonColorDark: backgroundButtonColorLight),
+                      ),*/
+                      onPressed: ()
+                      {
+                        widget.orderingCallback(widget.possibleSubjects[index]);
+                        widget.pastErrorsViewModel.createAllStuff();
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => PlayPage(
+                              subject: widget.pastErrorsViewModel.subject,
+                              deck: widget.pastErrorsViewModel.deck,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    child: Text(widget.possibleSubjects[index]),
+                        );
+                      },
+                      child: Text(widget.possibleSubjects[index], style: TextStyle(color: primaryColor),),
+                    ),
                   ),
                 );
               },

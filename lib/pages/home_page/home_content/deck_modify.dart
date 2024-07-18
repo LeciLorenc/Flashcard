@@ -44,6 +44,7 @@ class DeckModify extends StatelessWidget {
         ],
       ),
       children: [
+
         for (Flashcard flashcard in deck.flashcards) ...[
           Padding(
             key: ValueKey(flashcard.id),

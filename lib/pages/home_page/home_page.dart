@@ -41,6 +41,19 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    if(MediaQuery.of(context).orientation==Orientation.landscape )
+      {
+        HomePage.expanded=true;
+      }
+
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final backgroundColor = isDarkMode ? darkBackgroundColor : lightBackgroundColor;
+    final textColor = isDarkMode ? darkTextColor : lightTextColor;
+    final iconColor = isDarkMode ? darkIconColor : lightIconColor;
+    final dividerColor = isDarkMode ? Colors.white : Colors.black;
+
+
     return BlocBuilder<SubjectBloc, SubjectState>(
       builder: (BuildContext context, SubjectState subjectState) {
         return AdaptablePage(

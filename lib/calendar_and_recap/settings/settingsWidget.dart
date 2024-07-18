@@ -1,6 +1,8 @@
+import 'package:flashcard/constants.dart';
 import 'package:flashcard/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcard/ChatGPT_services/model-view/api_service.dart';
+import 'package:flutter/services.dart';
 
 import '../../main.dart';
 
@@ -42,6 +44,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           Container(
             width: double.infinity,
             child: SwitchListTile(
+              trackColor: MaterialStateProperty.all(
+                isDarkMode ? backgroundButtonColorDark : backgroundButtonColorLight,
+              ),
               title: Text('Dark Mode', style: TextStyle(color: textColor)),
               value: isDarkMode,
               onChanged: (bool value) {
@@ -52,33 +57,46 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           const SizedBox(height: 10),
 
           // Display current API key
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(width: 15,),
-              const Text("API key: ", style: TextStyle(fontSize: 18),),
-              Flexible(
-                child: Text(
-                  _newApiKey,
-                  style: TextStyle(color: textColor),
-                ),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(width: 15,),
+          const Text("API key: ", style: TextStyle(fontSize: 18),),
+          Flexible(
+            child: GestureDetector(
+              onTap: () {
+                Clipboard.setData(ClipboardData(text: _newApiKey));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("API key copied to clipboard")),
+                );
+              },
+              child: Text(
+                _newApiKey,
+                style: TextStyle(color: textColor),
               ),
-            ],
-          ),
+            ),
+          ),],),
           const SizedBox(height: 10),
 
           // Button to change API key
           Row(
             children: [
-              const SizedBox(width: 80,),
+              const SizedBox(width: 80),
               ElevatedButton(
                 onPressed: () {
                   changeApiButtonWidget(context);
                 },
-                child: const Text("Click here to change the API"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isDark? backgroundButtonColorDark: backgroundButtonColorLight, // Set the background color here
+                ),
+                child: const Text(
+                  "Click here to change the API",
+                  style: TextStyle(color: primaryColor), // Set the text color
+                ),
               ),
             ],
           ),
+
         ],
       ),
     );
@@ -105,13 +123,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: const Text('Cancel',  style: TextStyle(color: primaryColor),),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Save'),
+              child: const Text('Save', style: TextStyle(color: primaryColor),),
               onPressed: () {
                 setState(() {
                   ApiService.setApiKey(globalUserId, _newApiKey); // Update API key

@@ -53,7 +53,7 @@ Future<void> main() async {
 }
 
 String globalUserId = '';
-
+bool isDark= false;
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -67,7 +67,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Widget home = const LoadingPage();
-  ThemeMode _themeMode = ThemeMode.system;
+  ThemeMode themeMode = ThemeMode.system;
+
 
   @override
   void initState() {
@@ -79,7 +80,8 @@ class _MyAppState extends State<MyApp> {
     final prefs = await SharedPreferences.getInstance();
     final isDarkMode = prefs.getBool('isDarkMode') ?? false;
     setState(() {
-      _themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+      themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+      isDark = isDarkMode;
     });
   }
 
@@ -87,7 +89,8 @@ class _MyAppState extends State<MyApp> {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('isDarkMode', isDarkMode);
     setState(() {
-      _themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+      themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+      isDark = isDarkMode;
     });
   }
 
@@ -146,7 +149,7 @@ class _MyAppState extends State<MyApp> {
         ),
         iconTheme: const IconThemeData(color: darkIconColor),
       ),
-      themeMode: _themeMode,
+      themeMode: themeMode,
       home: BlocListener<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           // Pop to first route

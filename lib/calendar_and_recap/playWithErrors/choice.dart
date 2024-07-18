@@ -31,11 +31,9 @@ class _Choice extends State<Choice> {
           Transform.translate(
             offset: const Offset(0,-34),
             child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.blue, // Set the border color to blue
-                  width: 1, // Set the border width
-                ),
+              decoration: const BoxDecoration(
+
+
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -43,13 +41,13 @@ class _Choice extends State<Choice> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text("Would like to review again?", style: TextStyle(
-                      fontSize: 20.0,
+                    const Text("Would like to review errors?", style: TextStyle(
+                      fontSize: 26.0,
                     ),),
-                    const SizedBox(height: 10),
-                    buildButton("Review a subject", 'Subject'),
+                    const SizedBox(height: 80),
+                    buildButton("Review subject's errors", 'Subject'),
                     const SizedBox(height: 6),
-                    buildButton("Review a deck", 'Deck'),
+                    buildButton("Review a deck's errors", 'Deck'),
                   ],
                 ),
               ),
@@ -61,7 +59,7 @@ class _Choice extends State<Choice> {
 
   Widget buildButton(String label, String ordering) {
 
-    const Color customLightPink = Color.fromRGBO(255, 220, 220, 1.0);
+    const Color customLightPink = lightPrimaryColor;
 
 
     return ElevatedButton(

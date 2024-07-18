@@ -3,6 +3,7 @@ import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/playedItems.d
 import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/filters.dart';
 //import 'package:flashcard/calendar_and_recap/playErrors/storage/storageData.dart';
 import 'package:flashcard/calendar_and_recap/---TO_BE_DISCARDED---/incorrectItem.dart';
+import 'package:flashcard/constants.dart';
 import 'package:flashcard/model/flashcard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,6 +61,7 @@ class _PlayContentState extends State<PlayContent> {
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
+                      color: primaryColor
                     ),
                   ),
                 ),
@@ -77,6 +79,7 @@ class _PlayContentState extends State<PlayContent> {
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
+                            color: primaryColor
                           ),
                         ),
                       ),
@@ -95,6 +98,7 @@ class _PlayContentState extends State<PlayContent> {
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
+                            color: primaryColor
                           ),
                         ),
                       ),
@@ -162,6 +166,7 @@ class _PlayContentState extends State<PlayContent> {
 
                   visible: isButtonVisible(currentDate,currentTime),
                   child: ElevatedButton(
+
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -170,16 +175,22 @@ class _PlayContentState extends State<PlayContent> {
                           final specificSaving = NewFiltersStorage.getASpecificSaving(currentDate, currentTime, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
                           if (specificSaving != null)
                           {
+                            double width = MediaQuery.of(context).orientation==Orientation.landscape ? 600: 250;
+                            double height = MediaQuery.of(context).orientation==Orientation.landscape ? 250: 550;
+
                             return AlertDialog(
                               title: const Text("Those are your errors"),
                               //content: buildListOfErrors(FiltersStorage.getErrorsFilteredByDateAndTime(currentDate, currentTime)),
-                              content: ErrorsList(incorrectFlashcards: specificSaving),
+                              content: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: ErrorsList(incorrectFlashcards: specificSaving, width: width , height: height),
+                              ),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: const Text("Close"),
+                                  child: const Text("Close", style: TextStyle(color: primaryColor),),
                                 ),
                               ],
                             );
@@ -196,6 +207,7 @@ class _PlayContentState extends State<PlayContent> {
                       style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
+                        color: primaryColor
                       ),
                     ),
                   ),
@@ -210,6 +222,7 @@ class _PlayContentState extends State<PlayContent> {
                     style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
+                      color: primaryColor
                     ),
                   ),
                 ),

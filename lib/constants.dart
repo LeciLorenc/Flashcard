@@ -36,14 +36,14 @@ const LatLng polimi = LatLng(45.47810857587293, 9.227247297082284);
 // const Color onSurfaceColor = Color(0xFF000000);
 
 
-const Color lightPrimaryColor = Color(0xFF6200EA);
+const Color lightPrimaryColor = Color(0xFF4FA95E);
 const Color darkPrimaryColor = Color(0xFFFFFFFF);
 // Primary Color
-const Color primaryColor = Color(0xFF6200EA);
+const Color primaryColor = Color(0xFF0B7E11);
 
 // Background Colors
 const Color lightBackgroundColor = Color(0xFFFFFFFF);
-const Color darkBackgroundColor = Color(0xFF121212);
+const Color darkBackgroundColor = Color(0xD5121212);
 
 // Secondary Colors
 const Color lightSecondaryColor = Color(0xFFF5F5F5);
@@ -77,8 +77,23 @@ const Color lightTextColor = Color(0xFF000000);
 const Color darkTextColor = Color(0xFFFFFFFF);
 
 // Icon Colors
-const Color lightIconColor = Color(0xFF6200EA);
-const Color darkIconColor = Color(0xFFFFFFFF);
+const Color lightIconColor = Color(0xFF4FA95E);
+const Color darkIconColor = Color(0xFF4FA95E);
+
+
+//button COlors
+const Color backgroundButtonColorLight=Color(0xFFE9FCEC);
+const Color backgroundButtonColorDark=Color(0xF0B7E3BA);
+
+//choose button
+const Color chooseButtonColorLight=Color(0xFFAFF5BA);
+const Color chooseButtonColorDark=Color(0x90AAECAD);
+
+//shading text
+const Color shade1dark= Colors.black54;
+const Color shade2dark= Colors.black87;
+const Color shade1light= Colors.white60;
+const Color shade2light= Colors.white54;
 
 MaterialColor createColors(Color color) {
   List strengths = <double>[.05];

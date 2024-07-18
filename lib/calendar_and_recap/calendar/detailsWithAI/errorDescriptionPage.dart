@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import '../../../ChatGPT_services/model-view/api_service.dart';
 import '../../../ChatGPT_services/model-view/processAImessage.dart';
 import '../../../ChatGPT_services/view/minorDialogs/loading_dialog.dart';
+import '../../../constants.dart';
+import '../../../main.dart';
 
 class ErrorDescriptionWidgetWithAI extends StatefulWidget {
   final String messageToBeSent;
@@ -136,14 +138,14 @@ class _ErrorDescriptionWidgetWithAIState extends State<ErrorDescriptionWidgetWit
                         )),
                     const SizedBox(height: 4),
                     Text('Answer - ${answers[index]}',
-                        style: const TextStyle(
-                          color: Colors.black54,
+                        style: TextStyle(
+                          color: isDark? shade2light:  shade1dark,
                           fontSize: 14,
                         )),
                     const SizedBox(height: 4),
                     Text('Description - ${descriptions[index]}',
-                        style: const TextStyle(
-                          color: Colors.black87,
+                        style:  TextStyle(
+                          color: isDark? shade1light: shade2dark,
                           fontSize: 12,
                         )),
                     //const Divider(),

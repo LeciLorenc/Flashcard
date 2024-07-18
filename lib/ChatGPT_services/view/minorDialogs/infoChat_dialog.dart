@@ -1,3 +1,4 @@
+import 'package:flashcard/constants.dart';
 import 'package:flutter/material.dart';
 
 class InfoDialog extends StatelessWidget
@@ -13,7 +14,7 @@ class InfoDialog extends StatelessWidget
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 16),
-          Text(message),
+          Text(message, style: const TextStyle(color: primaryColor),),
           const SizedBox(height: 16),
         ],
       ),

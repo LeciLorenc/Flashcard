@@ -1,12 +1,17 @@
 import 'package:flashcard/ChatGPT_services/view/lists_of_small_widgets.dart';
+import 'package:flashcard/pages/home_page/home_content/deck_selection.dart';
 import 'package:flutter/material.dart';
 import '../../../presentation/education_icons.dart';
+import '../../constants.dart';
+import '../../model/subject.dart';
 import '../model/deckCreation.dart';
 
-Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationViewModel deckCreationViewModel) async {
+
+
+Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationViewModel deckCreationViewModel, Subject subject) async {
   PageController _pageController = PageController();
   int _currentPage = 0;
-
+  String error="";
 
   final result = await showDialog<List<dynamic>>(
     barrierColor: Colors.black.withOpacity(0.3),
@@ -16,6 +21,12 @@ Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationVie
       return StatefulBuilder(
         builder: (context, setState)
         {
+
+          void updateError(String newError) {
+            setState(() {
+              error = newError;
+            });
+          }
 
           if(MediaQuery.of(context).size.height > 700)
           {
@@ -27,6 +38,9 @@ Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationVie
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     buildDeckNameInput(context, EducationIcons.teaching, deckCreationViewModel),
+
+                    if(error=="")
+                      buildError(),
 
                     buildLabelForNumberOfFlashcards(context),
                     buildNumberOfFlashcards(context,deckCreationViewModel),
@@ -43,7 +57,26 @@ Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationVie
                 ),
               ),
               actions: <Widget>[
-                okButtonAction(deckCreationViewModel ,context),
+                   TextButton(
+                    onPressed: () {
+                      String? validationResult = DeckSelection.validateDeckName(context, deckCreationViewModel.nameDeckController.text, subject);
+
+                      if (validationResult != null) {
+                        updateError(validationResult);
+                        return;
+                      }
+
+                      Navigator.pop(context, [
+                        'OK',
+                        deckCreationViewModel.nameDeckController.text,
+                        deckCreationViewModel.descriptionController.text,
+                        deckCreationViewModel.number,
+                        deckCreationViewModel.selectedLanguage,
+                        deckCreationViewModel.selectedIcon,
+                      ]);
+                    },
+                  child: const Text('OK', style: TextStyle(color: primaryColor)),
+                ),
                 cancelButtonAction(context),
               ],
             );
@@ -169,5 +202,3 @@ Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationVie
   return result ?? [];
 
 }
-
-

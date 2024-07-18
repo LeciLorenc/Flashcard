@@ -1,3 +1,4 @@
+import 'package:flashcard/constants.dart';
 import 'package:flutter/material.dart';
 
 class LoadingDialog extends StatelessWidget
@@ -12,7 +13,7 @@ class LoadingDialog extends StatelessWidget
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const CircularProgressIndicator(), // Loading indicator
+          const CircularProgressIndicator( color: primaryColor,), // Loading indicator
           const SizedBox(height: 16),
           const Text("Loading..."),
           const SizedBox(height: 16),
@@ -21,7 +22,7 @@ class LoadingDialog extends StatelessWidget
               Navigator.pop(context);
               isLoading = false;// Cancel button action
             },
-            child: const Text("Cancel"),
+            child: const Text("Cancel", style: TextStyle(color: primaryColor),),
           ),
         ],
       ),
