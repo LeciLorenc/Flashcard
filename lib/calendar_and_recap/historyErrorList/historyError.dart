@@ -71,7 +71,7 @@ class _HistoryErrorState extends State<HistoryError> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20), // Specifica il raggio del bordo desiderato
         ),
-
+        backgroundColor: isDark ?  darkSecondaryColor : lightSecondaryColor,
       ),
       child: Column(
         children: [
@@ -144,13 +144,15 @@ class _HistoryErrorState extends State<HistoryError> {
     return SizedBox(
       width: 140,
       child: DropdownButton<String>(
-        hint: Text('Select Subject', style: TextStyle(color: isDark ?lightTextColor:  darkTextColor),),
+        hint: Text('Select Subject', style: TextStyle(color: isDark ? darkTextColor : lightTextColor),),
         onChanged: (String? newValue) {
           setState(() {
             widget.viewModel.updateSubjectFilter(newValue!);
           });
         },
         value: widget.viewModel.subjectFilter!='' ? widget.viewModel.subjectFilter: null,
+        style: TextStyle(color: isDark ? darkTextColor : lightTextColor),
+        dropdownColor: isDark ? darkSecondaryColor : lightSecondaryColor,
         items: computeItemsForSubject(context),
       ),
     );
@@ -160,13 +162,15 @@ class _HistoryErrorState extends State<HistoryError> {
     return SizedBox(
       width: 140,
       child: DropdownButton<String>(
-        hint:  Text('Select Deck',style: TextStyle(color: isDark ?lightTextColor:  darkTextColor),),
+        hint:  Text('Select Deck' ,style: TextStyle(color: isDark ? darkTextColor : lightTextColor),),
         onChanged: (String? newValue) {
           setState(() {
             widget.viewModel.updateDeckFilter(newValue!);
           });
         },
         value: widget.viewModel.deckFilter!='' ? widget.viewModel.deckFilter: null,
+        style: TextStyle(color: isDark ? darkTextColor : lightTextColor),
+        dropdownColor: isDark ? darkSecondaryColor : lightSecondaryColor,
         items: computeItemsForDeck(context),
       ),
     );
@@ -245,6 +249,7 @@ class _HistoryErrorState extends State<HistoryError> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
+        backgroundColor: isDark ?  darkSecondaryColor : lightSecondaryColor,
       ),
       child: Column(
         children: [

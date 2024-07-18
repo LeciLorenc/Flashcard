@@ -136,7 +136,7 @@ class DesktopPage extends StatelessWidget {
           // Detect swipe from left to right
           print("adsas");
           if (details.primaryVelocity != null && ( ( details.primaryVelocity! < 0 && HomePage.expanded )
-                                              || ( details.primaryVelocity! > 0 && !HomePage.expanded ))) {
+                                                      || ( details.primaryVelocity! > 0 && !HomePage.expanded ))) {
             onExpand();
           }
         },
