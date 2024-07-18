@@ -1,6 +1,7 @@
 import 'package:flashcard/constants.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/home_page/home_page.dart';
 import 'adaptable_button.dart';
 
 class AdaptablePage extends StatelessWidget {
@@ -77,8 +78,8 @@ class DesktopPage extends StatelessWidget {
                       expanded: expanded,
                       onPressed: onExpand,
                       icon: expanded
-                          ? Icons.keyboard_double_arrow_left
-                          : Icons.keyboard_double_arrow_right,
+                          ? Icons.dehaze_outlined
+                          : Icons.dehaze_outlined,
                       title: expanded ? 'Collapse' : 'Expand', textColor: primaryColor, iconColor: primaryColor,
                     ),
                     const Divider(),
@@ -110,59 +111,71 @@ class DesktopPage extends StatelessWidget {
   }
 }
 
-class MobilePage extends StatelessWidget {
-  const MobilePage({
-    super.key,
-    required this.expanded,
-    required this.drawer,
-    required this.content,
-    required this.onExpand,
-    required this.title,
-    this.actions,
-  });
+  class MobilePage extends StatelessWidget {
+    const MobilePage({
+      super.key,
+      required this.expanded,
+      required this.drawer,
+      required this.content,
+      required this.onExpand,
+      required this.title,
+      this.actions,
+    });
 
-  final bool expanded;
-  final Widget drawer;
-  final Widget content;
-  final Function() onExpand;
-  final String title;
-  final List<Widget>? actions;
+    final bool expanded;
+    final Widget drawer;
+    final Widget content;
+    final Function() onExpand;
+    final String title;
+    final List<Widget>? actions;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            if (Navigator.of(context).canPop()) ...[
-              AdaptableButton(
-                onPressed: () => Navigator.of(context).maybePop(),
-                title: 'Back',
-                icon: Icons.arrow_back,
-                expanded: false, textColor: primaryColor, iconColor: primaryColor
-              ),
-              const SizedBox(width: 8),
-            ],
-            Text(title),
-          ],
+    @override
+    Widget build(BuildContext context) {
+      return GestureDetector(
+        onHorizontalDragEnd: (details) {
+          // Detect swipe from left to right
+          print("adsas");
+          if (details.primaryVelocity != null && ( ( details.primaryVelocity! < 0 && HomePage.expanded )
+                                              || ( details.primaryVelocity! > 0 && !HomePage.expanded ))) {
+            onExpand();
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                if (Navigator.of(context).canPop()) ...[
+                  AdaptableButton(
+                    onPressed: () => Navigator.of(context).maybePop(),
+                    title: 'Back',
+                    icon: Icons.arrow_back,
+                    expanded: false,
+                    textColor: primaryColor,
+                    iconColor: primaryColor,
+                  ),
+                  const SizedBox(width: 8),
+                ],
+                Text(title),
+              ],
+            ),
+            actions: actions,
+            leading: AdaptableButton(
+              onPressed: onExpand,
+              title: expanded ? 'Collapse' : 'Expand',
+              icon: expanded ? Icons.dehaze_outlined : Icons.dehaze_outlined,
+              expanded: false,
+              textColor: primaryColor,
+              iconColor: primaryColor,
+            ),
+          ),
+          body: expanded
+              ? Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: drawer,
+          )
+              : content,
         ),
-        actions: actions,
-        leading: AdaptableButton(
-          onPressed: onExpand,
-          title: expanded ? 'Collapse' : 'Expand',
-          icon: expanded
-              ? Icons.keyboard_double_arrow_left
-              : Icons.keyboard_double_arrow_right,
-          expanded: false, textColor: primaryColor, iconColor: primaryColor
-        ),
-      ),
-      body: expanded
-          ? Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: drawer,
-            )
-          : content,
-    );
+      );
+    }
   }
-}

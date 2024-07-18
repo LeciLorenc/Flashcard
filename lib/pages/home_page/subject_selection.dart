@@ -170,59 +170,61 @@ class SubjectSelection extends StatelessWidget {
           builder: (BuildContext context, Function setState) {
             return AlertDialog(
               title: Text('Create new subject', style: TextStyle(color: textColor)),
-              content: Flex(
-                direction: Axis.vertical,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(icon, color: iconColor),
-                        onPressed: () async {},
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: TextField(
-                          decoration:  InputDecoration(
-                            hintText: 'Enter the name of the subject',
-                            hintStyle: TextStyle(color: textColor.withOpacity(0.5)),
+              content: SingleChildScrollView(
+                child: Flex(
+                  direction: Axis.vertical,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(icon, color: iconColor),
+                          onPressed: () async {},
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: TextField(
+                            decoration:  InputDecoration(
+                              hintText: 'Enter the name of the subject',
+                              hintStyle: TextStyle(color: textColor.withOpacity(0.5)),
+                            ),
+                            controller: textEditingController,
+                            style: TextStyle(color: textColor),
                           ),
-                          controller: textEditingController,
-                          style: TextStyle(color: textColor),
+                        ),
+
+                      ],
+                    ),
+
+                    Row (mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(width: 8),
+                      Icon(iconForSubject),
+                      const SizedBox(width: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          showIconPickerDialog(context, (IconData newValue) {
+                            iconForSubject = newValue;
+                            setState(() {
+                              iconForSubject = newValue;
+                            });
+                          });
+                        },
+                        child: const Text('Change'),
+                      ),
+
+                    ]
+                    ),
+                    if (errorMessage.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          errorMessage,
+                          style: const TextStyle(color: Colors.red),
                         ),
                       ),
-
-                    ],
-                  ),
-
-                  Row (mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 8),
-                    Icon(iconForSubject),
-                    const SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        showIconPickerDialog(context, (IconData newValue) {
-                          iconForSubject = newValue;
-                          setState(() {
-                            iconForSubject = newValue;
-                          });
-                        });
-                      },
-                      child: const Text('Change'),
-                    ),
-
-                  ]
-                  ),
-                  if (errorMessage.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        errorMessage,
-                        style: const TextStyle(color: Colors.red),
-                      ),
-                    ),
-                ],
+                  ],
+                ),
               ),
               actions: <Widget>[
                 TextButton(

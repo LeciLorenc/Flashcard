@@ -184,41 +184,43 @@ class DeckSelection extends StatelessWidget {
               return AlertDialog(
 
                 title: const Text('Create new deck'),
-                content: Flex(
-                  direction: Axis.vertical,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(icon),
-                          onPressed: () async {
-                          },
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              TextField(
-                                decoration: const InputDecoration(
-                                  hintText: 'Enter the name of the deck',
-                                ),
-                                controller: textEditingController,
-                              ),
-                              if (errorMessage.isNotEmpty)
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Text(
-                                    errorMessage,
-                                    style: const TextStyle(color: Colors.red),
-                                  ),
-                                ),
-                            ],
+                content: SingleChildScrollView(
+                  child: Flex(
+                    direction: Axis.vertical,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(icon),
+                            onPressed: () async {
+                            },
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                TextField(
+                                  decoration: const InputDecoration(
+                                    hintText: 'Enter the name of the deck',
+                                  ),
+                                  controller: textEditingController,
+                                ),
+                                if (errorMessage.isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Text(
+                                      errorMessage,
+                                      style: const TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 actions: <Widget>[
                   TextButton(

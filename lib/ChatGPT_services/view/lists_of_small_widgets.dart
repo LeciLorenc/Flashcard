@@ -161,7 +161,7 @@ Widget cancelButtonAction(BuildContext context)
   );
 }
 
-Widget buildError()
+Widget buildError(String error)
 {
-  return const Text("Error", style: TextStyle(color: errorColor),);
+  return Text(error, style: const TextStyle(color: errorColor),);
 }

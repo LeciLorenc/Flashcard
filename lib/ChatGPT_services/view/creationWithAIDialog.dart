@@ -39,8 +39,8 @@ Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationVie
                   children: [
                     buildDeckNameInput(context, EducationIcons.teaching, deckCreationViewModel),
 
-                    if(error=="")
-                      buildError(),
+                    if(error!="")
+                      buildError(error),
 
                     buildLabelForNumberOfFlashcards(context),
                     buildNumberOfFlashcards(context,deckCreationViewModel),
@@ -104,6 +104,10 @@ Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationVie
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               buildDeckNameInput(context, EducationIcons.teaching, deckCreationViewModel),
+
+                              if(error!="")
+                                buildError(error),
+
                             ],
                           ),
                           Column(
@@ -173,12 +177,25 @@ Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationVie
                     ),
                     TextButton(
                       onPressed: () {
+
                         if (_currentPage < 4) {
+                          if(_currentPage==0 )
+                          {
+                            String? validationResult = DeckSelection.validateDeckName(context, deckCreationViewModel.nameDeckController.text, subject);
+
+                            if (validationResult != null) {
+                              updateError(validationResult);
+                              return;
+                            }
+                          }
                           _pageController.nextPage(
                             duration: Duration(milliseconds: 300),
                             curve: Curves.ease,
                           );
+
                         } else {
+
+
                           Navigator.pop(context, ['OK',
                             deckCreationViewModel.nameDeckController.text,
                             deckCreationViewModel.descriptionController.text,
