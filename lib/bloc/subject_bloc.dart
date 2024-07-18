@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flashcard/service/local_repository_service.dart';
@@ -45,6 +46,24 @@ class ReorderFlashcard extends SubjectEvent {
     required this.newIndex,
     required this.oldIndex,
   });
+}
+
+class BackupData extends SubjectEvent {
+  final String userId;
+
+  BackupData(this.userId);
+
+  @override
+  List<Object> get props => [userId];
+}
+
+class RestoreData extends SubjectEvent {
+  final String userId;
+
+  RestoreData(this.userId);
+
+  @override
+  List<Object> get props => [userId];
 }
 
 /// ADD
@@ -158,7 +177,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
     on<DeleteAllSubjects>(_onDeleteAllSubject);
     on<ReorderFlashcard>(_onReorderFlashcard);
     on<DeleteFlashcard>(_onDeleteFlashcard);
-
+    on<BackupData>(_onBackupData);
+    on<RestoreData>(_onRestoreData);
     add(_LoadLocal());
   }
 
@@ -393,7 +413,7 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       id: deck.id,
       name: deck.name,
       icon: deck.icon,
-      flashcards: flashcards,
+      flashcards: flashcards, subjectId: state.subject!.id,
     );
 
     state.subject!.decks.add(deck);
@@ -432,7 +452,7 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       id: deck.id,
       name: deck.name,
       icon: deck.icon,
-      flashcards: flashcards,
+      flashcards: flashcards, subjectId: state.subject!.id,
     );
 
     state.subject!.decks.add(deck);
@@ -444,5 +464,112 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       subject: state.subject,
       subjects: state.subjects,
     ));
+  }
+
+  void _onBackupData(BackupData event, Emitter<SubjectState> emit) async {
+    try {
+      // Generate a list of subjects, where each subject is a map that includes its decks and flashcards
+      List<Map<String, dynamic>> subjectsJson = state.subjects.map((subject) {
+        // For each subject, generate a list of its decks, where each deck is a map that includes its flashcards
+        List<Map<String, dynamic>> decksJson = subject.decks.map((deck) {
+          // For each deck, generate a list of its flashcards, where each flashcard is a map
+          List<Map<String, dynamic>> flashcardsJson = deck.flashcards.map((flashcard) {
+            return flashcard.toJson();
+          }).toList();
+
+          // Combine the deck's properties with its flashcards into a single map
+          return {
+            ...deck.toJson(),
+            'flashcards': flashcardsJson,
+          };
+        }).toList();
+
+        // Combine the subject's properties with its decks into a single map
+        return {
+          ...subject.toJson(),
+          'decks': decksJson,
+        };
+      }).toList();
+
+      // Convert the list of subjects to JSON
+      String backupJson = jsonEncode(subjectsJson);
+
+      // Save the JSON to Firestore
+      //await firestoreService.backupData(event.userId, backupJson);
+      print(backupJson);
+
+      await firestoreService.backupData(event.userId, backupJson);
+
+    } catch (e) {
+      print("error backuping data");
+      print(e);
+    }
+  }
+
+  void _onRestoreData(RestoreData event, Emitter<SubjectState> emit) async {
+    try {
+      String backupJson = await firestoreService.restoreData(event.userId);
+
+      // Parse the backupJson into a list of subjects
+      List<dynamic> subjectsJson = jsonDecode(backupJson);
+      List<Subject> subjects = subjectsJson.map((subjectJson) {
+        // Parse the decks for each subject
+        List<dynamic> decksJson = subjectJson['decks'];
+        List<Deck> decks = decksJson.map((deckJson) {
+          // Parse the flashcards for each deck
+          List<dynamic> flashcardsJson = deckJson['flashcards'];
+          List<Flashcard> flashcards = flashcardsJson.map((flashcardJson) => Flashcard.fromJson(flashcardJson)).toList();
+
+          // Return the deck with its flashcards
+          return Deck(
+            id: deckJson['id'],
+            subjectId: deckJson['subjectId'],
+            name: deckJson['name'],
+            icon: IconData(
+              deckJson['icon']['codePoint'],
+              fontFamily: deckJson['icon']['fontFamily'],
+              fontPackage: deckJson['icon']['fontPackage'],
+              matchTextDirection: deckJson['icon']['matchTextDirection'],
+            ),
+            flashcards: flashcards,
+          );
+        }).toList();
+
+        // Construct the subject with its decks
+        return Subject(
+          id: subjectJson['id'],
+          user_id: subjectJson['user_id'],
+          name: subjectJson['name'],
+          icon: IconData(
+            subjectJson['icon']['codePoint'],
+            fontFamily: subjectJson['icon']['fontFamily'],
+            fontPackage: subjectJson['icon']['fontPackage'],
+            matchTextDirection: subjectJson['icon']['matchTextDirection'],
+          ),
+          decks: decks,
+        );
+      }).toList();
+
+
+      // Clear the local data
+      await LocalRepositoryService.clear();
+
+      // Add the new subjects to the local data
+      for (Subject subject in subjects) {
+        await LocalRepositoryService.addSubject(subject);
+      }
+
+      emit(SubjectState(
+        subjects: subjects,
+        subject: state.subject,
+        deck: state.deck,
+      ));
+    } catch (e) {
+      emit(SubjectState(
+        subjects: state.subjects,
+        subject: state.subject,
+        deck: state.deck,
+      ));
+    }
   }
 }

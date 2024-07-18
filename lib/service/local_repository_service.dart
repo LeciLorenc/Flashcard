@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flashcard/model/flashcard.dart';
 import 'package:flashcard/model/subject.dart';
 import 'package:flashcard/utils.dart';
@@ -16,7 +17,7 @@ class LocalRepositoryService {
   static const String _subjectsEntry = '__SUBJECTS__';
 
   static final Future<SharedPreferences> _sharedPreferences =
-      SharedPreferences.getInstance();
+  SharedPreferences.getInstance();
 
   ///METHODS FOR DEBUGGING
 
@@ -24,6 +25,9 @@ class LocalRepositoryService {
 
   static Future<void> clear() async {
     debugPrint('CLEARING MEMORY');
+
+    // final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.clear();
 
     (await _sharedPreferences).clear();
   }
@@ -163,13 +167,13 @@ class LocalRepositoryService {
     assert(name != null || icon != null);
 
     Deck updatedDeck = Deck(
-      id: deck.id,
-      name: name ?? deck.name,
-      icon: icon ?? deck.icon,
-      flashcards: deck.flashcards,
+        id: deck.id,
+        name: name ?? deck.name,
+        icon: icon ?? deck.icon,
+        flashcards: deck.flashcards, subjectId: deck.subjectId
     );
 
-    await setString(updatedDeck.id, jsonEncode(updatedDeck.toJsonIdFriendly()));
+    await setString(updatedDeck.id, jsonEncode(updatedDeck.toJson()));
 
     return updatedDeck;
   }
@@ -186,7 +190,7 @@ class LocalRepositoryService {
         id: flashcard.id,
         question: question ?? flashcard.question,
         answer: answer ?? flashcard.answer,
-        index: index ?? flashcard.index);
+        index: index ?? flashcard.index, deckId: flashcard.deckId);
 
     await setString(
       updatedFlashcard.id,
@@ -248,10 +252,10 @@ class LocalRepositoryService {
       id: id,
       name: name,
       icon: icon,
-      flashcards: [],
+      flashcards: [], subjectId: '_${subject.id}',
     );
 
-    await setString(deck.id, jsonEncode(deck.toJsonIdFriendly()));
+    await setString(deck.id, jsonEncode(deck.toJson()));
 
     return deck;
   }
@@ -277,7 +281,7 @@ class LocalRepositoryService {
       id: id,
       question: question,
       answer: answer,
-      index: index,
+      index: index, deckId: '*${deck.id}',
     );
 
     await setString(flashcard.id, jsonEncode(flashcard.toJson()));
@@ -292,6 +296,8 @@ class LocalRepositoryService {
     if (json == null) {
       return null;
     }
+
+
 
     Subject subject = Subject.fromJsonIdFriendly(jsonDecode(json));
 
@@ -317,7 +323,7 @@ class LocalRepositoryService {
       return null;
     }
 
-    Deck deck = Deck.fromJsonIdFriendly(jsonDecode(json));
+    Deck deck = Deck.fromJson(jsonDecode(json));
 
     List<String> flashcardIDs = await getStringList('*$id') ?? [];
 
@@ -378,6 +384,48 @@ class LocalRepositoryService {
       await prefs.remove(subjectId);
     }
   }
+
+  static Future<void> saveSubject(Subject subject) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> subjectIds = prefs.getStringList(_subjectsEntry) ?? [];
+    if (!subjectIds.contains(subject.id)) {
+      subjectIds.add(subject.id);
+    }
+    await prefs.setStringList(_subjectsEntry, subjectIds);
+    await prefs.setString(subject.id, jsonEncode(subject.toJson()));
+  }
+
+  static Future<void> saveDeck(Deck deck) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(deck.id, jsonEncode(deck.toJson()));
+  }
+
+  static Future<void> saveFlashcard(Flashcard flashcard) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(flashcard.id, jsonEncode(flashcard.toJson()));
+  }
+
+
+
+  static String subjectToJson(Subject subject) {
+    return jsonEncode(subject.toJson());
+  }
+
+  static Subject subjectFromJson(String jsonString) {
+    final json = jsonDecode(jsonString);
+    return Subject.fromJson(json);
+  }
+
+  static Future<void> addSubject(Subject subject) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> subjectIds = prefs.getStringList(_subjectsEntry) ?? [];
+    if (!subjectIds.contains(subject.id)) {
+      subjectIds.add(subject.id);
+    }
+    await prefs.setStringList(_subjectsEntry, subjectIds);
+    await prefs.setString(subject.id, jsonEncode(subject.toJson()));
+  }
+
 
 
 

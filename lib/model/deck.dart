@@ -8,68 +8,50 @@ import 'flashcard.dart';
 /// A deck is a collection of flashcards
 /// It should contain all the flashcards for a particular topic of a subject
 class Deck implements Comparable<Deck> {
-  late final String id;
-  final List<Flashcard> flashcards;
+  final String id;
+  final String subjectId; // Add this field
   final String name;
   final IconData icon;
+  late final List<Flashcard> flashcards;
 
   Deck({
     required this.id,
+    required this.subjectId, // Initialize this field
     required this.name,
     required this.icon,
     required this.flashcards,
   });
 
-  static Deck fromJson(Map<String, dynamic> json) {
-    if (json['name'] == null ||
-        json['name'] is! String ||
-        json['flashcards'] == null ||
-        json['flashcards'] is! List ||
-        json['icon'] == null ||
-        json['icon'] is! Map<String, dynamic>) {
-      throw InvalidJson(
-          json,
-          'Deck:{'
-          ' "id": String?,'
-          ' "name": String,'
-          ' "flashcards": List<Flashcard>'
-          ' "icon": IconData'
-          '}');
-    }
-    final List<Flashcard> flashcards = [];
-    for (final flashcard in json['flashcards']) {
-      final Flashcard flashcardObj = Flashcard.fromJson(flashcard);
-      flashcards.add(flashcardObj);
-    }
+  factory Deck.fromJson(Map<String, dynamic> json) {
     return Deck(
       id: json['id'],
+      subjectId: json['subjectId'], // Parse this field
       name: json['name'],
-      flashcards: flashcards,
-      icon: iconDataFromJson(json['icon']),
+      icon: IconData(
+        json['icon']['codePoint'],
+        fontFamily: json['icon']['fontFamily'],
+        fontPackage: json['icon']['fontPackage'],
+        matchTextDirection: json['icon']['matchTextDirection'],
+      ),
+      flashcards: (json['flashcards'] as List<dynamic>)
+          .map((flashcardJson) => Flashcard.fromJson(flashcardJson as Map<String, dynamic>))
+          .toList(),
     );
   }
 
-  static Deck fromJsonIdFriendly(Map<String, dynamic> json) {
-    json['flashcards'] = [];
-    return fromJson(json);
-  }
-
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['flashcards'] =
-        flashcards.map((flashcard) => flashcard.toJson()).toList();
-    data['name'] = name;
-    data['icon'] = iconDataToJson(icon);
-    return data;
-  }
-
-  Map<String, dynamic> toJsonIdFriendly() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['icon'] = iconDataToJson(icon);
-    return data;
+    return {
+      'id': id,
+      'subjectId': subjectId, // Include this field
+      'name': name,
+      'icon': {
+        'codePoint': icon.codePoint,
+        'fontFamily': icon.fontFamily,
+        'fontPackage': icon.fontPackage,
+        'matchTextDirection': icon.matchTextDirection,
+      },
+      'flashcards': flashcards.map((flashcard) => flashcard.toJson()).toList(),
+    };
   }
 
   @override
@@ -88,7 +70,16 @@ class Deck implements Comparable<Deck> {
       id: id ?? this.id,
       name: name,
       flashcards: flashcards,
+      icon: icon, subjectId: '',
+    );
+  }
+
+  Deck addFlashcards({required List<Flashcard> flashcards}) {
+    return Deck(
+      id: id,
+      name: name,
       icon: icon,
+      flashcards: flashcards, subjectId: '',
     );
   }
 }

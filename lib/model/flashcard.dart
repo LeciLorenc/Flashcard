@@ -4,34 +4,23 @@ import 'package:flashcard/exceptions/invalid_json.dart';
 /// A flashcard is a question and answer pair
 class Flashcard implements Comparable<Flashcard>{
   final String id;
+  final String deckId; // Add this field
   final String question;
   final String answer;
   final int index;
 
   Flashcard({
     required this.id,
+    required this.deckId, // Initialize this field
     required this.question,
     required this.answer,
     required this.index,
   });
 
-  static Flashcard fromJson(Map<String, dynamic> json) {
-    if (json['question'] == null ||
-        json['question'] is! String ||
-        json['answer'] == null ||
-        json['answer'] is! String ||
-        json['index'] == null ||
-        json['index'] is! int) {
-      throw InvalidJson(
-          json,
-          'Flashcard:{'
-          ' "id": String?,'
-          ' "name": String,'
-          ' "question": String'
-          '}');
-    }
+  factory Flashcard.fromJson(Map<String, dynamic> json) {
     return Flashcard(
       id: json['id'],
+      deckId: json['deckId'], // Parse this field
       question: json['question'],
       answer: json['answer'],
       index: json['index'],
@@ -39,13 +28,16 @@ class Flashcard implements Comparable<Flashcard>{
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['question'] = question;
-    data['answer'] = answer;
-    data['index'] = index;
-    return data;
+    return {
+      'id': id,
+      'deckId': deckId, // Include this field
+      'question': question,
+      'answer': answer,
+      'index': index,
+    };
   }
+
+
 
   Map<String, dynamic> toJsonIdFriendly() {
     return toJson();
@@ -72,7 +64,7 @@ class Flashcard implements Comparable<Flashcard>{
       id: id ?? this.id,
       question: question ?? this.question,
       answer: answer ?? this.answer,
-      index: index ?? this.index,
+      index: index ?? this.index, deckId: '',
     );
   }
 }

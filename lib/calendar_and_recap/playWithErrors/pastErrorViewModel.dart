@@ -34,7 +34,7 @@ class PastErrorsViewModel extends ChangeNotifier {
   }
   void createDeck(id,name,icon,flashcards)
   {
-    deck= Deck(id: id, name: name, icon: icon, flashcards: flashcards);
+    deck= Deck(id: id, name: name, icon: icon, flashcards: flashcards, subjectId: '');
   }
   void createListFlashcard()
   {
@@ -91,7 +91,7 @@ class PastErrorsViewModel extends ChangeNotifier {
                 id: i.toString(),
                 question: item.wrongQuestions[j],
                 answer: item.wrongAnswers[j],
-                index: i));
+                index: i, deckId: ''));
             i++;
           }
         }
@@ -113,7 +113,7 @@ class PastErrorsViewModel extends ChangeNotifier {
                 id: i.toString(),
                 question: item.wrongQuestions[j],
                 answer: item.wrongAnswers[j],
-                index: i));
+                index: i, deckId: ''));
             i++;
           }
 

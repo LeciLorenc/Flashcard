@@ -8,7 +8,7 @@ class Subject implements Comparable<Subject> {
   late final String id;
   final String user_id;
   final String name;
-  final List<Deck> decks;
+  late final List<Deck> decks;
   final IconData icon;
 
   Subject({
@@ -31,12 +31,12 @@ class Subject implements Comparable<Subject> {
       throw InvalidJson(
           json,
           'Subject:{'
-          ' "id": String?,'
-          ' "user_id": String?,'
-          ' "name": String,'
-          ' "decks": List<Deck>,'
-          ' "icon": IconData'
-          '}');
+              ' "id": String?,'
+              ' "user_id": String?,'
+              ' "name": String,'
+              ' "decks": List<Deck>,'
+              ' "icon": IconData'
+              '}');
     }
     final List<Deck> decks = [];
     for (final deck in json['decks']) {
@@ -79,7 +79,7 @@ class Subject implements Comparable<Subject> {
     return data;
   }
   //set the id of the subject to the id of the document in firestore
-Subject copyWith({String? id}) {
+  Subject copyWith({String? id}) {
     return Subject(
       id: id ?? this.id,
       user_id: user_id,
@@ -97,6 +97,16 @@ Subject copyWith({String? id}) {
   @override
   String toString() {
     return toJson().toString();
+  }
+
+  Subject addDecks({required List<Deck> decks}) {
+    return Subject(
+      id: id,
+      user_id: user_id,
+      name: name,
+      decks: [...this.decks, ...decks],
+      icon: icon,
+    );
   }
 
 }

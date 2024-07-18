@@ -72,4 +72,57 @@ class FirestoreService {
     await _db.collection('decks').doc(deckId).collection('flashcards').doc(flashcardId).delete();
   }
 
+
+  Future<void> backupData(String userId, String backupJson) async {
+    // Store the backup data in Firestore under the user's ID
+    await _db.collection('backups').doc(userId).set({
+      'data': backupJson,
+    });
+  }
+
+  Future<String> restoreData(String userId) async {
+    // Retrieve the backup data from Firestore using the user's ID
+    DocumentSnapshot snapshot = await _db.collection('backups').doc(userId).get();
+
+    if (!snapshot.exists) {
+      throw Exception('No backup found for this user');
+    }
+
+    Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+    if (data != null) {
+      print("Data: ${data['data']}");
+      return data['data'] ?? '';
+    } else {
+      throw Exception('No data found for this user');
+    }
+  }
+
+  Future<List<Subject>> _fetchAllSubjects() async {
+    List<Subject> subjects = [];
+    QuerySnapshot subjectSnapshot = await _db.collection('subjects').get();
+    for (QueryDocumentSnapshot subjectDoc in subjectSnapshot.docs) {
+      Subject subject = Subject.fromJson(subjectDoc.data() as Map<String, dynamic>);
+      List<Deck> decks = [];
+
+      // QuerySnapshot deckSnapshot = await _db.collection('subjects').doc(subject.id).collection('decks').get();
+      QuerySnapshot deckSnapshot = await _db.collection('decks').where('subject_id', isEqualTo: subject.id).get();
+
+      for (QueryDocumentSnapshot deckDoc in deckSnapshot.docs) {
+        Deck deck = Deck.fromJson(deckDoc.data() as Map<String, dynamic>);
+        List<Flashcard> flashcards = [];
+
+        QuerySnapshot flashcardSnapshot = await _db.collection('decks').doc(deck.id).collection('flashcards').get();
+        for (QueryDocumentSnapshot flashcardDoc in flashcardSnapshot.docs) {
+          Flashcard flashcard = Flashcard.fromJson(flashcardDoc.data() as Map<String, dynamic>);
+          flashcards.add(flashcard);
+        }
+
+        decks.add(deck.addFlashcards(flashcards: flashcards));
+      }
+
+      subjects.add(subject.addDecks(decks: decks));
+    }
+
+    return subjects;
+  }
 }
