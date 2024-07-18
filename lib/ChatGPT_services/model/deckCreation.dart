@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import '../../presentation/education_icons.dart';
 
 class DeckCreationViewModel {
-  late TextEditingController textEditingController;
-  late TextEditingController textDescriptionController;
+  late TextEditingController nameDeckController;
+  late TextEditingController descriptionController;
   late int number;
   late IconData iconName;
   late IconData iconDescription;
@@ -16,8 +16,8 @@ class DeckCreationViewModel {
   late Map<String, dynamic> languageIcons; // Declare here
 
   DeckCreationViewModel() {
-    textEditingController = TextEditingController();
-    textDescriptionController = TextEditingController();
+    nameDeckController = TextEditingController();
+    descriptionController = TextEditingController();
     number = 5;
     iconName = EducationIcons.teaching;
     iconDescription = EducationIcons.certificate;

@@ -6,16 +6,16 @@ import '../../../ChatGPT_services/model-view/api_service.dart';
 import '../../../ChatGPT_services/model-view/processAImessage.dart';
 import '../../../ChatGPT_services/view/minorDialogs/loading_dialog.dart';
 
-class ErrorDescriptionWidget extends StatefulWidget {
+class ErrorDescriptionWidgetWithAI extends StatefulWidget {
   final String messageToBeSent;
 
-  ErrorDescriptionWidget(this.messageToBeSent, {Key? key}) : super(key: key);
+  ErrorDescriptionWidgetWithAI(this.messageToBeSent, {Key? key}) : super(key: key);
 
   @override
-  _ErrorDescriptionWidgetState createState() => _ErrorDescriptionWidgetState();
+  _ErrorDescriptionWidgetWithAIState createState() => _ErrorDescriptionWidgetWithAIState();
 }
 
-class _ErrorDescriptionWidgetState extends State<ErrorDescriptionWidget> {
+class _ErrorDescriptionWidgetWithAIState extends State<ErrorDescriptionWidgetWithAI> {
   late String responseFromGpt = "";
   List<String> questions = [];
   List<String> answers = [];
@@ -42,7 +42,7 @@ class _ErrorDescriptionWidgetState extends State<ErrorDescriptionWidget> {
                 children: [
                   const Text("Here is your response:"),
                   SizedBox(height: 10),
-                  widgetResponseAIWithALLSTUFF(context),
+                  widgetResponseAIWithRecap(context),
                 ],
               ),
             ),
@@ -110,7 +110,7 @@ class _ErrorDescriptionWidgetState extends State<ErrorDescriptionWidget> {
     print("ciao");
   }
 
-  Widget widgetResponseAIWithALLSTUFF(BuildContext context) {
+  Widget widgetResponseAIWithRecap(BuildContext context) {
 
     return Expanded(
       child: ListView.builder(

@@ -6,6 +6,7 @@ import 'package:flashcard/calendar_and_recap/playWithErrors/subjectChoice.dart';
 import 'package:flutter/material.dart';
 
 import 'deckChoice.dart';
+
 class PlayWithPastErrors extends StatefulWidget {
   final PastErrorsViewModel viewModel;
   bool areThereErrors = true;

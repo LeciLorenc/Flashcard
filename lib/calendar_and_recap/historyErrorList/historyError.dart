@@ -42,12 +42,12 @@ class _HistoryErrorState extends State<HistoryError> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FilterButton(),
+                  FilterButtonWidget(),
                   const SizedBox(height: 8),
                   orderButton(),
                   const SizedBox(height: 16),
                   savingList(),
-                  deleteAllButton(context),
+                  deleteAllRecordsButton(context),
                 ],
               ),
             ),
@@ -58,7 +58,7 @@ class _HistoryErrorState extends State<HistoryError> {
   }
 
 
-  Widget FilterButton()
+  Widget FilterButtonWidget()
   {
     return ElevatedButton(
       onPressed: () {
@@ -310,7 +310,7 @@ class _HistoryErrorState extends State<HistoryError> {
     );
   }
 
-  Widget deleteAllButton(BuildContext context) {
+  Widget deleteAllRecordsButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
         showDialog(
@@ -357,143 +357,3 @@ class _HistoryErrorState extends State<HistoryError> {
   }
 
 }
-
-
-
-
-
-
-
-/*
-  Widget FilterButton()
-  {
-    return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          _isExpanded = !_isExpanded;
-        });
-      },
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20), // Specifica il raggio del bordo desiderato
-        ),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const Icon (Icons.filter_alt),
-              Text(_isExpanded ? "Hide Filters" : "Filters"),
-            ],
-          ),
-          Row(
-            children : [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                height: _isExpanded ? 50 : 0,
-                width: MediaQuery.of(context).size.width*0.85,
-                child: _isExpanded ? filteringMenu() : const SizedBox.shrink(),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }*/
-/*
-  Widget filteringMenu() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        const buttonWidth = 100.0; // Width of each button
-        final availableWidth = constraints.maxWidth;
-        final maxButtonsPerRow = (availableWidth / buttonWidth).floor();
-
-        if (maxButtonsPerRow >= 4) {
-          return _buildButtonsRow(4);
-        } else if (maxButtonsPerRow >= 2) {
-          return _buildButtonsRow(2);
-        } else {
-          return _buildButtonsRow(1);
-        }
-      },
-    );
-  }
-
-  Widget _buildButtonsRow(int buttonsCount) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: List.generate(buttonsCount, (index) {
-        switch (index) {
-          case 0:
-            return Expanded(
-              child: DropdownButton<String>(
-                hint: const Text('Select Subject'),
-                onChanged: (String? newValue) {
-                  widget.viewModel.updateSubjectFilter(newValue!);
-                },
-                items: computeItemsForDeck(context),
-              ),
-            );
-          case 1:
-            return Expanded(
-              child: DropdownButton<String>(
-                hint: const Text('Select Deck'),
-                onChanged: (String? newValue) {
-                  widget.viewModel.updateDeckFilter(newValue!);
-                },
-                items: computeItemsForSubjects(context),
-              ),
-            );
-          case 2:
-            return Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-                  // Implement your logic here
-                },
-                child: const Row(
-                  children: [
-                    Icon(Icons.calendar_today),
-                    Text("Filter by Date"),
-                  ],
-                ),
-              ),
-            );
-          case 3:
-            return Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    widget.viewModel.getFilteredSavings(NewSavings.savings);
-                  });
-                },
-                child: const Row(
-                  children: [
-                    Icon(Icons.search),
-                    Text("Search"),
-                  ],
-                ),
-              ),
-            );
-          default:
-            return const SizedBox.shrink();
-        }
-      }),
-    );
-  }*/
-
-//SEARCH BUTTON
-/*ElevatedButton(
-        onPressed: () {
-          setState(() {
-            widget.viewModel.getFilteredSavings(NewSavings.savings);
-            });
-          },
-          child: const Row(
-            children: [
-              Icon(Icons.search),
-              Text("Search"),
-            ],
-          ),
-        ),*/
-
-

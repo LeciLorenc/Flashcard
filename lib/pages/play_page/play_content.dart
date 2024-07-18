@@ -110,22 +110,7 @@ class _PlayContentState extends State<PlayContent> {
           String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
           String currentTime = DateFormat.Hms().format(DateTime.now());
 
-          //ADD OF ERRORS
-          /*
-          for(Flashcard wrongFlash in incorrectFlashcards)
-          {
-            IncorrectItem incorrectItem = StorageData.createIncorrectItem(context.read<PlayBloc>(),
-                                                    wrongFlash, currentDate, currentTime);
-            StorageData.addToErrorList(incorrectItem);
-          }
-          StorageData.saveErrorList().then((value) => null);
 
-          //ADD OF PLAYED DECK
-          PlayedDeck playedDeck = StorageData.createPlayedDeck(context.read<PlayBloc>(),
-                                                  currentDate,currentTime);
-          StorageData.addToPlayedList(playedDeck);
-          StorageData.savePlayedList().then((value) => null);
-          */
 
                         //SUBSTITUTE
           pastErrorsObject newObject = NewSavings.createNewObject(globalUserId, context.read<PlayBloc>(), incorrectFlashcards, currentDate, currentTime);
@@ -188,7 +173,7 @@ class _PlayContentState extends State<PlayContent> {
                             return AlertDialog(
                               title: const Text("Those are your errors"),
                               //content: buildListOfErrors(FiltersStorage.getErrorsFilteredByDateAndTime(currentDate, currentTime)),
-                              content: buildListOfErrors(specificSaving),
+                              content: ErrorsList(incorrectFlashcards: specificSaving),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {

@@ -33,12 +33,12 @@ class _SettingsWidgetState extends State<SettingsWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 10),
-          Text(
+          const SizedBox(height: 10),
+          const Text(
             "Here there are some settings :",
             style: TextStyle(fontSize: 18),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Container(
             width: double.infinity,
             child: SwitchListTile(
@@ -49,14 +49,14 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               },
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
 
           // Display current API key
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(width: 15,),
-              Text("API key: ", style: TextStyle(fontSize: 18),),
+              const SizedBox(width: 15,),
+              const Text("API key: ", style: TextStyle(fontSize: 18),),
               Flexible(
                 child: Text(
                   _newApiKey,
@@ -65,15 +65,15 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               ),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
 
           // Button to change API key
           Row(
             children: [
-              SizedBox(width: 80,),
+              const SizedBox(width: 80,),
               ElevatedButton(
                 onPressed: () {
-                  showNewWidget(context);
+                  changeApiButtonWidget(context);
                 },
                 child: const Text("Click here to change the API"),
               ),
@@ -84,17 +84,17 @@ class _SettingsWidgetState extends State<SettingsWidget> {
     );
   }
 
-  void showNewWidget(BuildContext context) {
+  void changeApiButtonWidget(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Change API Key'),
+          title: const Text('Change API Key'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
-                decoration: InputDecoration(labelText: 'New API Key'),
+                decoration: const InputDecoration(labelText: 'New API Key'),
                 onChanged: (value) {
                   setState(() {
                     _newApiKey = value;
@@ -105,13 +105,13 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Save'),
+              child: const Text('Save'),
               onPressed: () {
                 setState(() {
                   ApiService.setApiKey(globalUserId, _newApiKey); // Update API key

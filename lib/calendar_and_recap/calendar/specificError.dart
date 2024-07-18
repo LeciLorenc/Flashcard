@@ -47,7 +47,7 @@ class SpecificErrorWidget extends StatelessWidget {
                     Navigator.push
                       (
                       context, MaterialPageRoute(
-                        builder: (context) => ErrorDescriptionWidget(messageToBeSent),
+                        builder: (context) => ErrorDescriptionWidgetWithAI(messageToBeSent),
                       ),
                     );
                   },

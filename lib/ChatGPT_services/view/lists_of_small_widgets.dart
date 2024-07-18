@@ -19,7 +19,7 @@ Widget buildDeckNameInput(BuildContext context, IconData iconName, DeckCreationV
           decoration: const InputDecoration(
             hintText: "Enter the deck's name",
           ),
-          controller: deckCreationViewModel.textEditingController,
+          controller: deckCreationViewModel.nameDeckController,
         ),
       ),
     ],
@@ -105,7 +105,7 @@ Widget buildLabelForDescriptionOfFlashcards(DeckCreationViewModel deckCreationVi
           decoration: const InputDecoration(
             hintText: 'Help AI with more details...',
           ),
-          controller: deckCreationViewModel.textDescriptionController,
+          controller: deckCreationViewModel.descriptionController,
         ),
       ),
     ],
@@ -150,8 +150,8 @@ Widget okButtonAction(DeckCreationViewModel deckCreationViewModel, BuildContext 
 {
   return TextButton(
     onPressed: () => Navigator.pop(context, ['OK',
-      deckCreationViewModel.textEditingController.text,
-      deckCreationViewModel.textDescriptionController.text,
+      deckCreationViewModel.nameDeckController.text,
+      deckCreationViewModel.descriptionController.text,
       deckCreationViewModel.number,
       deckCreationViewModel.selectedLanguage,
       deckCreationViewModel.selectedIcon]),

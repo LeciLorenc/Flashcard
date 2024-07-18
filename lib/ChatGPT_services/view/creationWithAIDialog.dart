@@ -147,8 +147,8 @@ Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationVie
                           );
                         } else {
                           Navigator.pop(context, ['OK',
-                            deckCreationViewModel.textEditingController.text,
-                            deckCreationViewModel.textDescriptionController.text,
+                            deckCreationViewModel.nameDeckController.text,
+                            deckCreationViewModel.descriptionController.text,
                             deckCreationViewModel.number,
                             deckCreationViewModel.selectedLanguage,
                             deckCreationViewModel.selectedIcon]);
