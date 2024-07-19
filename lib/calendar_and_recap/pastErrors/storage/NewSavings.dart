@@ -41,6 +41,32 @@ class NewSavings {
     return false;
   }
 
+  //get List<pastErrorsObject> from the user_id
+static List<pastErrorsObject> getPastErrorsObjectList(String user_id)
+  {
+    List<pastErrorsObject> userPastErrorsObjectList = [];
+    for(int i=0;i<savings.length;i++)
+    {
+      if(savings[i].user_id == user_id)
+      {
+        userPastErrorsObjectList.add(savings[i]);
+      }
+    }
+    return userPastErrorsObjectList;
+  }
+
+  //toJson
+  static List<Map<String, dynamic>> toJson() {
+    List<Map<String, dynamic>> jsonList = savings.map((item) => item.toJson()).toList();
+    return jsonList;
+  }
+
+  //fromJson
+  static void fromJson(List<dynamic> jsonList) {
+    List<pastErrorsObject> loadedErrorList =   jsonList.map((itemJson) => pastErrorsObject.fromJson(itemJson)).toList();
+    savings = loadedErrorList;
+  }
+
 
 
 
@@ -97,6 +123,10 @@ class NewSavings {
     savings.clear();
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('savings', "");
+  }
+
+  static void addPastErrorsObject(pastErrorsObject error) {
+    savings.add(error);
   }
 
 }

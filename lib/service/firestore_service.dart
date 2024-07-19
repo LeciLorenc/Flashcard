@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../calendar_and_recap/pastErrors/model/newObject.dart';
 import '../model/deck.dart';
 import '../model/flashcard.dart';
 import '../model/subject.dart';
@@ -103,35 +104,6 @@ class FirestoreService {
     }
   }
 
-  Future<List<Subject>> _fetchAllSubjects() async {
-    List<Subject> subjects = [];
-    QuerySnapshot subjectSnapshot = await _db.collection('subjects').get();
-    for (QueryDocumentSnapshot subjectDoc in subjectSnapshot.docs) {
-      Subject subject = Subject.fromJson(subjectDoc.data() as Map<String, dynamic>);
-      List<Deck> decks = [];
-
-      // QuerySnapshot deckSnapshot = await _db.collection('subjects').doc(subject.id).collection('decks').get();
-      QuerySnapshot deckSnapshot = await _db.collection('decks').where('subject_id', isEqualTo: subject.id).get();
-
-      for (QueryDocumentSnapshot deckDoc in deckSnapshot.docs) {
-        Deck deck = Deck.fromJson(deckDoc.data() as Map<String, dynamic>);
-        List<Flashcard> flashcards = [];
-
-        QuerySnapshot flashcardSnapshot = await _db.collection('decks').doc(deck.id).collection('flashcards').get();
-        for (QueryDocumentSnapshot flashcardDoc in flashcardSnapshot.docs) {
-          Flashcard flashcard = Flashcard.fromJson(flashcardDoc.data() as Map<String, dynamic>);
-          flashcards.add(flashcard);
-        }
-
-        decks.add(deck.addFlashcards(flashcards: flashcards));
-      }
-
-      subjects.add(subject.addDecks(decks: decks));
-    }
-
-    return subjects;
-  }
-
 
   // Method to create a JSON backup string from a list of subjects
   Future<String> createBackupJson(List<Subject> subjects) async {
@@ -158,5 +130,32 @@ class FirestoreService {
     List<dynamic> jsonData = jsonDecode(jsonString);
     List<Subject> subjects = jsonData.map((data) => Subject.fromJson(data)).toList();
     return subjects;
+  }
+
+  // Method to create a JSON backup string from a list of pastErrorsObject
+  Future<String> createPastErrorsBackupJson(List<pastErrorsObject> pastErrors) async {
+    List<Map<String, dynamic>> pastErrorsJson = pastErrors.map((error) => error.toJson()).toList();
+    return jsonEncode(pastErrorsJson);
+  }
+
+// Method to backup pastErrors data to Firestore
+  Future<void> backupPastErrorsData(String userId, List<pastErrorsObject> pastErrors) async {
+    String backupJson = await createPastErrorsBackupJson(pastErrors);
+    await _db.collection('backups').doc(userId).set({'data': backupJson});
+  }
+
+  restorePastErrorsData(String userId) {
+    //restore the past errors data from firestore
+  return _db.collection('backups').doc(userId).get().then((snapshot) {
+      if (snapshot.exists) {
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        String backupJson = data['data'];
+        List<dynamic> jsonData = jsonDecode(backupJson);
+        List<pastErrorsObject> pastErrors = jsonData.map((data) => pastErrorsObject.fromJson(data)).toList();
+        return pastErrors;
+      } else {
+        throw Exception('No backup found for this user');
+      }
+    });
   }
 }
