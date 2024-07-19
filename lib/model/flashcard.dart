@@ -53,18 +53,35 @@ class Flashcard implements Comparable<Flashcard>{
     return toJson().toString();
   }
 
-  //copyWith method
+  // //copyWith method
+  // Flashcard copyWith({
+  //   String? id,
+  //   String? question,
+  //   String? answer,
+  //   int? index,
+  // }) {
+  //   return Flashcard(
+  //     id: id ?? this.id,
+  //     question: question ?? this.question,
+  //     answer: answer ?? this.answer,
+  //     index: index ?? this.index, deckId: '',
+  //   );
+  // }
+
+  // copyWith method
   Flashcard copyWith({
     String? id,
+    String? deckId,
     String? question,
     String? answer,
     int? index,
   }) {
     return Flashcard(
       id: id ?? this.id,
+      deckId: deckId ?? this.deckId,
       question: question ?? this.question,
       answer: answer ?? this.answer,
-      index: index ?? this.index, deckId: '',
+      index: index ?? this.index,
     );
   }
 }

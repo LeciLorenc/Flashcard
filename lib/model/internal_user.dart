@@ -14,11 +14,20 @@ class InternalUser {
   final String uid;
   bool fetched;
 
-  Reference get _profilePictureRef =>
-      FirebaseStorage.instance.ref(uid).child('profile.jpg');
 
-  set uploadProfilePicture(Uint8List image) =>
-      _profilePictureRef.putData(image);
+  factory InternalUser.fromJson(Map<String, dynamic> json) {
+    return InternalUser(
+      uid: json['uid'],
+      fetched: json['fetched'],
+      name: json['name'],
+    );
+  }
 
-  Future<String> get profilePicture => _profilePictureRef.getDownloadURL();
+  Map<String, dynamic> toJson() {
+    return {
+      'uid': uid,
+      'fetched': fetched,
+      'name': name,
+    };
+  }
 }
