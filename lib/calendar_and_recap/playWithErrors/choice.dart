@@ -41,9 +41,13 @@ class _Choice extends State<Choice> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text("Would like to review errors?", style: TextStyle(
-                      fontSize: 26.0,
-                    ),),
+                    const Text(
+                      "Would you like to play again some old errors?",
+                      style: TextStyle(
+                        fontSize: 26.0,
+                      ),
+                      textAlign: TextAlign.center, // Center the text
+                    ),
                     const SizedBox(height: 80),
                     buildButton("Review subject's errors", 'Subject'),
                     const SizedBox(height: 6),

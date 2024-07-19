@@ -27,14 +27,14 @@ class SignUpScreen extends StatelessWidget {
           return ScrollExpandable(
             child: Center(
               child: SizedBox(
-                width: 300,
+                width: 380,
                 child: Column(
                   children: [
                     Expanded(
                       child: Column(
                         children: [
                           const Spacer(
-                            flex: 2,
+                            flex: 1,
                           ),
                           Center(
                             child: FittedBox(
@@ -43,7 +43,7 @@ class SignUpScreen extends StatelessWidget {
                                 S.of(context).signUp,
                                 style: TextStyle(
                                   color: isDark ? darkTextColor: lightTextColor,
-                                  fontSize: 110,
+                                  fontSize: 100,
                                   fontFamily: 'Pacifico',
                                 ),
                               ),
@@ -73,7 +73,7 @@ class SignUpScreen extends StatelessWidget {
                                 : null,
                           ),
                           const SizedBox(
-                            height: 25,
+                            height: 15,
                           ),
                           TextInput.password(
                             textEditingController: password,
@@ -84,15 +84,18 @@ class SignUpScreen extends StatelessWidget {
                           const SizedBox(
                             height: spaceBetweenWidgets,
                           ),
-                          Button(
-                            key: const Key('sign_up_button'),
-                            onPressed: () => signUpBloc.add(
-                              EmailPasswordSignUpEvent(
-                                email: email.text,
-                                password: password.text,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: primaryColor, // Use the correct color property
+                                  ),
+                                  onPressed: () => signUpBloc.add(EmailPasswordSignUpEvent(email: email.text, password: password.text)),
+                                  child: Text(S.of(context).signUp ,style: TextStyle(color: isDark? lightTextColor: darkTextColor),),
+                                ),
                               ),
-                            ),
-                            text: S.of(context).signUp,
+                            ],
                           ),
                           const Spacer(),
                         ],

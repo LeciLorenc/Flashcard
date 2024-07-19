@@ -108,6 +108,41 @@ class SubjectSelection extends StatelessWidget {
               title: 'History of progress',
               expanded: expanded, textColor: textColor, iconColor: iconColor,
             ),
+
+            AdaptableButton(
+              onPressed: () => context.read<SubjectBloc>().add(DeleteAllSubjects()),
+              icon: Icons.remove_outlined,
+              title: 'Delete all subjects',
+              expanded: expanded, textColor: textColor, iconColor: iconColor,
+
+            ),
+            AdaptableButton(
+              onPressed: () => { whenPressedSwitchEssentialWidgets(context, EssentialWidgets.settings) },
+              icon: Icons.settings,
+              title: 'Settings',
+              expanded: expanded, textColor: textColor, iconColor: iconColor,
+
+            ),
+            AdaptableButton(
+              onPressed: () {
+                context.read<SubjectBloc>().add(BackupData(FirebaseAuth.instance.currentUser!.uid));
+              },
+              icon: Icons.backup,
+              title: 'Backup Data Full',
+              expanded: expanded,
+              textColor: textColor,
+              iconColor: iconColor,
+            ),
+            AdaptableButton(
+              onPressed: () {
+                context.read<SubjectBloc>().add(RestoreData(FirebaseAuth.instance.currentUser!.uid));
+              },
+              icon: Icons.restore,
+              title: 'Restore Data Full',
+              expanded: expanded,
+              textColor: textColor,
+              iconColor: iconColor,  ),
+            /*
             if (kDebugMode) ...[
               Divider(color: dividerColor),
               AdaptableButton(
@@ -115,42 +150,8 @@ class SubjectSelection extends StatelessWidget {
                 icon: Icons.info_outline,
                 title: 'Debug info',
                 expanded: expanded, textColor: textColor, iconColor: iconColor,
-              ),
-              AdaptableButton(
-                onPressed: () => context.read<SubjectBloc>().add(DeleteAllSubjects()),
-                icon: Icons.remove_outlined,
-                title: 'Delete all subjects',
-                expanded: expanded, textColor: textColor, iconColor: iconColor,
-
-              ),
-              AdaptableButton(
-                onPressed: () => { whenPressedSwitchEssentialWidgets(context, EssentialWidgets.settings) },
-                icon: Icons.settings,
-                title: 'Settings',
-                expanded: expanded, textColor: textColor, iconColor: iconColor,
-
-              ),
-              AdaptableButton(
-                onPressed: () {
-                  context.read<SubjectBloc>().add(BackupData(FirebaseAuth.instance.currentUser!.uid));
-                },
-                icon: Icons.backup,
-                title: 'Backup Data Full',
-                expanded: expanded,
-                textColor: textColor,
-                iconColor: iconColor,
-              ),
-              AdaptableButton(
-                onPressed: () {
-                  context.read<SubjectBloc>().add(RestoreData(FirebaseAuth.instance.currentUser!.uid));
-                },
-                icon: Icons.restore,
-                title: 'Restore Data Full',
-                expanded: expanded,
-                textColor: textColor,
-                iconColor: iconColor,  ),
-
-            ],
+              ),],
+              */
             AdaptableButton(
               onPressed: () {
                 context.read<AuthenticationBloc>().logout();

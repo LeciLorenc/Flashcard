@@ -175,7 +175,9 @@ class _PlayContentState extends State<PlayContent> {
                           final specificSaving = NewFiltersStorage.getASpecificSaving(currentDate, currentTime, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
                           if (specificSaving != null)
                           {
-                            double width = MediaQuery.of(context).orientation==Orientation.landscape ? 600: 250;
+                            double actualWidth=MediaQuery.of(context).size.width;
+                            double actualHeight=MediaQuery.of(context).size.height;
+                            double width = MediaQuery.of(context).orientation==Orientation.landscape ? actualWidth*0.8: actualWidth*0.8;
                             double height = MediaQuery.of(context).orientation==Orientation.landscape ? 250: 550;
 
                             return AlertDialog(

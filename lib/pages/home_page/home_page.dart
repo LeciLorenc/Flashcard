@@ -4,7 +4,7 @@ import 'package:flashcard/calendar_and_recap/pastErrors/storage/NewSavings.dart'
 import 'package:flashcard/calendar_and_recap/playWithErrors/pastErrorViewModel.dart';
 import 'package:flashcard/constants.dart';
 import 'package:flashcard/pages/enumParamountWidgets.dart';
-import 'package:flashcard/pages/home_page/home_content/home_content.dart';
+import 'package:flashcard/pages/home_page/home_content/subjectContent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
       case EssentialWidgets.historyError:
         return "History of all the errors";
       case EssentialWidgets.playWithError:
-        return "Play with past errors";
+        return "Play with old errors";
       case EssentialWidgets.settings:
         return "Settings";
       default:

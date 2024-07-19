@@ -175,23 +175,28 @@ class SignInScreen extends StatelessWidget {
                                         Row(
                                           children: [
                                             Expanded(
-                                              child: Button(
-                                                key: const Key('sign_in_button'),
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: primaryColor, // Use the correct color property
+                                                ),
                                                 onPressed: () => signInBloc.add(
                                                   EmailPasswordSignInEvent(
                                                     email: email.text,
                                                     password: password.text,
                                                   ),
                                                 ),
-                                                text: S.of(context).signIn,
+                                                child: Text(S.of(context).signIn ,style: TextStyle(color: isDark? lightTextColor: darkTextColor),),
                                               ),
                                             ),
+
                                             const SizedBox(width: 20), // Space between buttons
                                             Expanded(
-                                              child: Button(
-                                                key: const Key('google_sign_in_button'),
+                                              child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: primaryColor, // Use the correct color property
+                                                ),
                                                 onPressed: () => signInBloc.add(GoogleSignInEvent()),
-                                                text: S.of(context).signInWithGoogle,
+                                                child: Text(S.of(context).signInWithGoogle ,style: TextStyle(color: isDark? lightTextColor: darkTextColor),),
                                               ),
                                             ),
                                           ],

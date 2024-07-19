@@ -108,7 +108,7 @@ class _HistoryErrorState extends State<HistoryError> {
       );
     }
     else {
-      if(MediaQuery.of(context).size.width > 620) {
+      if(MediaQuery.of(context).size.width > 700) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -168,7 +168,12 @@ class _HistoryErrorState extends State<HistoryError> {
             widget.viewModel.updateDeckFilter(newValue!);
           });
         },
-        value: widget.viewModel.deckFilter!='' ? widget.viewModel.deckFilter: null,
+        value: widget.viewModel.deckFilter.isNotEmpty
+            ? (widget.viewModel.deckFilter.length > 20
+            ? widget.viewModel.deckFilter.substring(0, 20)
+            : widget.viewModel.deckFilter)
+            : null,
+
         style: TextStyle(color: isDark ? darkTextColor : lightTextColor),
         dropdownColor: isDark ? darkSecondaryColor : lightSecondaryColor,
         items: computeItemsForDeck(context),

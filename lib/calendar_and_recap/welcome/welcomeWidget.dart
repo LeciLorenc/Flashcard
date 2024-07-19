@@ -227,9 +227,9 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: 50),
                       Flexible(
-                        flex: 3,
+                        flex: 2,
                         child: HistogramWidget(
                           selectedDate: _selectedDate,
                         ),

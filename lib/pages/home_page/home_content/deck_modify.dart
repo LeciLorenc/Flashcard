@@ -36,10 +36,13 @@ class DeckModify extends StatelessWidget {
                 .add(AddFlashcard(index: deck.flashcards.length)),
 
           ),
-          ListTile(
-            leading: const Icon(Icons.arrow_back),
-            title: const Text('Go back'),
-            onTap: () =>  context.read<SubjectBloc>().add(SelectSubject(subject))
+          Align(
+          alignment: Alignment.bottomCenter,
+          child: ListTile(
+              leading: const Icon(Icons.arrow_back),
+              title: const Text('Go back'),
+              onTap: () =>  context.read<SubjectBloc>().add(SelectSubject(subject))
+            ),
           ),
         ],
       ),
