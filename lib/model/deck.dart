@@ -65,12 +65,13 @@ class Deck implements Comparable<Deck> {
   }
 
   // set id of the deck to the id of the document in firestore
-  Deck copyWith({String? id}) {
+  Deck copyWith({String? id, String? name, List<Flashcard>? flashcards}) {
     return Deck(
       id: id ?? this.id,
-      name: name,
-      flashcards: flashcards,
-      icon: icon, subjectId: '',
+      subjectId: subjectId,
+      name: name ?? this.name,
+      icon: icon,
+      flashcards: flashcards ?? this.flashcards,
     );
   }
 

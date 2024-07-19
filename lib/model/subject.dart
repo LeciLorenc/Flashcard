@@ -79,13 +79,13 @@ class Subject implements Comparable<Subject> {
     return data;
   }
   //set the id of the subject to the id of the document in firestore
-  Subject copyWith({String? id}) {
+  Subject copyWith({String? id, String? user_id, String? name, List<Deck>? decks, IconData? icon}) {
     return Subject(
       id: id ?? this.id,
-      user_id: user_id,
-      name: name,
-      decks: decks,
-      icon: icon,
+      user_id: user_id ?? this.user_id,
+      name: name ?? this.name,
+      decks: decks ?? this.decks,
+      icon: icon ?? this.icon,
     );
   }
 

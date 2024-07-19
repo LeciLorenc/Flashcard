@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../model/deck.dart';
@@ -5,7 +7,11 @@ import '../model/flashcard.dart';
 import '../model/subject.dart';
 
 class FirestoreService {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  FirebaseFirestore _db = FirebaseFirestore.instance;
+
+
+  FirestoreService({FirebaseFirestore? firestore})
+      : _db = firestore ?? FirebaseFirestore.instance;
 
 
   // Add a new subject to Firestore and update the local instance with the Firestore-generated ID
@@ -123,6 +129,34 @@ class FirestoreService {
       subjects.add(subject.addDecks(decks: decks));
     }
 
+    return subjects;
+  }
+
+
+  // Method to create a JSON backup string from a list of subjects
+  Future<String> createBackupJson(List<Subject> subjects) async {
+    List<Map<String, dynamic>> subjectsJson = subjects.map((subject) {
+      List<Map<String, dynamic>> decksJson = subject.decks.map((deck) {
+        List<Map<String, dynamic>> flashcardsJson = deck.flashcards.map((flashcard) {
+          return flashcard.toJson();
+        }).toList();
+        return {
+          ...deck.toJson(),
+          'flashcards': flashcardsJson,
+        };
+      }).toList();
+      return {
+        ...subject.toJson(),
+        'decks': decksJson,
+      };
+    }).toList();
+    return jsonEncode(subjectsJson);
+  }
+
+  // Method to parse a JSON backup string to a list of subjects
+  Future<List<Subject>> parseBackupJson(String jsonString) async {
+    List<dynamic> jsonData = jsonDecode(jsonString);
+    List<Subject> subjects = jsonData.map((data) => Subject.fromJson(data)).toList();
     return subjects;
   }
 }
