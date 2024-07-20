@@ -26,34 +26,36 @@ class _PlayWithPastErrors extends State<PlayWithPastErrors> {
     return StatefulBuilder(builder: (context, setState) {
       if (widget.viewModel.phasePlayChoice == PhasePlayChoice.choice ||
           widget.viewModel.phasePlayChoice == PhasePlayChoice.play) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              SizedBox(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width - 16,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height - 16 - 56-34, //padding + appBar
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Choice(orderingCallback: updateChoice),
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width - 16,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height - 16 - 56-34, //padding + appBar
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Choice(orderingCallback: updateChoice),
 
-                    Visibility(
-                      visible: !widget.areThereErrors,
-                      child: const Text(
-                        "No errors done till now",
-                        style: TextStyle(color: Colors.red),
+                      Visibility(
+                        visible: !widget.areThereErrors,
+                        child: const Text(
+                          "No errors done till now",
+                          style: TextStyle(color: Colors.red),
+                        ),
                       ),
-                    ),
-                  ],
-                ),),
-            ],),);
+                    ],
+                  ),),
+              ],),),
+        );
       }
       else {
         return Padding(

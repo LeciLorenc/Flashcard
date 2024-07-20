@@ -4,6 +4,7 @@ import 'package:flashcard/calendar_and_recap/pastErrors/model/newObject.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/NewSavings.dart';
 import 'package:flashcard/calendar_and_recap/pastErrors/storage/utilitiesStorage.dart';
 import 'package:flashcard/constants.dart';
+import 'package:flashcard/layoutUtils.dart';
 import 'package:flashcard/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,18 +40,16 @@ class _HistoryErrorState extends State<HistoryError> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FilterButtonWidget(),
-                  const SizedBox(height: 8),
-                  orderButton(),
-                  const SizedBox(height: 16),
-                  savingList(),
-                  deleteAllRecordsButton(context),
-                ],
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FilterButtonWidget(),
+                const SizedBox(height: 8),
+                orderButton(),
+                const SizedBox(height: 16),
+                savingList(),
+
+              ],
             ),
           ),
         );
@@ -85,7 +84,7 @@ class _HistoryErrorState extends State<HistoryError> {
             children : [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                height: _isFilterExpanded ? (MediaQuery.of(context).size.width > 720 ? 50: 200) : 0, // Change the height as needed
+                height: setHeightFilter(context),
                 child: _isFilterExpanded ?
                 SingleChildScrollView(
                     child: filteringMenu()) : const SizedBox.shrink(),
@@ -100,45 +99,61 @@ class _HistoryErrorState extends State<HistoryError> {
 
 
 
+
+
   Widget filteringMenu() {
-    if(NewSavings.savings.isEmpty)
-    {
+    if (NewSavings.savings.isEmpty) {
       return const Center(
         child: Text("No filters available"),
       );
-    }
-    else {
-      if(MediaQuery.of(context).size.width > 700) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // Filtraggio per subject
-            filterSubject(),
-            // Filtraggio per deck
-            filterDeck(),
-            // Filtraggio per data
-            filterDate(),
-            removeFilter(),
-          ],
+    } else {
+      if (MediaQuery.of(context).size.width > 700) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              // Filtraggio per subject
+              filterSubject(),
+              // Filtraggio per deck
+              filterDeck(),
+              // Filtraggio per data
+              filterDate(),
+              removeFilter(),
+            ],
+          ),
         );
-      }
-      else
-      {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // Filtraggio per subject
-            filterSubject(),
-            // Filtraggio per deck
-            filterDeck(),
-            // Filtraggio per data
-            filterDate(),
-            removeFilter(),
-          ],
+      } else {
+        return SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // Filtraggio per subject
+              Row(
+                children: [
+                  Column(
+                    children: [
+                      filterSubject(),
+                      // Filtraggio per deck
+                      filterDeck(),
+                    ],
+                  ),
+                  // Filtraggio per data
+                  Column(
+                    children: [
+                      filterDate(),
+                      removeFilter(),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         );
       }
     }
   }
+
+
   Widget filterSubject()
   {
     return SizedBox(
@@ -180,10 +195,10 @@ class _HistoryErrorState extends State<HistoryError> {
       ),
     );
   }
-  Widget filterDate()
-  {
+
+  Widget filterDate() {
     return SizedBox(
-      width: 140,
+      width: 120,
       child: ElevatedButton(
         onPressed: () async {
           final DateTime? picked = await showDatePicker(
@@ -191,28 +206,55 @@ class _HistoryErrorState extends State<HistoryError> {
             initialDate: DateTime.now(),
             firstDate: DateTime(2015, 8),
             lastDate: DateTime(2101),
-
+            builder: (BuildContext context, Widget? child) {
+              final isDark = Theme.of(context).brightness == Brightness.dark;
+              return Theme(
+                data: Theme.of(context).copyWith(
+                  colorScheme: isDark
+                      ? const ColorScheme.dark(
+                    primary: primaryColor,
+                    onPrimary: darkTextColor,
+                    surface: lightTextColor,
+                    onSurface: darkTextColor,
+                  )
+                      : const ColorScheme.light(
+                    primary: primaryColor,
+                    onPrimary: lightTextColor,
+                    surface: darkTextColor,
+                    onSurface: lightTextColor,
+                  ),
+                  dialogBackgroundColor: isDark ? Colors.black : Colors.white,
+                  textTheme: TextTheme(
+                    bodyLarge: TextStyle(color: isDark ? Colors.white : Colors.black),
+                    bodyMedium: TextStyle(color: isDark ? Colors.white : Colors.black),
+                  ),
+                ),
+                child: child!,
+              );
+            },
           );
           if (picked != null) {
             setState(() {
-              widget.viewModel.updateDateFilter( UtilitiesStorage.getOnlyDateFromSelectedDate(picked) );
+              widget.viewModel.updateDateFilter(UtilitiesStorage.getOnlyDateFromSelectedDate(picked));
             });
           }
         },
         child: const Row(
           children: [
             Icon(Icons.calendar_today),
-            Text("Filter Date"),
+            SizedBox(width: 10,),
+            Text("Filter \nDate"),
           ],
         ),
       ),
     );
   }
 
+
   Widget removeFilter()
   {
     return SizedBox(
-      width: 200,
+      width: 175,
       child: Row(
         children: [
           const SizedBox(width: 27),
@@ -225,7 +267,8 @@ class _HistoryErrorState extends State<HistoryError> {
             child: const Row(
               children: [
                 Icon(Icons.highlight_remove),
-                Text("Remove Filters"),
+                SizedBox(width: 10,),
+                Text("Remove \n Filters"),
               ],
             ),
           ),
@@ -268,8 +311,8 @@ class _HistoryErrorState extends State<HistoryError> {
             children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                height: _isOrderExpanded ? MediaQuery.of(context).orientation== Orientation.portrait ? 320: 100 : 0,
-                width: MediaQuery.of(context).orientation== Orientation.landscape? 600: 200,
+                height: calculateHeight(),
+                width: calculateWidth(),
                 child: _isOrderExpanded
                     ? ListView(
                   physics: NeverScrollableScrollPhysics(), // Disable scrolling
@@ -283,6 +326,30 @@ class _HistoryErrorState extends State<HistoryError> {
       ),
     );
   }
+
+  double calculateHeight()
+  {
+    if (_isOrderExpanded) {
+      return MediaQuery.of(context).size.width>400 &&
+          MediaQuery.of(context).size.width<800 ? 160: 300;
+    } else {
+      return 0;
+    }
+  }
+
+  double calculateWidth()
+  {
+    if(MediaQuery.of(context).size.width>400 &&
+        MediaQuery.of(context).size.width<800 && Layoututils.isLandscape(context)){
+      return 400;
+    }
+    else if(MediaQuery.of(context).size.width<400){
+      return 200;
+    }
+    return Layoututils.isPortrait(context) ? 600: 200;
+  }
+
+
 
 
   void updateOrdering(String newOrdering) {
@@ -299,26 +366,38 @@ class _HistoryErrorState extends State<HistoryError> {
 
     //TODO here i'm still considering all the items each time -> todo maintain a state of the one already filtered
     return Expanded(
-        child: buildList(results, results.length)
+      child: Column(
+        children: [
+          Expanded(
+            child: buildList(results, results.length),
+          ),
+        ],
+      ),
     );
   }
 
 
-  Widget buildList(List list, int length)
-  {
+  Widget buildList(List list, int length) {
     return ListView.builder(
-      itemCount: length,
-      itemBuilder: (context, index)
-      {
-        // Inverti l'ordine
-        final error = list[length - 1 - index];
+      itemCount: length + 1, // Incrementa length di uno per includere il bottone
+      itemBuilder: (context, index) {
+        if (index == 0) {
+          // Ritorna il bottone quando si raggiunge l'ultimo indice
+          return Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: deleteAllRecordsButton(context),
+          );
+        } else {
+          // Inverti l'ordine
+          final error = list[length - 1 - index+1];
 
-        return Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: CustomErrorListItem(
-            item: error,
-          ),
-        );
+          return Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: CustomErrorListItem(
+              item: error,
+            ),
+          );
+        }
       },
     );
   }
@@ -368,5 +447,17 @@ class _HistoryErrorState extends State<HistoryError> {
       ),
     );
   }
-
+  double? setHeightFilter(BuildContext context){
+    if(_isFilterExpanded)
+    {
+      if(Layoututils.getWidth(context) > 720) //landscape tablet
+      {
+        return 50;
+      }
+      else {
+        return 100;
+      }
+    }
+    return 0;
+  }
 }

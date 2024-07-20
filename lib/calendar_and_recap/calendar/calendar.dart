@@ -55,14 +55,16 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               primary: primaryColor,
             ),
           ),
-          child: Column(
-            children: [
-              buildCalendarPicker(  MediaQuery.of(context).size.width *0.8,
-                  MediaQuery.of(context).size.height * 0.5),
-              buildDate(),
-              buildListOfFilteredSavings( MediaQuery.of(context).size.width *0.8,
-                  MediaQuery.of(context).size.height *0.35),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                buildCalendarPicker(  MediaQuery.of(context).size.width *0.8,
+                    MediaQuery.of(context).size.height * 0.5),
+                buildDate(),
+                buildListOfFilteredSavings( MediaQuery.of(context).size.width *0.8,
+                    MediaQuery.of(context).size.height *0.35),
+              ],
+            ),
           ),
         ),
       );
@@ -143,14 +145,16 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   Widget buildCalendarPicker(double width, double height)
   {
-    return ConstrainedBox(
-      constraints:  BoxConstraints(
-        maxWidth: width,
-        maxHeight: height,
-      ),
-      child: DatePickerWidget(
-        initialDate: _selectedDate,
-        onDateChanged: _updateSelectedDate,
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints:  BoxConstraints(
+          maxWidth: width,
+          maxHeight: height,
+        ),
+        child: DatePickerWidget(
+          initialDate: _selectedDate,
+          onDateChanged: _updateSelectedDate,
+        ),
       ),
     );
   }

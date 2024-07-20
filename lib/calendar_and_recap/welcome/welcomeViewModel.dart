@@ -34,8 +34,8 @@ class WelcomeData
       array[i]=playedInADay;
     }
 
-    //return array;
-    return [1,2,1,1,2,1,0,1,4,0,1,1,0,1,1,1,2,1,3,2,1,1,4,1,3,1,1,1,5,1];
+    return array;
+    //return [1,2,1,1,2,1,0,1,4,0,1,1,0,1,1,1,2,1,3,2,1,1,4,1,3,1,1,1,5,1];
   }
 
   static List<String> computeLabels(DateTime selectedDate)
@@ -74,8 +74,8 @@ class WelcomeData
       array[i]=playedInADay;
     }
 
-    //return array;
-    return [2,3,4,1,5,2,0,2,2,2,3,3,6,3,0,8,5,0,8,8,0,0,7,2,3,4,3,3,3];
+    return array;
+    //return [2,3,4,1,5,2,0,2,2,2,3,3,6,3,0,8,5,0,8,8,0,0,7,2,3,4,3,3,3];
   }
 
 

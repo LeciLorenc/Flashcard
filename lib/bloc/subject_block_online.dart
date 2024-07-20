@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -61,4 +62,4 @@ class SubjectBlocFirebase extends Bloc<SubjectEventFirebase, SubjectStateFirebas
     await firestoreService.deleteSubject(event.subjectId);
     _loadSubjects(emit);
   }
-}
+}*/

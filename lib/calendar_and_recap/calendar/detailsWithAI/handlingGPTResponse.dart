@@ -21,7 +21,8 @@ String constructionOfTheMessageForDetails(List<String> wrongQuestions, List<Stri
       "Now here is the list of questions and then the corresponding answers:"
       "questions : $wrongQuestions; answers: $wrongAnswers"
       "NECESSARY CONDITION : In the response that you will send to me I want only a json file"
-      "So I don't need any other explanatory or introducing section or sentence."
+      "So I don't need any other explanatory or introducing section or sentence. "
+      "Also note that the language of the response MUST be the same as the one of the questions and answers."
       "ONLY THE JSON FILE AND ONLY WITH THE STRUCTURE DESCRIBED BEFORE";
   return message;
 }

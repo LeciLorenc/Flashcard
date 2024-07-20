@@ -36,15 +36,15 @@ Future<void> main() async {
           lazy: false,
           create: (BuildContext context) => AuthenticationBloc(),
         ),
-        BlocProvider(
+        /*BlocProvider(
           create: (BuildContext context) => user_bloc.UserBloc(),
-        ),
+        ),*/
         BlocProvider(
           create: (BuildContext context) => SubjectBloc(firestoreService: FirestoreService()),
         ),
-        BlocProvider<SubjectBlocFirebase>(
+        /*BlocProvider<SubjectBlocFirebase>(
           create: (BuildContext context) => SubjectBlocFirebase(FirestoreService()),
-        ),
+        ),*/
       ],
       child: const MyApp(),
     ),
@@ -95,15 +95,15 @@ class _MyAppState extends State<MyApp> {
 
   void _setOrientation() {
     final shortestSide = MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.shortestSide;
-    final isTablet = shortestSide >= 600;
+    final isTablet = /*shortestSide >= 600;*/ true;
 
     if (isTablet) {
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.landscapeLeft,
         DeviceOrientation.landscapeRight,
-      ]);
+      /*]);
     } else {
-      SystemChrome.setPreferredOrientations([
+      SystemChrome.setPreferredOrientations([*/
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
       ]);
@@ -173,7 +173,7 @@ class _MyAppState extends State<MyApp> {
             newHome = const AuthenticationScreen();
           } else if (state is AuthenticatedState) {
             newHome = const HomePage();
-            context.read<user_bloc.UserBloc>().add(user_bloc.InitUserBloc());
+            //context.read<user_bloc.UserBloc>().add(user_bloc.InitUserBloc());
 
             globalUserId = FirebaseAuth.instance.currentUser!.uid;
           }

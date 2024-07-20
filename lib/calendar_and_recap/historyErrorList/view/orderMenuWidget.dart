@@ -6,6 +6,8 @@ import '../historyErrorViewModel.dart';
 
 
 typedef OrderingCallback = void Function(String ordering);
+
+
 class OrderMenu extends StatefulWidget {
   final OrderingCallback orderingCallback;
 
@@ -20,40 +22,75 @@ class _OrderMenuState extends State<OrderMenu> {
 
   @override
   Widget build(BuildContext context) {
-    if(MediaQuery.of(context).size.width>400) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              buildButton("By Subject Name (A-Z)", OrderingEnum.subjectNameAZ.toString()),
-              const SizedBox(height: 6),
-              buildButton("By Subject Name (Z-A)", OrderingEnum.subjectNameZA.toString()),
-              const SizedBox(height: 6),
+    if(MediaQuery.of(context).size.width>400 &&
+        MediaQuery.of(context).size.width<800){
+      return SingleChildScrollView(scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
+              children: [
+                buildButton("By Subject Name (A-Z)", OrderingEnum.subjectNameAZ.toString()),
+                const SizedBox(height: 6),
+                buildButton("By Subject Name (Z-A)", OrderingEnum.subjectNameZA.toString()),
+                const SizedBox(height: 6),
+                buildButton("By Deck Name (A-Z)", OrderingEnum.deckNameAZ.toString()),
+                const SizedBox(height: 6),
+              ],
+            ),
+            const SizedBox(width: 20,),
+            Column(
+              children: [
+                buildButton("By Date (Increasing)", OrderingEnum.dateIncrease.toString()),
+                const SizedBox(height: 6),
+                buildButton("By Date (Decreasing)", OrderingEnum.dateDecrease.toString()),
+                const SizedBox(height: 6),
+                buildButton("By Deck Name (Z-A)", OrderingEnum.deckNameZA.toString()),
+                const SizedBox(height: 6),
+              ],
+            ),
 
-            ],
-          ),
-          SizedBox(width: 20,),
-          Column(
-            children: [
-              buildButton("By Deck Name (A-Z)", OrderingEnum.deckNameAZ.toString()),
-              const SizedBox(height: 6),
-              buildButton("By Deck Name (Z-A)", OrderingEnum.deckNameZA.toString()),
-              const SizedBox(height: 6),
+          ],
+        ),
+      );
+    }
+    else if(MediaQuery.of(context).size.width>400) {
+      return Container(
+        height: 121,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
+              children: [
+                buildButton("By Subject Name (A-Z)", OrderingEnum.subjectNameAZ.toString()),
+                const SizedBox(height: 6),
+                buildButton("By Subject Name (Z-A)", OrderingEnum.subjectNameZA.toString()),
+                const SizedBox(height: 6),
 
-            ],
-          ),
-          SizedBox(width: 20,),
-          Column(
-            children: [
-              buildButton("By Date (Increasing)", OrderingEnum.dateIncrease.toString()),
-              const SizedBox(height: 6),
-              buildButton("By Date (Decreasing)", OrderingEnum.dateDecrease.toString()),
-              const SizedBox(height: 6),
-            ],
-          )
+              ],
+            ),
+            SizedBox(width: 20,),
+            Column(
+              children: [
+                buildButton("By Deck Name (A-Z)", OrderingEnum.deckNameAZ.toString()),
+                const SizedBox(height: 6),
+                buildButton("By Deck Name (Z-A)", OrderingEnum.deckNameZA.toString()),
+                const SizedBox(height: 6),
 
-        ],
+              ],
+            ),
+            SizedBox(width: 20,),
+            Column(
+              children: [
+                buildButton("By Date (Increasing)", OrderingEnum.dateIncrease.toString()),
+                const SizedBox(height: 6),
+                buildButton("By Date (Decreasing)", OrderingEnum.dateDecrease.toString()),
+                const SizedBox(height: 6),
+              ],
+            )
+
+          ],
+        ),
       );
     }
     else
@@ -62,15 +99,15 @@ class _OrderMenuState extends State<OrderMenu> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             buildButton("By Subject Name (A-Z)", OrderingEnum.subjectNameAZ.toString()),
-            const SizedBox(height: 6),
+            const SizedBox(height: 2),
             buildButton("By Subject Name (Z-A)", OrderingEnum.subjectNameZA.toString()),
-            const SizedBox(height: 6),
+            const SizedBox(height: 2),
             buildButton("By Deck Name (A-Z)", OrderingEnum.deckNameAZ.toString()),
-            const SizedBox(height: 6),
+            const SizedBox(height: 2),
             buildButton("By Deck Name (Z-A)", OrderingEnum.deckNameZA.toString()),
-            const SizedBox(height: 6),
+            const SizedBox(height: 2),
             buildButton("By Date (Increasing)", OrderingEnum.dateIncrease.toString()),
-            const SizedBox(height: 6),
+            const SizedBox(height: 2),
             buildButton("By Date (Decreasing)", OrderingEnum.dateDecrease.toString()),
           ],
         );

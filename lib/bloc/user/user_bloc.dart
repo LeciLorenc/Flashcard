@@ -7,7 +7,7 @@ import 'package:flashcard/model/internal_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+/*
 abstract class UserEvent {}
 
 class _ReloadEvent extends UserEvent {
@@ -141,3 +141,4 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 }
+*/
