@@ -129,6 +129,14 @@ static List<PastErrorsObject> getPastErrorsObjectList(String user_id)
     savings.add(error);
   }
 
+  static void addHistoryObject(fromJson) {
+    //add
+  }
+
+  static void clearPastErrorsObjectList(String userId) {
+    savings.removeWhere((element) => element.user_id == userId);
+  }
+
 }
 
 

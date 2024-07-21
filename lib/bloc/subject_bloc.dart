@@ -5,8 +5,10 @@ import 'package:flashcard/service/local_repository_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../ChatGPT_services/model-view/api_service.dart';
 import '../calendar_and_recap/pastErrors/model/newObject.dart';
 import '../calendar_and_recap/pastErrors/storage/NewSavings.dart';
+import '../main.dart';
 import '../model/deck.dart';
 import '../model/flashcard.dart';
 import '../model/subject.dart';
@@ -174,7 +176,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
   final FirestoreService firestoreService;
 
 
-  SubjectBloc({required this.firestoreService}) : super(SubjectState(subjects: [])) {
+  SubjectBloc({required this.firestoreService})
+      : super(SubjectState(subjects: [])) {
     on<AddDeck>(_onAddDeck);
     on<SelectSubject>(_onSelectSubject);
     on<SelectDeck>(_onSelectDeck);
@@ -194,7 +197,6 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
   }
 
 
-
   _onAddDeck(AddDeck event, Emitter<SubjectState> emit) async {
     if (state.subject == null) {
       return;
@@ -208,7 +210,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       icon: event.icon,
     );
 
-    Subject subject = state.subject!..decks.add(deck);
+    Subject subject = state.subject!
+      ..decks.add(deck);
 
     firestoreService.addDeck(deck);
 
@@ -261,12 +264,14 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
 
     await LocalRepositoryService.removeDeck(deckToDelete, state.subject!);
 
-    Subject subject = state.subject!..decks.remove(deckToDelete);
+    Subject subject = state.subject!
+      ..decks.remove(deckToDelete);
 
     if (state.id != null && deckToDelete.id != null) {
       await firestoreService.deleteDeck(state.id!, deckToDelete.id!);
     } else {
-      debugPrint('Unable to delete deck from Firestore: Missing state.id or deck.id');
+      debugPrint(
+          'Unable to delete deck from Firestore: Missing state.id or deck.id');
     }
 
     emit(SubjectState(
@@ -312,7 +317,7 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
 
     state.deck!.flashcards.add(flashcard);
 
-    firestoreService.addFlashcard(flashcard,  state.deck!.id);
+    firestoreService.addFlashcard(flashcard, state.deck!.id);
 
     emit(SubjectState(
       subject: state.subject,
@@ -375,8 +380,6 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       subject: state.subject,
       subjects: subjects,
     ));
-
-
   }
 
   _onDeleteAllSubject(DeleteAllSubjects event, Emitter<SubjectState> emit) {
@@ -384,11 +387,16 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
 
     firestoreService.deleteAllSubjects();
 
+    //delete pastErrorsObject in the subbject_block
+    NewSavings.clearPastErrorsObjectList(globalUserId);
+    //delete historyErrorList in the subbject_block
+
+
     emit(SubjectState(subjects: []));
   }
 
-  _onReorderFlashcard(
-      ReorderFlashcard event, Emitter<SubjectState> emit) async {
+  _onReorderFlashcard(ReorderFlashcard event,
+      Emitter<SubjectState> emit) async {
     if (state.deck == null || state.subject == null) {
       return;
     }
@@ -424,7 +432,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       id: deck.id,
       name: deck.name,
       icon: deck.icon,
-      flashcards: flashcards, subjectId: state.subject!.id,
+      flashcards: flashcards,
+      subjectId: state.subject!.id,
     );
 
     state.subject!.decks.add(deck);
@@ -463,7 +472,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       id: deck.id,
       name: deck.name,
       icon: deck.icon,
-      flashcards: flashcards, subjectId: state.subject!.id,
+      flashcards: flashcards,
+      subjectId: state.subject!.id,
     );
 
     state.subject!.decks.add(deck);
@@ -484,7 +494,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
         // For each subject, generate a list of its decks, where each deck is a map that includes its flashcards
         List<Map<String, dynamic>> decksJson = subject.decks.map((deck) {
           // For each deck, generate a list of its flashcards, where each flashcard is a map
-          List<Map<String, dynamic>> flashcardsJson = deck.flashcards.map((flashcard) {
+          List<Map<String, dynamic>> flashcardsJson = deck.flashcards.map((
+              flashcard) {
             return flashcard.toJson();
           }).toList();
 
@@ -512,17 +523,24 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       await firestoreService.backupData(event.userId, backupJson);
 
       //get the pastErrorsObject list
-      List<PastErrorsObject> pastErrors = NewSavings.getPastErrorsObjectList(event.userId);
+      List<PastErrorsObject> pastErrors = NewSavings.getPastErrorsObjectList(
+          event.userId);
 
       print("error List backup");
       //print pastErrors list
 
+      //backup chatgpt api_key
+      String chatgpt_api_key = ApiService.getApiKey(event.userId);
+
+      //backup api_key
+      await firestoreService.backupApiKey(event.userId, chatgpt_api_key);
 
       print(pastErrors);
 
       await firestoreService.backupPastErrorsData(event.userId, pastErrors);
 
-
+      //clean remove pastErrorsObject in the subbject_block
+      NewSavings.clearPastErrorsObjectList(event.userId);
     } catch (e) {
       print("error backuping data");
       print(e);
@@ -541,7 +559,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
         List<Deck> decks = decksJson.map((deckJson) {
           // Parse the flashcards for each deck
           List<dynamic> flashcardsJson = deckJson['flashcards'];
-          List<Flashcard> flashcards = flashcardsJson.map((flashcardJson) => Flashcard.fromJson(flashcardJson)).toList();
+          List<Flashcard> flashcards = flashcardsJson.map((flashcardJson) =>
+              Flashcard.fromJson(flashcardJson)).toList();
 
           // Return the deck with its flashcards
           return Deck(
@@ -583,7 +602,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       }
 
       //get the pastErrorsObject list
-      List<PastErrorsObject> pastErrors = await firestoreService.restorePastErrorsData(event.userId);
+      List<PastErrorsObject> pastErrors = await firestoreService
+          .restorePastErrorsData(event.userId);
       //
       print("error list download");
       // print(pastErrors);
@@ -592,6 +612,14 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       for (PastErrorsObject error in pastErrors) {
         NewSavings.addPastErrorsObject(error);
       }
+
+      //restore chatgpt api_key
+      String chatgpt_api_key = await firestoreService.restoreApiKey(
+          event.userId);
+
+      //restore api_key
+      ApiService.setApiKey(globalUserId, chatgpt_api_key);
+
 
       emit(SubjectState(
         subjects: subjects,
@@ -608,21 +636,7 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
   }
 
   void _onPopulateDB(PopulateDB event, Emitter<SubjectState> emit) async {
-    try{
-      await firestoreService.restoreDebugData();
-      List<Subject> subjects = await LocalRepositoryService.getSubjects();
-      emit(SubjectState(
-        subjects: subjects,
-        subject: state.subject,
-        deck: state.deck,
-      ));
-    } catch (e) {
-      emit(SubjectState(
-        subjects: state.subjects,
-        subject: state.subject,
-        deck: state.deck,
-      ));
-    }
-}
+    //populate the database with the data from firestore
 
+  }
 }

@@ -14,17 +14,15 @@ class Flashcard implements Comparable<Flashcard>{
     required this.answer,
     required this.index,
   });
-
   factory Flashcard.fromJson(Map<String, dynamic> json) {
     return Flashcard(
-      id: json['id'],
-      deckId: json['deckId'], // Parse this field
-      question: json['question'],
-      answer: json['answer'],
-      index: json['index'],
+      id: json['id'] ?? '',
+      question: json['question'] ?? '',
+      answer: json['answer'] ?? '',
+      index: json['index'] ?? 0,
+      deckId: json['deckId'] ?? '',
     );
   }
-
   Map<String, dynamic> toJson() {
     return {
       'id': id,

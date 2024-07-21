@@ -10,7 +10,7 @@ import '../model/flashcard.dart';
 import '../model/subject.dart';
 import 'local_repository_service.dart';
 
-class FirestoreService {
+class FirestoreService  extends ChangeNotifier{
   FirebaseFirestore _db = FirebaseFirestore.instance;
 
 
@@ -92,6 +92,7 @@ class FirestoreService {
 
   Future<String> restoreData(String userId) async {
     // Retrieve the backup data from Firestore using the user's ID
+    print("User ID: $userId");
     DocumentSnapshot snapshot = await _db.collection('backups').doc(userId).get();
 
     if (!snapshot.exists) {
@@ -168,71 +169,71 @@ class FirestoreService {
       }
     });
   }
-  Future<void> restoreDebugData() async {
-    try {
-      Map<String, dynamic> debugData = jsonDecode(debugDataJson);
-
-      List<dynamic> subjectsJson = debugData['subjects'] ?? [];
-      List<Subject> subjects = subjectsJson.map((subjectJson) {
-        List<dynamic> decksJson = subjectJson['decks'] ?? [];
-        List<Deck> decks = decksJson.map((deckJson) {
-          List<dynamic> flashcardsJson = deckJson['flashcards'] ?? [];
-          List<Flashcard> flashcards = flashcardsJson.map((flashcardJson) {
-            return Flashcard(
-              id: flashcardJson['id'] ?? '',
-              question: flashcardJson['question'] ?? '',
-              answer: flashcardJson['answer'] ?? '',
-              index: flashcardJson['index'] ?? 0,
-              deckId: flashcardJson['deckId'] ?? '',
-            );
-          }).toList();
-
-          return Deck(
-            id: deckJson['id'] ?? '',
-            subjectId: deckJson['subjectId'] ?? '',
-            name: deckJson['name'] ?? '',
-            icon: IconData(
-              deckJson['icon']['codePoint'] ?? 0,
-              fontFamily: deckJson['icon']['fontFamily'],
-              fontPackage: deckJson['icon']['fontPackage'],
-              matchTextDirection: deckJson['icon']['matchTextDirection'] ?? false,
-            ),
-            flashcards: flashcards,
-          );
-        }).toList();
-
-        return Subject(
-          id: subjectJson['id'] ?? '',
-          user_id: subjectJson['user_id'] ?? '',
-          name: subjectJson['name'] ?? '',
-          icon: IconData(
-            subjectJson['icon']['codePoint'] ?? 0,
-            fontFamily: subjectJson['icon']['fontFamily'],
-            fontPackage: subjectJson['icon']['fontPackage'],
-            matchTextDirection: subjectJson['icon']['matchTextDirection'] ?? false,
-          ),
-          decks: decks,
-        );
-      }).toList();
-
-      await LocalRepositoryService.clear();
-
-      for (Subject subject in subjects) {
-        await LocalRepositoryService.addSubject(subject);
-      }
-
-      List<dynamic> errorsJson = debugData['errors'] ?? [];
-      await LocalRepositoryService.addErrors('eTem2I3UmDZP2pi7X2tSJiD2u472', List<Map<String, dynamic>>.from(errorsJson));
-
-      List<dynamic> historyJson = debugData['history'] ?? [];
-      await LocalRepositoryService.addHistory('eTem2I3UmDZP2pi7X2tSJiD2u472', List<Map<String, dynamic>>.from(historyJson));
-
-
-    } catch (e, stackTrace) {
-      debugPrint('Error populating debug data: $e');
-      debugPrint(stackTrace.toString());
-    }
-  }
+  // Future<void> restoreDebugData() async {
+  //   try {
+  //     Map<String, dynamic> debugData = jsonDecode(debugDataJson);
+  //
+  //     List<dynamic> subjectsJson = debugData['subjects'] ?? [];
+  //     List<Subject> subjects = subjectsJson.map((subjectJson) {
+  //       List<dynamic> decksJson = subjectJson['decks'] ?? [];
+  //       List<Deck> decks = decksJson.map((deckJson) {
+  //         List<dynamic> flashcardsJson = deckJson['flashcards'] ?? [];
+  //         List<Flashcard> flashcards = flashcardsJson.map((flashcardJson) {
+  //           return Flashcard(
+  //             id: flashcardJson['id'] ?? '',
+  //             question: flashcardJson['question'] ?? '',
+  //             answer: flashcardJson['answer'] ?? '',
+  //             index: flashcardJson['index'] ?? 0,
+  //             deckId: flashcardJson['deckId'] ?? '',
+  //           );
+  //         }).toList();
+  //
+  //         return Deck(
+  //           id: deckJson['id'] ?? '',
+  //           subjectId: deckJson['subjectId'] ?? '',
+  //           name: deckJson['name'] ?? '',
+  //           icon: IconData(
+  //             deckJson['icon']['codePoint'] ?? 0,
+  //             fontFamily: deckJson['icon']['fontFamily'],
+  //             fontPackage: deckJson['icon']['fontPackage'],
+  //             matchTextDirection: deckJson['icon']['matchTextDirection'] ?? false,
+  //           ),
+  //           flashcards: flashcards,
+  //         );
+  //       }).toList();
+  //
+  //       return Subject(
+  //         id: subjectJson['id'] ?? '',
+  //         user_id: subjectJson['user_id'] ?? '',
+  //         name: subjectJson['name'] ?? '',
+  //         icon: IconData(
+  //           subjectJson['icon']['codePoint'] ?? 0,
+  //           fontFamily: subjectJson['icon']['fontFamily'],
+  //           fontPackage: subjectJson['icon']['fontPackage'],
+  //           matchTextDirection: subjectJson['icon']['matchTextDirection'] ?? false,
+  //         ),
+  //         decks: decks,
+  //       );
+  //     }).toList();
+  //
+  //     await LocalRepositoryService.clear();
+  //
+  //     for (Subject subject in subjects) {
+  //       await LocalRepositoryService.addSubject(subject);
+  //     }
+  //
+  //     List<dynamic> errorsJson = debugData['errors'] ?? [];
+  //     await LocalRepositoryService.addErrors('eTem2I3UmDZP2pi7X2tSJiD2u472', List<Map<String, dynamic>>.from(errorsJson));
+  //
+  //     List<dynamic> historyJson = debugData['history'] ?? [];
+  //     await LocalRepositoryService.addHistory('eTem2I3UmDZP2pi7X2tSJiD2u472', List<Map<String, dynamic>>.from(historyJson));
+  //
+  //     notifyListeners();
+  //   } catch (e, stackTrace) {
+  //     debugPrint('Error populating debug data: $e');
+  //     debugPrint(stackTrace.toString());
+  //   }
+  // }
 
   static const String debugDataJson = '''
 {
@@ -323,6 +324,37 @@ class FirestoreService {
   ]
 }
 ''';
+
+  Future<String> getDebugBackupData(String userId) async {
+    String userId = 'eTem2I3UmDZP2pi7X2tSJiD2u472';
+    DocumentSnapshot snapshot = await _db.collection('debug').doc(userId).get();
+    if (snapshot.exists && snapshot.data() != null) {
+      var data = snapshot.data() as Map<String, dynamic>;
+      print(data['backup_json']);
+      return data['backup_json'] ?? '';
+    } else {
+      return '';
+    }
+  }
+
+  backupApiKey(String userId, String chatgptApiKey) {
+    //backup the api key to firestore
+    _db.collection('apiKeys').doc(userId).set({'chatgpt_api_key': chatgptApiKey});
+  }
+
+  restoreApiKey(String userId) {
+    //restore the api key from firestore
+    return _db.collection('apiKeys').doc(userId).get().then((snapshot) {
+      if (snapshot.exists) {
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        String chatgptApiKey = data['chatgpt_api_key'];
+        ApiService.setApiKey(userId, chatgptApiKey);
+        return chatgptApiKey;
+      } else {
+        throw Exception('No backup found for this user');
+      }
+    });
+  }
 
 
 }

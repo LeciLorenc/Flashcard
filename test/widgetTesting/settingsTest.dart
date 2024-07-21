@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flashcard/ChatGPT_services/model-view/api_service.dart';
-import 'package:flashcard/settings/settings_widget.dart';
-import 'mocks.dart';  // Import the generated mocks file
+// import 'package:flashcard/settings/settings_widget.dart';
+// import 'mocks.dart';  // Import the generated mocks file
 
 void main() {
   late MockApiService mockApiService;

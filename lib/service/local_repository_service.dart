@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../calendar_and_recap/pastErrors/model/newObject.dart';
+import '../calendar_and_recap/pastErrors/storage/NewSavings.dart';
 import '../model/deck.dart';
 import '../model/flashcard.dart';
 import '../model/subject.dart';
@@ -319,34 +321,65 @@ class LocalRepositoryService {
     deck.flashcards.add(flashcard);
   }
 
-  static Future<void> addErrors(String userId, List<Map<String, dynamic>> errors) async {
-    List<String> errorIds = await getStringList(_errorsEntry) ?? [];
+  // static Future<void> addErrors(String userId, List<Map<String, dynamic>> errors) async {
+  //   List<String> errorIds = await getStringList(_errorsEntry) ?? [];
+  //
+  //   for (var error in errors) {
+  //     String id;
+  //     do {
+  //       id = generateRandomString();
+  //     } while (errorIds.contains(id));
+  //     errorIds.add(id);
+  //     await setString(id, jsonEncode(error));
+  //   }
+  //
+  //   await setStringList(_errorsEntry, errorIds);
+  // }
 
-    for (var error in errors) {
-      String id;
-      do {
-        id = generateRandomString();
-      } while (errorIds.contains(id));
-      errorIds.add(id);
-      await setString(id, jsonEncode(error));
+  // static Future<void> addHistory(String userId, List<Map<String, dynamic>> history) async {
+  //   List<String> historyIds = await getStringList(_historyEntry) ?? [];
+  //
+  //   for (var record in history) {
+  //     String id;
+  //     do {
+  //       id = generateRandomString();
+  //     } while (historyIds.contains(id));
+  //     historyIds.add(id);
+  //     await setString(id, jsonEncode(record));
+  //   }
+  //
+  //   await setStringList(_historyEntry, historyIds);
+  // }
+
+
+  static Future<void> addBackupData(String backupJson) async {
+    List<dynamic> subjectsJson = jsonDecode(backupJson);
+    for (var subjectJson in subjectsJson) {
+      Subject subject = Subject.fromJson(subjectJson);
+      await addSubject(subject);
+
+      for (var deckJson in subjectJson['decks']) {
+        Deck deck = Deck.fromJson(deckJson);
+        await addDeck(subject, deck);
+
+        for (var flashcardJson in deckJson['flashcards']) {
+          Flashcard flashcard = Flashcard.fromJson(flashcardJson);
+          await addFlashcard(deck, flashcard);
+        }
+      }
     }
-
-    await setStringList(_errorsEntry, errorIds);
   }
 
-  static Future<void> addHistory(String userId, List<Map<String, dynamic>> history) async {
-    List<String> historyIds = await getStringList(_historyEntry) ?? [];
-
-    for (var record in history) {
-      String id;
-      do {
-        id = generateRandomString();
-      } while (historyIds.contains(id));
-      historyIds.add(id);
-      await setString(id, jsonEncode(record));
+  static Future<void> addErrors(List<dynamic> errorsJson) async {
+    for (var errorJson in errorsJson) {
+      NewSavings.addPastErrorsObject(PastErrorsObject.fromJson(errorJson));
     }
+  }
 
-    await setStringList(_historyEntry, historyIds);
+  static Future<void> addHistory(List<dynamic> historyJson) async {
+    for (var history in historyJson) {
+      //NewSavings.addHistoryObject(historyErrorViewModel.fromJson(history));
+    }
   }
 
 
