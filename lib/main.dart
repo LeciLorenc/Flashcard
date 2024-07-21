@@ -172,9 +172,9 @@ class _MyAppState extends State<MyApp> {
             newHome = const AuthenticationScreen();
           } else if (state is AuthenticatedState) {
             newHome = const HomePage();
-            //context.read<user_bloc.UserBloc>().add(user_bloc.InitUserBloc());
 
             globalUserId = FirebaseAuth.instance.currentUser!.uid;
+            context.read<SubjectBloc>().add(RestoreData(FirebaseAuth.instance.currentUser!.uid));
           }
 
           // Update the home widget state

@@ -599,6 +599,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
         await LocalRepositoryService.addSubject(subject);
       }
 
+      NewSavings.clearPastErrorsObjectList(event.userId);
+
       //get the pastErrorsObject list
       List<PastErrorsObject> pastErrors = await firestoreService
           .restorePastErrorsData(event.userId);
