@@ -7,7 +7,6 @@ import 'package:flashcard/input/button.dart';
 import 'package:flashcard/input/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../main.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -19,6 +18,9 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDarkMode ? darkTextColor : lightTextColor;
+
     return Scaffold(
       appBar: const KAppBar(),
       body: BlocBuilder<SignUpBloc, SignUpState>(
@@ -32,19 +34,26 @@ class SignUpScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Spacer(
-                            flex: 1,
+                          const Spacer(flex: 1),
+                          // Add logo here
+                          Image.asset(
+                            isDarkMode ? 'assets/iconDark.png' : 'assets/iconWhite.png',
+                            width: 100,
+                            height: 100,
                           ),
+                          const SizedBox(height: 20),
                           Center(
                             child: FittedBox(
                               fit: BoxFit.fitWidth,
                               child: Text(
                                 S.of(context).signUp,
                                 style: TextStyle(
-                                  color: isDark ? darkTextColor: lightTextColor,
-                                  fontSize: 100,
+                                  color: textColor,
+                                  fontSize: 40,
                                   fontFamily: 'Pacifico',
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
@@ -72,18 +81,14 @@ class SignUpScreen extends StatelessWidget {
                                 ? S.of(context).emailAlreadyRegistered
                                 : null,
                           ),
-                          const SizedBox(
-                            height: 15,
-                          ),
+                          const SizedBox(height: 15),
                           TextInput.password(
                             textEditingController: password,
                             errorText: state is WeekPasswordState
                                 ? S.of(context).passwordTooWeak
                                 : null,
                           ),
-                          const SizedBox(
-                            height: spaceBetweenWidgets,
-                          ),
+                          const SizedBox(height: spaceBetweenWidgets),
                           Row(
                             children: [
                               Expanded(
@@ -92,7 +97,10 @@ class SignUpScreen extends StatelessWidget {
                                     backgroundColor: primaryColor, // Use the correct color property
                                   ),
                                   onPressed: () => signUpBloc.add(EmailPasswordSignUpEvent(email: email.text, password: password.text)),
-                                  child: Text(S.of(context).signUp ,style: TextStyle(color: isDark? lightTextColor: darkTextColor),),
+                                  child: Text(
+                                    S.of(context).signUp,
+                                    style: TextStyle(color: isDarkMode ? lightTextColor : darkTextColor),
+                                  ),
                                 ),
                               ),
                             ],

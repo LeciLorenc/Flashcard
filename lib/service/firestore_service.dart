@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
+import '../ChatGPT_services/model-view/api_service.dart';
 import '../calendar_and_recap/pastErrors/model/newObject.dart';
 import '../model/deck.dart';
 import '../model/flashcard.dart';
 import '../model/subject.dart';
+import 'local_repository_service.dart';
 
 class FirestoreService {
   FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -106,7 +109,8 @@ class FirestoreService {
 
 
   // Method to create a JSON backup string from a list of subjects
-  Future<String> createBackupJson(List<Subject> subjects) async {
+  Future<String> createBackupJson(List<Subject> subjects, String userId) async {
+    String apiKey = ApiService.getApiKey(userId);
     List<Map<String, dynamic>> subjectsJson = subjects.map((subject) {
       List<Map<String, dynamic>> decksJson = subject.decks.map((deck) {
         List<Map<String, dynamic>> flashcardsJson = deck.flashcards.map((flashcard) {
@@ -122,13 +126,19 @@ class FirestoreService {
         'decks': decksJson,
       };
     }).toList();
-    return jsonEncode(subjectsJson);
+    return jsonEncode({
+      'apiKey': apiKey,
+      'subjects': subjectsJson,
+    });
   }
 
   // Method to parse a JSON backup string to a list of subjects
-  Future<List<Subject>> parseBackupJson(String jsonString) async {
-    List<dynamic> jsonData = jsonDecode(jsonString);
-    List<Subject> subjects = jsonData.map((data) => Subject.fromJson(data)).toList();
+  Future<List<Subject>> parseBackupJson(String jsonString, String userId) async {
+    Map<String, dynamic> jsonData = jsonDecode(jsonString);
+    String apiKey = jsonData['apiKey'];
+    ApiService.setApiKey(userId, apiKey);
+    List<dynamic> subjectsJson = jsonData['subjects'];
+    List<Subject> subjects = subjectsJson.map((data) => Subject.fromJson(data)).toList();
     return subjects;
   }
 
@@ -141,12 +151,12 @@ class FirestoreService {
 // Method to backup pastErrors data to Firestore
   Future<void> backupPastErrorsData(String userId, List<pastErrorsObject> pastErrors) async {
     String backupJson = await createPastErrorsBackupJson(pastErrors);
-    await _db.collection('backups').doc(userId).set({'data': backupJson});
+    await _db.collection('pastErrors').doc(userId).set({'data': backupJson});
   }
 
   restorePastErrorsData(String userId) {
     //restore the past errors data from firestore
-  return _db.collection('backups').doc(userId).get().then((snapshot) {
+  return _db.collection('pastErrors').doc(userId).get().then((snapshot) {
       if (snapshot.exists) {
         Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
         String backupJson = data['data'];
@@ -158,4 +168,161 @@ class FirestoreService {
       }
     });
   }
+  Future<void> restoreDebugData() async {
+    try {
+      Map<String, dynamic> debugData = jsonDecode(debugDataJson);
+
+      List<dynamic> subjectsJson = debugData['subjects'] ?? [];
+      List<Subject> subjects = subjectsJson.map((subjectJson) {
+        List<dynamic> decksJson = subjectJson['decks'] ?? [];
+        List<Deck> decks = decksJson.map((deckJson) {
+          List<dynamic> flashcardsJson = deckJson['flashcards'] ?? [];
+          List<Flashcard> flashcards = flashcardsJson.map((flashcardJson) {
+            return Flashcard(
+              id: flashcardJson['id'] ?? '',
+              question: flashcardJson['question'] ?? '',
+              answer: flashcardJson['answer'] ?? '',
+              index: flashcardJson['index'] ?? 0,
+              deckId: flashcardJson['deckId'] ?? '',
+            );
+          }).toList();
+
+          return Deck(
+            id: deckJson['id'] ?? '',
+            subjectId: deckJson['subjectId'] ?? '',
+            name: deckJson['name'] ?? '',
+            icon: IconData(
+              deckJson['icon']['codePoint'] ?? 0,
+              fontFamily: deckJson['icon']['fontFamily'],
+              fontPackage: deckJson['icon']['fontPackage'],
+              matchTextDirection: deckJson['icon']['matchTextDirection'] ?? false,
+            ),
+            flashcards: flashcards,
+          );
+        }).toList();
+
+        return Subject(
+          id: subjectJson['id'] ?? '',
+          user_id: subjectJson['user_id'] ?? '',
+          name: subjectJson['name'] ?? '',
+          icon: IconData(
+            subjectJson['icon']['codePoint'] ?? 0,
+            fontFamily: subjectJson['icon']['fontFamily'],
+            fontPackage: subjectJson['icon']['fontPackage'],
+            matchTextDirection: subjectJson['icon']['matchTextDirection'] ?? false,
+          ),
+          decks: decks,
+        );
+      }).toList();
+
+      await LocalRepositoryService.clear();
+
+      for (Subject subject in subjects) {
+        await LocalRepositoryService.addSubject(subject);
+      }
+
+      List<dynamic> errorsJson = debugData['errors'] ?? [];
+      await LocalRepositoryService.addErrors('eTem2I3UmDZP2pi7X2tSJiD2u472', List<Map<String, dynamic>>.from(errorsJson));
+
+      List<dynamic> historyJson = debugData['history'] ?? [];
+      await LocalRepositoryService.addHistory('eTem2I3UmDZP2pi7X2tSJiD2u472', List<Map<String, dynamic>>.from(historyJson));
+
+
+    } catch (e, stackTrace) {
+      debugPrint('Error populating debug data: $e');
+      debugPrint(stackTrace.toString());
+    }
+  }
+
+  static const String debugDataJson = '''
+{
+  "subjects": [
+    {
+      "user_id": "eTem2I3UmDZP2pi7X2tSJiD2u472",
+      "name": "Subject 1",
+      "icon": {
+        "codePoint": 57633,
+        "fontFamily": "MaterialIcons",
+        "fontPackage": null,
+        "matchTextDirection": false
+      },
+      "id": "subject1",
+      "decks": [
+        {
+          "id": "deck1",
+          "name": "Deck 1",
+          "icon": {
+            "codePoint": 57633,
+            "fontFamily": "MaterialIcons",
+            "fontPackage": null,
+            "matchTextDirection": false
+          },
+          "subjectId": "subject1",
+          "flashcards": [
+            {
+              "id": "flashcard1",
+              "question": "Question 1",
+              "answer": "Answer 1"
+            },
+            {
+              "id": "flashcard2",
+              "question": "Question 2",
+              "answer": "Answer 2"
+            }
+          ]
+        },
+        {
+          "id": "deck2",
+          "name": "Deck 2",
+          "icon": {
+            "codePoint": 57633,
+            "fontFamily": "MaterialIcons",
+            "fontPackage": null,
+            "matchTextDirection": false
+          },
+          "subjectId": "subject1",
+          "flashcards": [
+            {
+              "id": "flashcard3",
+              "question": "Question 3",
+              "answer": "Answer 3"
+            },
+            {
+              "id": "flashcard4",
+              "question": "Question 4",
+              "answer": "Answer 4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "user_id": "eTem2I3UmDZP2pi7X2tSJiD2u472",
+      "subject": "Subject 1",
+      "deck": "Deck 1",
+      "date": "2024-07-01",
+      "time": "10:00:00",
+      "length": "1",
+      "questions": ["Question 1"],
+      "answers": ["Answer 1"]
+    }
+  ],
+  "history": [
+    {
+      "user_id": "eTem2I3UmDZP2pi7X2tSJiD2u472",
+      "subject": "Subject 1",
+      "deck": "Deck 1",
+      "date": "2024-07-01",
+      "time": "10:00:00",
+      "length": "1",
+      "questions": ["Question 1"],
+      "answers": ["Answer 1"]
+    }
+  ]
+}
+''';
+
+
 }
