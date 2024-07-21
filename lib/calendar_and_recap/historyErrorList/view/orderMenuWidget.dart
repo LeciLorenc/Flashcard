@@ -22,6 +22,7 @@ class _OrderMenuState extends State<OrderMenu> {
 
   @override
   Widget build(BuildContext context) {
+    //case of phone landscape
     if(MediaQuery.of(context).size.width>400 &&
         MediaQuery.of(context).size.width<800){
       return SingleChildScrollView(scrollDirection: Axis.horizontal,
@@ -54,7 +55,9 @@ class _OrderMenuState extends State<OrderMenu> {
         ),
       );
     }
-    else if(MediaQuery.of(context).size.width>400) {
+    //case of tablet landscape
+    else if(MediaQuery.of(context).size.width>400 &&
+        MediaQuery.of(context).size.width>800) {
       return Container(
         height: 121,
         child: Row(
@@ -69,7 +72,7 @@ class _OrderMenuState extends State<OrderMenu> {
 
               ],
             ),
-            SizedBox(width: 20,),
+            SizedBox(width: 30,),
             Column(
               children: [
                 buildButton("By Deck Name (A-Z)", OrderingEnum.deckNameAZ.toString()),
@@ -79,7 +82,7 @@ class _OrderMenuState extends State<OrderMenu> {
 
               ],
             ),
-            SizedBox(width: 20,),
+            SizedBox(width: 30,),
             Column(
               children: [
                 buildButton("By Date (Increasing)", OrderingEnum.dateIncrease.toString()),
@@ -93,6 +96,7 @@ class _OrderMenuState extends State<OrderMenu> {
         ),
       );
     }
+    //case of phone portrait
     else
       {
         return Column(

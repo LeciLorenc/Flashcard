@@ -164,7 +164,7 @@ class CustomErrorListItem extends StatelessWidget {
                     ]
                 ),
               ),
-              Column(
+              const Column(
                 children: [
                   Text("Time: ", style:
                   TextStyle(
@@ -220,11 +220,13 @@ class CustomErrorListItem extends StatelessWidget {
                     TextStyle(
                     fontWeight: FontWeight.bold,
                   ),),
+                  SizedBox(width: 0,)
                 ],
               ),
               Expanded( // Use Expanded or Flexible to control the space taken by the Text widget
                 child: Column(
                   children: [
+                    const SizedBox(width: 30,),
                     Text(
                       "${item.deck};",
                       overflow: TextOverflow.ellipsis, // Properly place the overflow property

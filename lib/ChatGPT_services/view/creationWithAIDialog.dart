@@ -57,6 +57,7 @@ Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationVie
                 ),
               ),
               actions: <Widget>[
+                cancelButtonAction(context),
                    TextButton(
                     onPressed: () {
                       String? validationResult = DeckSelection.validateDeckName(context, deckCreationViewModel.nameDeckController.text, subject);
@@ -77,7 +78,7 @@ Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationVie
                     },
                   child: const Text('OK', style: TextStyle(color: primaryColor)),
                 ),
-                cancelButtonAction(context),
+
               ],
             );
           }
@@ -137,15 +138,15 @@ Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationVie
                         ],
                       ),
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List<Widget>.generate(5, (int index) {
                         return AnimatedContainer(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           height: 10,
                           width: 10,
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: _currentPage == index
@@ -189,7 +190,7 @@ Future<List<dynamic>> creationWithAIDialog(BuildContext context, DeckCreationVie
                             }
                           }
                           _pageController.nextPage(
-                            duration: Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: 300),
                             curve: Curves.ease,
                           );
 

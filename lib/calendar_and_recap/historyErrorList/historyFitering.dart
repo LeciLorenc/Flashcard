@@ -1,7 +1,4 @@
-import 'package:flashcard/bloc/subject_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../main.dart';
 import '../pastErrors/storage/NewSavings.dart';
 
@@ -14,8 +11,8 @@ List<DropdownMenuItem<String>> computeItemsForSubject(BuildContext context) {
   // Crea le voci del menu a discesa per i soggetti filtrati
   return subjects.map((subject) {
     return DropdownMenuItem<String>(
-      value: subject,
-      child: Text(subject),
+      value: subject.length>10 ? "${subject.substring(0,7)}...": subject,
+      child: Text(subject.length>10 ? "${subject.substring(0,7)}...": subject,),
     );
   }).toList();
 }
@@ -35,8 +32,8 @@ List<DropdownMenuItem<String>> computeItemsForDeck(BuildContext context) {
   // Crea le voci del menu a discesa per i nomi dei deck
   return deckNames.map((deckName) {
     return DropdownMenuItem<String>(
-      value: deckName,
-      child: Text(deckName),
+      value: deckName.length>10 ? "${deckName.substring(0,7)}...": deckName,
+      child: Text(deckName.length>10 ? "${deckName.substring(0,7)}...": deckName,),
     );
   }).toList();
 }

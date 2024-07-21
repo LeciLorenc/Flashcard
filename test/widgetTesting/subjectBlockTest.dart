@@ -7,12 +7,6 @@ import 'package:flashcard/model/subject.dart';
 import 'package:flashcard/model/deck.dart';
 import 'package:flashcard/service/firestore_service.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:flashcard/service/firestore_service.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   group('SubjectWidget', () {

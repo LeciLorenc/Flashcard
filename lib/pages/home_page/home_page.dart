@@ -47,12 +47,6 @@ class _HomePageState extends State<HomePage> {
         HomePage.expanded=true;
       }
 
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDarkMode ? darkBackgroundColor : lightBackgroundColor;
-    final textColor = isDarkMode ? darkTextColor : lightTextColor;
-    final iconColor = isDarkMode ? darkIconColor : lightIconColor;
-    final dividerColor = isDarkMode ? Colors.white : Colors.black;
-
 
     return BlocBuilder<SubjectBloc, SubjectState>(
       builder: (BuildContext context, SubjectState subjectState) {
@@ -109,7 +103,7 @@ class _HomePageState extends State<HomePage> {
   }
   String defineStringTitleForSubject(subjectState)
   {
-    int maxLengthTotal= 25;
+    int maxLengthTotal= 15;
     int maxTrimSubject = 10;
 
     if(subjectState.subject == null){
@@ -123,7 +117,7 @@ class _HomePageState extends State<HomePage> {
       if(deckName == '')
       {
         if(subjName.length>maxLengthTotal) {
-          return subjName.substring(0,maxLengthTotal);
+          return subjName.substring(0,maxLengthTotal)+"...";
         }
         else
         {
@@ -165,7 +159,7 @@ class _HomePageState extends State<HomePage> {
       return const SubjectContent();
     }
     else if(HomePage.bodyContent == EssentialWidgets.welcome){
-      return WelcomeWidget();
+      return const WelcomeWidget();
     }
     else if(HomePage.bodyContent == EssentialWidgets.calendar){
       return const CalendarWidget();

@@ -1,15 +1,12 @@
 import 'package:flashcard/constants.dart';
 import 'package:flutter/material.dart';
 import '../../main.dart';
-import '../../model/subject.dart';
-import '../../pages/home_page/home_content/deck_selection.dart';
 import '../../presentation/education_icons.dart';
 import 'package:flashcard/ChatGPT_services/view/minorDialogs/iconPicker_dialog.dart';
 import 'package:flashcard/ChatGPT_services/view/dropDown.dart';
 import 'package:flashcard/ChatGPT_services/model-view/number_manipulation.dart';
 import 'package:flashcard/ChatGPT_services/model/deckCreation.dart';
 
-import 'creationWithAIDialog.dart';
 
 
 Widget buildDeckNameInput(BuildContext context, IconData iconName, DeckCreationViewModel deckCreationViewModel) {
@@ -138,7 +135,7 @@ Widget buildIconSelectionWidget(BuildContext context,DeckCreationViewModel deckC
   return Row(children: [
     const SizedBox(width: 45),
     Icon(deckCreationViewModel.selectedIcon),
-    SizedBox(width: 30,),
+    const SizedBox(width: 30,),
     ElevatedButton(
       onPressed: () {
         showIconPickerDialog(context, (IconData newValue) {

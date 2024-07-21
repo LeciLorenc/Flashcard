@@ -66,10 +66,6 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDarkMode ? darkBackgroundColor : lightBackgroundColor;
-    final textColor = isDarkMode ? darkTextColor : lightTextColor;
-    final iconColor = isDarkMode ? darkIconColor : lightIconColor;
-    final dividerColor = isDarkMode ? Colors.white : Colors.black;
 
     return LayoutBuilder(
       builder: (context, constraints) {

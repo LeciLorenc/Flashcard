@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-class Layoututils{
+class LayoutUtils{
 
   static bool isPortrait(BuildContext context)
   {

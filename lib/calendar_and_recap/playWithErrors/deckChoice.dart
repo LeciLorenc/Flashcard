@@ -1,7 +1,6 @@
 
 import 'package:flashcard/calendar_and_recap/playWithErrors/pastErrorViewModel.dart';
 import 'package:flashcard/constants.dart';
-import 'package:flashcard/main.dart';
 import 'package:flutter/material.dart';
 
 import '../../pages/play_page/play_page.dart';

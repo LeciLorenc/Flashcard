@@ -1,5 +1,3 @@
-import 'package:flashcard/exceptions/invalid_json.dart';
-
 /// Model class for Flashcard
 /// A flashcard is a question and answer pair
 class Flashcard implements Comparable<Flashcard>{

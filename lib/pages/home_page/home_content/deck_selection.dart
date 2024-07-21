@@ -6,7 +6,6 @@ import '../../../ChatGPT_services/model/deckCreation.dart';
 import '../../../ChatGPT_services/model-view/processAImessage.dart';
 import '../../../bloc/subject_bloc.dart';
 import '../../../constants.dart';
-import '../../../main.dart';
 import '../../../model/deck.dart';
 import '../../../model/subject.dart';
 import '../../../presentation/education_icons.dart';
@@ -203,7 +202,11 @@ class DeckSelection extends StatelessWidget {
                                 TextField(
                                   decoration: const InputDecoration(
                                     hintText: 'Enter the name of the deck',
+                                    focusedBorder: const UnderlineInputBorder(
+                                      borderSide: BorderSide(color: primaryColor), // Color when focused
+                                    ),
                                   ),
+
                                   controller: textEditingController,
                                 ),
                                 if (errorMessage.isNotEmpty)
@@ -225,7 +228,7 @@ class DeckSelection extends StatelessWidget {
                 actions: <Widget>[
                   TextButton(
                     onPressed: () => Navigator.pop(context, 'Cancel'),
-                    child: const Text('Cancel'),
+                    child: const Text('Cancel', style: TextStyle(color: primaryColor),),
                   ),
                   TextButton(
                     onPressed: () {
@@ -248,7 +251,7 @@ class DeckSelection extends StatelessWidget {
                       );
                       Navigator.pop(context, 'OK');
                     },
-                    child: const Text('OK'),
+                    child: const Text('OK', style: TextStyle(color: primaryColor)),
                   ),
                 ],
               );

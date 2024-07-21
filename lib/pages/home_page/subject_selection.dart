@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flashcard/layoutUtils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,9 +11,7 @@ import '../../constants.dart';
 import '../../main.dart';
 import '../../model/subject.dart';
 import '../../presentation/education_icons.dart';
-import '../../service/local_repository_service.dart';
 import '../../widget/adaptable_button.dart';
-import '../../widget/logoutButton.dart';
 import '../enumParamountWidgets.dart';
 import 'home_page.dart';
 
@@ -78,7 +77,7 @@ class SubjectSelection extends StatelessWidget {
                   HomePage.bodyContent = EssentialWidgets.subject;
                 },
                 icon: subject.icon,
-                title: subject.name.length > 25 ? '${subject.name.substring(0, 25)}...' : subject.name,
+                title: subject.name.length > 15 ? LayoutUtils.isPortrait(context) ?'${subject.name.substring(0, 25)}...' : '${subject.name.substring(0, 15)}...' : subject.name,
                 expanded: expanded,
                 selected: context.read<SubjectBloc>().state.subject == subject, textColor: textColor, iconColor: iconColor,
               ),
@@ -109,20 +108,8 @@ class SubjectSelection extends StatelessWidget {
               expanded: expanded, textColor: textColor, iconColor: iconColor,
             ),
 
-            AdaptableButton(
-              onPressed: () => context.read<SubjectBloc>().add(DeleteAllSubjects()),
-              icon: Icons.remove_outlined,
-              title: 'Delete all subjects',
-              expanded: expanded, textColor: textColor, iconColor: iconColor,
 
-            ),
-            AdaptableButton(
-              onPressed: () => { whenPressedSwitchEssentialWidgets(context, EssentialWidgets.settings) },
-              icon: Icons.settings,
-              title: 'Settings',
-              expanded: expanded, textColor: textColor, iconColor: iconColor,
 
-            ),
             AdaptableButton(
               onPressed: () {
                 context.read<SubjectBloc>().add(BackupData(FirebaseAuth.instance.currentUser!.uid));
@@ -152,6 +139,21 @@ class SubjectSelection extends StatelessWidget {
                 expanded: expanded, textColor: textColor, iconColor: iconColor,
               ),],
               */
+            AdaptableButton(
+              onPressed: () => { whenPressedSwitchEssentialWidgets(context, EssentialWidgets.settings) },
+              icon: Icons.settings,
+              title: 'Settings',
+              expanded: expanded, textColor: textColor, iconColor: iconColor,
+
+            ),
+            AdaptableButton(
+              onPressed: () => context.read<SubjectBloc>().add(DeleteAllSubjects()),
+              icon: Icons.remove_outlined,
+              title: 'Delete all subjects',
+              expanded: expanded, textColor: textColor, iconColor: iconColor,
+
+            ),
+
             AdaptableButton(
               onPressed: () {
                 context.read<AuthenticationBloc>().logout();
@@ -207,9 +209,14 @@ class SubjectSelection extends StatelessWidget {
                           child: TextField(
                             decoration:  InputDecoration(
                               hintText: 'Enter the name of the subject',
-                              hintStyle: TextStyle(color: textColor.withOpacity(0.5)),
+                              hintStyle: TextStyle(color: textColor.withOpacity(0.5),
+                              ),
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: primaryColor), // Color when focused
+                              ),
                             ),
-                            controller: textEditingController,
+                            controller: textEditingController
+                            ,
                             style: TextStyle(color: textColor),
                           ),
                         ),
@@ -231,7 +238,7 @@ class SubjectSelection extends StatelessWidget {
                                 });
                               });
                             },
-                            child: const Text('Change'),
+                            child: const Text('Change',style: TextStyle(color: primaryColor),),
                           ),
 
                         ]

@@ -78,7 +78,38 @@ class HistogramPainter extends CustomPainter {
     int maxIndexValue = k > 5 ? k : 5;
     double offsetForLeftAxisLabel = -12;
 
+    List<int> yLabels=[];
+    int kY=5;
+    if(maxIndexValue<20)
+    {
+      kY=1;
+    }
+    else if(maxIndexValue<50)
+    {
+      kY=5;
+    }
+    else if(maxIndexValue<100)
+    {
+      kY= 10;
+    }
+    if(kY>=5)
+    { //faccio scelta label
+      for(int i = 1; i <= maxIndexValue; i++)
+      {
+        if(i%kY==0)
+          yLabels.add(i);
+      }
+    }
+    else
+    {//prendo le label fino alla fine
+      for(int i = 1; i <= maxIndexValue; i++)
+      {
+        yLabels.add(i);
+      }
+    }
+
     for (int i = 1; i <= maxIndexValue; i++) { // Start from 1 instead of 0
+      if(!yLabels.contains(i)) continue;
       TextPainter textPainter = TextPainter(
         text: TextSpan(text: i.toString(), style:  TextStyle(fontSize: 10, color: isDark ? darkTextColor: lightTextColor)),
         textDirection: TextDirection.ltr,
