@@ -123,8 +123,8 @@ class _PlayWithPastErrors extends State<PlayWithPastErrors> {
   void updateSubject(String subject) {
     setState(() {
       if (subject != '') {
-        widget.viewModel.subjectChosen = subject;
         widget.viewModel.phasePlayChoice = PhasePlayChoice.play;
+        widget.viewModel.subjectChosen = subject;
       } else {
         widget.viewModel.phasePlayChoice = PhasePlayChoice.choice;
       }
@@ -134,8 +134,8 @@ class _PlayWithPastErrors extends State<PlayWithPastErrors> {
   void updateDeck(String deck) {
     setState(() {
       if (deck != '') {
-        widget.viewModel.deckChosen = deck;
         widget.viewModel.phasePlayChoice = PhasePlayChoice.play;
+        widget.viewModel.deckChosen = deck;
       } else {
         widget.viewModel.phasePlayChoice = PhasePlayChoice.choice;
       }

@@ -16,8 +16,8 @@ class ErrorsList extends StatelessWidget {
   return Column(
     children: [
       SizedBox(
-        height: LayoutUtils.getHeight(context)>400? 570: 135,
-        width:200,
+        height: setHeightForErrors(context),
+        width: 200,
         child:
         ListView.builder(
           shrinkWrap: true,
@@ -35,5 +35,17 @@ class ErrorsList extends StatelessWidget {
       ),
     ],
   );
+  }
+
+  double setHeightForErrors(BuildContext context)
+  {
+    if (LayoutUtils.getHeight(context)>400 && LayoutUtils.isPortrait(context)) {
+      return 570;
+    } else if(LayoutUtils.getHeight(context)>400 && LayoutUtils.isLandscape(context)){
+      return 270;
+    }
+    else {
+      return 135;
+    }
   }
 }

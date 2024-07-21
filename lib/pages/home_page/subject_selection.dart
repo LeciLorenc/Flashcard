@@ -163,14 +163,17 @@ class SubjectSelection extends StatelessWidget {
               title: 'Logout',
               expanded: expanded, textColor: textColor, iconColor: iconColor,
             ),
-            AdaptableButton(
+
+
+            // LEGACY
+           /* AdaptableButton(
               onPressed: () => { context.read<SubjectBloc>().add(PopulateDB(FirebaseAuth.instance.currentUser!.uid))
             },
               icon: Icons.settings,
               title: 'Populate with data',
               expanded: expanded, textColor: textColor, iconColor: iconColor,
 
-            ),
+            ),*/
           ],
         ),
       ),

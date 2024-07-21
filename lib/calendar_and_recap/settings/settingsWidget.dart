@@ -104,7 +104,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             : backgroundButtonColorLight, // Set the background color here
                       ),
                       child: const Text(
-                        "Click here to change the API",
+                        "Change API key",
                         style: TextStyle(color: primaryColor), // Set the text color
                       ),
                     ),
