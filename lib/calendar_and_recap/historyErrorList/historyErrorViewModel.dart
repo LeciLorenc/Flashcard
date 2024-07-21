@@ -47,33 +47,46 @@ class HistoryErrorViewModel extends ChangeNotifier {
   }
 
   // Define method to get filtered savings based on filters
-  List<PastErrorsObject> getFilteredSavings(List<PastErrorsObject> allSavings)
-  {
+  List<PastErrorsObject> getFilteredSavings(List<PastErrorsObject> allSavings) {
     List<PastErrorsObject> listFiltered = List<PastErrorsObject>.from(allSavings);
 
-    for(var item in allSavings){
+    for (var item in allSavings) {
 
-      if(deckFilter!='') {
-        if (item.deck != deckFilter) {
+      if(subjectFilter.contains("..."))
+      {
+        subjectFilter = removeDots(subjectFilter);
+      }
+
+      if(deckFilter.contains("..."))
+      {
+        deckFilter=removeDots(deckFilter);
+      }
+
+      if (deckFilter != '') {
+        if (!item.deck.contains(deckFilter)) {
           listFiltered.remove(item);
+          continue; // Skip further checks if the deck does not match
         }
       }
-      if(subjectFilter!='') {
-        if (item.subject != subjectFilter) {
+      if (subjectFilter != '') {
+        if (!item.subject.contains(subjectFilter)) {
           listFiltered.remove(item);
+          continue; // Skip further checks if the subject does not match
         }
       }
-      if(dateFilter!='') {
+      if (dateFilter != '') {
         String finalDate = UtilitiesStorage.getOnlyDateFromStringDate(item.date);
-
         if (finalDate != dateFilter) {
           listFiltered.remove(item);
         }
       }
-
     }
-        return listFiltered;
+    return listFiltered;
   }
+  String removeDots(String input) {
+    return input.replaceAll('...', '');
+  }
+
 
 
 
