@@ -99,7 +99,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
                   "Hi User, welcome back!",
                   style: TextStyle(fontSize: 30),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height:90),
                 if (_isLoading) const CircularProgressIndicator(), // Show a loading indicator while fetching
                 const SizedBox(height: 50),
                 const Text(
@@ -143,6 +143,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
                     Text(" = wrong answers"),
                   ],
                 ),
+                SizedBox(height: 90,),
               ],
             ),
           ),

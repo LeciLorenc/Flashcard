@@ -29,7 +29,7 @@ class _DeckChoice extends State<DeckChoice> {
 
       ),
       width: MediaQuery.of(context).size.width - 16,
-      height: MediaQuery.of(context).size.height - 16 - 56 - 34-51,
+      height: MediaQuery.of(context).size.height - 16 - 56 - 34,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -37,14 +37,17 @@ class _DeckChoice extends State<DeckChoice> {
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Which deck would you like to review again?"),
+              Text("Which deck would you like to play again?",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20),),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 3),
           buildCheckBox(),
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
           buildListViewOfDeck(),
-          const SizedBox(height: 15),
+          //const SizedBox(height: 15),
+          const Spacer(),
           buildGoBackButton(),
         ],
       ),

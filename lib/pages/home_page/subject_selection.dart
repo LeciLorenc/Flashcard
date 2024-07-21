@@ -223,10 +223,10 @@ class SubjectSelection extends StatelessWidget {
 
                       ],
                     ),
-
+                    const SizedBox(height: 5,),
                     Row (mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 12),
                           Icon(iconForSubject),
                           const SizedBox(width: 20),
                           ElevatedButton(

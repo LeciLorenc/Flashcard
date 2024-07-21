@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../ChatGPT_services/model/deckCreation.dart';
 import '../../../ChatGPT_services/model-view/processAImessage.dart';
+import '../../../ChatGPT_services/view/minorDialogs/iconPicker_dialog.dart';
 import '../../../bloc/subject_bloc.dart';
 import '../../../constants.dart';
 import '../../../model/deck.dart';
@@ -172,7 +173,8 @@ class DeckSelection extends StatelessWidget {
   void onAddDeck(BuildContext context) {
     TextEditingController textEditingController = TextEditingController();
     String errorMessage = '';
-    IconData icon = EducationIcons.openBook;
+    IconData icon = Icons.book;
+    IconData iconForDeck = EducationIcons.openBook;
 
     showDialog<String>(
       barrierColor: Colors.black.withOpacity(0.3),
@@ -192,13 +194,11 @@ class DeckSelection extends StatelessWidget {
                         children: [
                           IconButton(
                             icon: Icon(icon),
-                            onPressed: () async {
-                            },
+                            onPressed: () async {},
                           ),
                           const SizedBox(width: 8),
                           Expanded(
-                            child: Column(
-                              children: [
+                            child:
                                 TextField(
                                   decoration: const InputDecoration(
                                     hintText: 'Enter the name of the deck',
@@ -208,6 +208,27 @@ class DeckSelection extends StatelessWidget {
                                   ),
 
                                   controller: textEditingController,
+                                ),),],),
+
+                                const SizedBox(height: 5,),
+                                Row (mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(width: 12),
+                                      Icon(iconForDeck),
+                                      const SizedBox(width: 20),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          showIconPickerDialog(context, (IconData newValue) {
+                                            iconForDeck = newValue;
+                                            setState(() {
+                                              iconForDeck = newValue;
+                                            });
+                                          });
+                                        },
+                                        child: const Text('Change',style: TextStyle(color: primaryColor),),
+                                      ),
+
+                                    ]
                                 ),
                                 if (errorMessage.isNotEmpty)
                                   Padding(
@@ -220,11 +241,7 @@ class DeckSelection extends StatelessWidget {
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+
                 actions: <Widget>[
                   TextButton(
                     onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -246,7 +263,7 @@ class DeckSelection extends StatelessWidget {
                       context.read<SubjectBloc>().add(
                         AddDeck(
                           name: textEditingController.text,
-                          icon: icon,
+                          icon: iconForDeck,
                         ),
                       );
                       Navigator.pop(context, 'OK');

@@ -98,6 +98,12 @@ class _MonthYearPickerState extends State<MonthYearPicker> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
                     Navigator.of(context).pop(DateTime(selectedYear, selectedMonth));
                   },
                   child: const Text('OK'),

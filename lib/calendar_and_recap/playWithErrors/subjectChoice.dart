@@ -29,22 +29,32 @@ class _SubjectChoice extends State<SubjectChoice> {
 
       ),
       width: MediaQuery.of(context).size.width - 16,
-      height: MediaQuery.of(context).size.height - 16 - 56 - 34-51,
+      height: MediaQuery.of(context).size.height - 16 - 56 - 34,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const SizedBox(height: 6),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Which subject would you like to review again?"),
+              Container(
+                width: 300,
+                height: 80,
+                child: const Text(
+                  "Which subject would you like to play again?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 6),
+
+          const SizedBox(height: 3),
           buildCheckBox(),
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
           buildListViewOfSubjects(),
-          const SizedBox(height: 15),
+          //const SizedBox(height: 15),
+          const Spacer(),
           buildGoBackButton(),
         ],
       ),
