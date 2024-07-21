@@ -84,7 +84,7 @@ void main() {
         }
       ]);
 
-      List<Subject> subjects = await firestoreService.parseBackupJson(jsonString);
+      List<Subject> subjects = await firestoreService.parseBackupJson(jsonString,'');
       expect(subjects.length, 1);
       expect(subjects.first.id, 'subject1');
     });

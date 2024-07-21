@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/deck.dart';
@@ -8,6 +9,8 @@ import '../utils.dart';
 
 class LocalRepositoryService {
   static const String _subjectsEntry = '__SUBJECTS__';
+  static const String _errorsEntry = '__ERRORS__';
+  static const String _historyEntry = '__HISTORY__';
   static final Future<SharedPreferences> _sharedPreferences = SharedPreferences.getInstance();
 
   static Future<void> clear() async {
@@ -315,6 +318,39 @@ class LocalRepositoryService {
   static Future<void> addFlashcard(Deck deck, Flashcard flashcard) async {
     deck.flashcards.add(flashcard);
   }
+
+  static Future<void> addErrors(String userId, List<Map<String, dynamic>> errors) async {
+    List<String> errorIds = await getStringList(_errorsEntry) ?? [];
+
+    for (var error in errors) {
+      String id;
+      do {
+        id = generateRandomString();
+      } while (errorIds.contains(id));
+      errorIds.add(id);
+      await setString(id, jsonEncode(error));
+    }
+
+    await setStringList(_errorsEntry, errorIds);
+  }
+
+  static Future<void> addHistory(String userId, List<Map<String, dynamic>> history) async {
+    List<String> historyIds = await getStringList(_historyEntry) ?? [];
+
+    for (var record in history) {
+      String id;
+      do {
+        id = generateRandomString();
+      } while (historyIds.contains(id));
+      historyIds.add(id);
+      await setString(id, jsonEncode(record));
+    }
+
+    await setStringList(_historyEntry, historyIds);
+  }
+
+
+
 
 
 }

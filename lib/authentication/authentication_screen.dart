@@ -9,7 +9,6 @@ import 'sign_in/sign_in_screen.dart';
 class AuthenticationScreen extends StatelessWidget {
   const AuthenticationScreen({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -58,19 +57,25 @@ class AuthenticationScreen extends StatelessWidget {
                       const Spacer(
                         flex: 2,
                       ),
-                      Center(
-                        child: FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Text(
-                            S.of(context).FlashCard,
-                            style: TextStyle(
-                              color: onBackgroundColor,
-                              fontSize: 140,
-                              fontFamily: 'Pacifico',
-                            ),
-                          ),
-                        ),
+                      // Add logo here
+                      Image.asset(
+                        isDarkMode ? 'assets/iconDark.png' : 'assets/iconWhite.png',
+                        width: 192,
+                        height: 192,
                       ),
+                      // Center(
+                      //   child: FittedBox(
+                      //     fit: BoxFit.fitWidth,
+                      //     child: Text(
+                      //       S.of(context).FlashCard,
+                      //       style: TextStyle(
+                      //         color: onBackgroundColor,
+                      //         fontSize: 140,
+                      //         fontFamily: 'Pacifico',
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       const Spacer(),
                     ],
                   ),

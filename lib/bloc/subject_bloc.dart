@@ -50,6 +50,15 @@ class ReorderFlashcard extends SubjectEvent {
   });
 }
 
+class PopulateDB extends SubjectEvent {
+  final String userId;
+
+  PopulateDB(this.userId);
+
+  @override
+  List<Object> get props => [userId];
+}
+
 class BackupData extends SubjectEvent {
   final String userId;
 
@@ -182,6 +191,7 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
     on<BackupData>(_onBackupData);
     on<RestoreData>(_onRestoreData);
     add(_LoadLocal());
+    on<PopulateDB>(_onPopulateDB);
   }
 
 
@@ -503,15 +513,15 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       await firestoreService.backupData(event.userId, backupJson);
 
       //get the pastErrorsObject list
-      // List<pastErrorsObject> pastErrors = NewSavings.getPastErrorsObjectList(event.userId);
+      List<pastErrorsObject> pastErrors = NewSavings.getPastErrorsObjectList(event.userId);
 
       print("error List backup");
       //print pastErrors list
 
 
-      // print(pastErrors);
+      print(pastErrors);
 
-      // await firestoreService.backupPastErrorsData(event.userId, pastErrors);
+      await firestoreService.backupPastErrorsData(event.userId, pastErrors);
 
 
     } catch (e) {
@@ -574,15 +584,15 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       }
 
       //get the pastErrorsObject list
-      // List<pastErrorsObject> pastErrors = await firestoreService.restorePastErrorsData(event.userId);
+      List<pastErrorsObject> pastErrors = await firestoreService.restorePastErrorsData(event.userId);
       //
-      // print("error list download");
+      print("error list download");
       // print(pastErrors);
       //
       // //restore pastErrorsObject in the subbject_block
-      // for (pastErrorsObject error in pastErrors) {
-      //   NewSavings.addPastErrorsObject(error);
-      // }
+      for (pastErrorsObject error in pastErrors) {
+        NewSavings.addPastErrorsObject(error);
+      }
 
       emit(SubjectState(
         subjects: subjects,
@@ -597,4 +607,23 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       ));
     }
   }
+
+  void _onPopulateDB(PopulateDB event, Emitter<SubjectState> emit) async {
+    try{
+      await firestoreService.restoreDebugData();
+      List<Subject> subjects = await LocalRepositoryService.getSubjects();
+      emit(SubjectState(
+        subjects: subjects,
+        subject: state.subject,
+        deck: state.deck,
+      ));
+    } catch (e) {
+      emit(SubjectState(
+        subjects: state.subjects,
+        subject: state.subject,
+        deck: state.deck,
+      ));
+    }
+}
+
 }
