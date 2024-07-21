@@ -22,7 +22,7 @@ class WelcomeData
     {
       playedInADay = 0;
       String dateIteration= constructDate(selectedDate.toString(), i+1);
-      List<pastErrorsObject> listOfPlayedInTheDay = NewFiltersStorage.getSavingsFilteredByDate(dateIteration, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
+      List<PastErrorsObject> listOfPlayedInTheDay = NewFiltersStorage.getSavingsFilteredByDate(dateIteration, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
 
       for(int j=0;j<listOfPlayedInTheDay.length;j++)
       {
@@ -64,7 +64,7 @@ class WelcomeData
     {
       playedInADay = 0;
       String dateIteration= constructDate(selectedDate.toString(), i+1);
-      List<pastErrorsObject> listOfPlayedInTheDay = NewFiltersStorage.getSavingsFilteredByDate(dateIteration,NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
+      List<PastErrorsObject> listOfPlayedInTheDay = NewFiltersStorage.getSavingsFilteredByDate(dateIteration,NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
 
       for(int j=0;j<listOfPlayedInTheDay.length;j++)
       {

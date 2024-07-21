@@ -1,5 +1,4 @@
 import 'package:flashcard/constants.dart';
-import 'package:flashcard/pages/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flashcard/ChatGPT_services/model-view/api_service.dart';
 import 'package:flutter/services.dart';

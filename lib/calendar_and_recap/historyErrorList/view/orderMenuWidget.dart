@@ -138,10 +138,13 @@ class _OrderMenuState extends State<OrderMenu> {
           }
         }),
       ),
-      child: Row(
-        children: [
-          Text(label),
-        ],
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            Text(label),
+          ],
+        ),
       ),
     );
   }

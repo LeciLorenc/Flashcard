@@ -7,10 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class NewSavings {
 
-  static List<pastErrorsObject> savings = [];
+  static List<PastErrorsObject> savings = [];
 
 
-  static void addToNewSavings(pastErrorsObject playedDeck)
+  static void addToNewSavings(PastErrorsObject playedDeck)
   {
     if( ! isContainedInTheSavings(playedDeck)) {
       savings.add(playedDeck);
@@ -20,14 +20,14 @@ class NewSavings {
 
 
 
-  static bool isContainedInTheSavings(pastErrorsObject newObject)
+  static bool isContainedInTheSavings(PastErrorsObject newObject)
   {
     if(savings.isEmpty) {
       return false;
     }
     for(int i=0;i<savings.length;i++)
     {
-      pastErrorsObject inTheList = savings[i];
+      PastErrorsObject inTheList = savings[i];
       if(inTheList.deck == newObject.deck &&
           inTheList.subject == newObject.subject &&
           inTheList.date == newObject.date &&
@@ -42,9 +42,9 @@ class NewSavings {
   }
 
   //get List<pastErrorsObject> from the user_id
-static List<pastErrorsObject> getPastErrorsObjectList(String user_id)
+static List<PastErrorsObject> getPastErrorsObjectList(String user_id)
   {
-    List<pastErrorsObject> userPastErrorsObjectList = [];
+    List<PastErrorsObject> userPastErrorsObjectList = [];
     for(int i=0;i<savings.length;i++)
     {
       if(savings[i].user_id == user_id)
@@ -63,7 +63,7 @@ static List<pastErrorsObject> getPastErrorsObjectList(String user_id)
 
   //fromJson
   static void fromJson(List<dynamic> jsonList) {
-    List<pastErrorsObject> loadedErrorList =   jsonList.map((itemJson) => pastErrorsObject.fromJson(itemJson)).toList();
+    List<PastErrorsObject> loadedErrorList =   jsonList.map((itemJson) => PastErrorsObject.fromJson(itemJson)).toList();
     savings = loadedErrorList;
   }
 
@@ -71,7 +71,7 @@ static List<pastErrorsObject> getPastErrorsObjectList(String user_id)
 
 
 
-  static pastErrorsObject createNewObject(String user_id,PlayBloc context, List<Flashcard> incorrectFlashcard, String date, String time)
+  static PastErrorsObject createNewObject(String user_id,PlayBloc context, List<Flashcard> incorrectFlashcard, String date, String time)
   {
     String userId = user_id;
     String subject = context.subject.name;
@@ -85,7 +85,7 @@ static List<pastErrorsObject> getPastErrorsObjectList(String user_id)
       questions.add(incorrectFlashcard[i].question);
       answers.add(incorrectFlashcard[i].answer);
     }
-    return pastErrorsObject(user_id: userId, subject: subject, deck: deck, date: date, time: time, numberOfTotalFlashcards: length, wrongQuestions: questions,wrongAnswers: answers);
+    return PastErrorsObject(user_id: userId, subject: subject, deck: deck, date: date, time: time, numberOfTotalFlashcards: length, wrongQuestions: questions,wrongAnswers: answers);
   }
 
 
@@ -109,7 +109,7 @@ static List<pastErrorsObject> getPastErrorsObjectList(String user_id)
     if (errorListJson != null) {
 
       List<dynamic> jsonList = jsonDecode(errorListJson);
-      List<pastErrorsObject> loadedErrorList =   jsonList.map((itemJson) => pastErrorsObject.fromJson(itemJson)).toList();
+      List<PastErrorsObject> loadedErrorList =   jsonList.map((itemJson) => PastErrorsObject.fromJson(itemJson)).toList();
       savings = loadedErrorList;
     } else {
       savings = [];
@@ -125,7 +125,7 @@ static List<pastErrorsObject> getPastErrorsObjectList(String user_id)
     prefs.setString('savings', "");
   }
 
-  static void addPastErrorsObject(pastErrorsObject error) {
+  static void addPastErrorsObject(PastErrorsObject error) {
     savings.add(error);
   }
 

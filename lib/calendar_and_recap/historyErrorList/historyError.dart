@@ -6,7 +6,6 @@ import 'package:flashcard/calendar_and_recap/pastErrors/storage/utilitiesStorage
 import 'package:flashcard/constants.dart';
 import 'package:flashcard/layoutUtils.dart';
 import 'package:flashcard/main.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -437,7 +436,7 @@ class _HistoryErrorState extends State<HistoryError> {
 
   Widget savingList()
   {
-    List<pastErrorsObject> results = widget.viewModel.getFilteredSavings(NewSavings.savings);
+    List<PastErrorsObject> results = widget.viewModel.getFilteredSavings(NewSavings.savings);
     results = widget.viewModel.getOrderedSavings(results);
 
     //TODO here i'm still considering all the items each time -> todo maintain a state of the one already filtered
@@ -512,12 +511,15 @@ class _HistoryErrorState extends State<HistoryError> {
       child: const SizedBox(
         width: 170,
         child: Center(
-          child: Row(
-            children: [
-              Icon(Icons.delete),
-              SizedBox(width: 8),
-              Text("Delete all the records"),
-            ],
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                Icon(Icons.delete),
+                SizedBox(width: 8),
+                Text("Delete all the records"),
+              ],
+            ),
           ),
         ),
       ),

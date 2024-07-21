@@ -38,7 +38,7 @@ class PastErrorsViewModel extends ChangeNotifier {
   }
   void createListFlashcard()
   {
-    List<pastErrorsObject> listFiltered = List<pastErrorsObject>.from(NewSavings.savings);
+    List<PastErrorsObject> listFiltered = List<PastErrorsObject>.from(NewSavings.savings);
     List<Flashcard> listOfAllThePossibleFlashcards = [];
 
     if(subjectChosen!= '')
@@ -76,7 +76,7 @@ class PastErrorsViewModel extends ChangeNotifier {
     }
   }
 
-  void flashcardFromSubject(List<pastErrorsObject> listFiltered, List<Flashcard> listOfAllThePossibleFlashcards)
+  void flashcardFromSubject(List<PastErrorsObject> listFiltered, List<Flashcard> listOfAllThePossibleFlashcards)
   {
     int i=0;
 
@@ -98,7 +98,7 @@ class PastErrorsViewModel extends ChangeNotifier {
       }
     }
   }
-  void flashcardFromDeck(List<pastErrorsObject> listFiltered, List<Flashcard> listOfAllThePossibleFlashcards)
+  void flashcardFromDeck(List<PastErrorsObject> listFiltered, List<Flashcard> listOfAllThePossibleFlashcards)
   {
     int i=0;
 
@@ -143,7 +143,7 @@ class PastErrorsViewModel extends ChangeNotifier {
 
   List<String> getSubjects()
   {
-    List<pastErrorsObject> listFiltered = List<pastErrorsObject>.from(NewSavings.savings);
+    List<PastErrorsObject> listFiltered = List<PastErrorsObject>.from(NewSavings.savings);
     List<String> listOfNames = [];
 
     for(var item in listFiltered)
@@ -159,7 +159,7 @@ class PastErrorsViewModel extends ChangeNotifier {
   }
   List<String> getDecks()
   {
-    List<pastErrorsObject> listFiltered = List<pastErrorsObject>.from(NewSavings.savings);
+    List<PastErrorsObject> listFiltered = List<PastErrorsObject>.from(NewSavings.savings);
     List<String> listOfNames = [];
 
     for(var item in listFiltered){

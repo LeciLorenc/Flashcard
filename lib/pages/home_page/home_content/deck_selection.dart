@@ -202,7 +202,7 @@ class DeckSelection extends StatelessWidget {
                                 TextField(
                                   decoration: const InputDecoration(
                                     hintText: 'Enter the name of the deck',
-                                    focusedBorder: const UnderlineInputBorder(
+                                    focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(color: primaryColor), // Color when focused
                                     ),
                                   ),

@@ -5,8 +5,8 @@ import 'package:flashcard/calendar_and_recap/pastErrors/storage/utilitiesStorage
 
 class NewFiltersStorage{
 
-  static pastErrorsObject? getASpecificSaving(String date, String time , List<pastErrorsObject> list) {
-    pastErrorsObject? itemsWithDate;
+  static PastErrorsObject? getASpecificSaving(String date, String time , List<PastErrorsObject> list) {
+    PastErrorsObject? itemsWithDate;
 
     for (var item in list) {
       if (item.date == date && item.time == time) {
@@ -20,9 +20,9 @@ class NewFiltersStorage{
 
 
 
-  static List<pastErrorsObject> filterByUser(String user_id, List<pastErrorsObject> list)
+  static List<PastErrorsObject> filterByUser(String user_id, List<PastErrorsObject> list)
   {
-    List<pastErrorsObject> itemsByUser=[];
+    List<PastErrorsObject> itemsByUser=[];
 
     for (var item in list) {
       if (item.user_id == user_id) {
@@ -35,8 +35,8 @@ class NewFiltersStorage{
 
 
 
-  static List<pastErrorsObject> getSavingsFilteredByDate(String date, List<pastErrorsObject> list) {
-    List<pastErrorsObject> itemsWithDate=[];
+  static List<PastErrorsObject> getSavingsFilteredByDate(String date, List<PastErrorsObject> list) {
+    List<PastErrorsObject> itemsWithDate=[];
 
     for (var item in list) {
       if (item.date == date) {
@@ -48,8 +48,8 @@ class NewFiltersStorage{
   }
 
 
-  static pastErrorsObject? getSavingsFilteredByDateSubjectDeck(String date, String time, String subject, String deck,  List<pastErrorsObject> list) {
-    pastErrorsObject? itemsWithDate;
+  static PastErrorsObject? getSavingsFilteredByDateSubjectDeck(String date, String time, String subject, String deck,  List<PastErrorsObject> list) {
+    PastErrorsObject? itemsWithDate;
 
     for (var item in list) {
       if (item.date == date && item.deck == deck && item.subject == subject && item.time == time) {
@@ -62,8 +62,8 @@ class NewFiltersStorage{
   }
 
 
-  static pastErrorsObject? getSavingsFilteredByMonthAndYear(int month, int year,  List<pastErrorsObject> list) {
-    pastErrorsObject? itemsWithMonthAndYear;
+  static PastErrorsObject? getSavingsFilteredByMonthAndYear(int month, int year,  List<PastErrorsObject> list) {
+    PastErrorsObject? itemsWithMonthAndYear;
 
     for (var item in list) {
       DateTime itemDate = DateTime.parse(item.date);
@@ -76,7 +76,7 @@ class NewFiltersStorage{
     return itemsWithMonthAndYear;
   }
 
-  static List<pastErrorsObject> calculatePlayedListWithOnlyDate(DateTime selectedDate, List<pastErrorsObject>  list)
+  static List<PastErrorsObject> calculatePlayedListWithOnlyDate(DateTime selectedDate, List<PastErrorsObject>  list)
   {
     return NewFiltersStorage.
     getSavingsFilteredByDate(UtilitiesStorage.getOnlyDateFromSelectedDate(selectedDate), list );

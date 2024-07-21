@@ -8,7 +8,7 @@ import 'detailsWithAI/handlingGPTResponse.dart';
 
 
 class SpecificErrorWidget extends StatelessWidget {
-  final pastErrorsObject item;
+  final PastErrorsObject item;
 
   const SpecificErrorWidget({Key? key, required this.item}) : super(key: key);
 

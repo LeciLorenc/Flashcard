@@ -113,7 +113,7 @@ class _PlayContentState extends State<PlayContent> {
 
 
                         //SUBSTITUTE
-          pastErrorsObject newObject = NewSavings.createNewObject(globalUserId, context.read<PlayBloc>(), incorrectFlashcards, currentDate, currentTime);
+          PastErrorsObject newObject = NewSavings.createNewObject(globalUserId, context.read<PlayBloc>(), incorrectFlashcards, currentDate, currentTime);
           NewSavings.addToNewSavings(newObject);
           NewSavings.saveNewObject().then((value) => null);
 
@@ -236,7 +236,7 @@ class _PlayContentState extends State<PlayContent> {
 
   bool isButtonVisible(String currentDate, String currentTime)
   {
-    pastErrorsObject? result = NewFiltersStorage.getASpecificSaving(currentDate, currentTime, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
+    PastErrorsObject? result = NewFiltersStorage.getASpecificSaving(currentDate, currentTime, NewFiltersStorage.filterByUser(globalUserId, NewSavings.savings));
     if( result != null && result.wrongQuestions.isNotEmpty && result.wrongAnswers.isNotEmpty) {
       return true;
     } else {

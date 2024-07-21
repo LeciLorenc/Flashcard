@@ -137,7 +137,7 @@ class HistogramPainter extends CustomPainter {
       double orangeColumnHeight = ((maxTotal[i] - pointsDone[i]) / maxOfTheTotal()) * maxColumnHeight;
       RRect orangeColumnRect = RRect.fromRectAndRadius(
         Rect.fromLTWH(columnX, size.height - (orangeColumnHeight + columnHeight), finalColumnWidth, orangeColumnHeight),
-        Radius.circular(2.0), // Adjust the radius to change the roundness of the corners
+        const Radius.circular(2.0), // Adjust the radius to change the roundness of the corners
       );
 
       canvas.drawRRect(orangeColumnRect, redColumnPaint);

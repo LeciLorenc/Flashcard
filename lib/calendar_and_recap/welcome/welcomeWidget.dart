@@ -185,7 +185,7 @@ class _WelcomeWidgetState extends State<WelcomeWidget> {
                         flex: 2,
                         child: Column(
                           children: [
-                            Text("Choose here the month to display)"),
+                            const Text("Choose here the month to display)"),
                             MonthYearPicker(
                               onChanged: (DateTime newDate) {
                                 setState(() {

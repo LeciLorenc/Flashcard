@@ -1,4 +1,4 @@
-class pastErrorsObject {
+class PastErrorsObject {
   final String user_id;
   final String subject;
   final String deck;
@@ -8,7 +8,7 @@ class pastErrorsObject {
   final List<String> wrongQuestions;
   final List<String> wrongAnswers;
 
-  pastErrorsObject({
+  PastErrorsObject({
     required this.user_id,
     required this.subject,
     required this.deck,
@@ -19,11 +19,11 @@ class pastErrorsObject {
     required this.wrongAnswers,
   });
 
-  factory pastErrorsObject.fromJson(Map<String, dynamic> json) {
+  factory PastErrorsObject.fromJson(Map<String, dynamic> json) {
     List<String> questionList = List<String>.from(json['questions']);
     List<String> answerList = List<String>.from(json['answers']);
 
-    return pastErrorsObject(
+    return PastErrorsObject(
       user_id: json['user_id'],
       deck: json['deck'],
       subject: json['subject'],

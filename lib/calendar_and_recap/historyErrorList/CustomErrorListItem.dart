@@ -125,7 +125,7 @@ class CustomErrorListItem extends StatelessWidget {
 
 
 class CustomErrorListItem extends StatelessWidget {
-  final pastErrorsObject item;
+  final PastErrorsObject item;
 
   const CustomErrorListItem(
       {super.key,

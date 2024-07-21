@@ -3,11 +3,9 @@ import 'package:flashcard/constants.dart';
 import 'package:flashcard/custom_widgets/app_bar.dart';
 import 'package:flashcard/custom_widgets/scroll_expandable.dart';
 import 'package:flashcard/generated/l10n.dart';
-import 'package:flashcard/input/button.dart';
 import 'package:flashcard/input/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../main.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});

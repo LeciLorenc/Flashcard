@@ -143,13 +143,13 @@ class FirestoreService {
   }
 
   // Method to create a JSON backup string from a list of pastErrorsObject
-  Future<String> createPastErrorsBackupJson(List<pastErrorsObject> pastErrors) async {
+  Future<String> createPastErrorsBackupJson(List<PastErrorsObject> pastErrors) async {
     List<Map<String, dynamic>> pastErrorsJson = pastErrors.map((error) => error.toJson()).toList();
     return jsonEncode(pastErrorsJson);
   }
 
 // Method to backup pastErrors data to Firestore
-  Future<void> backupPastErrorsData(String userId, List<pastErrorsObject> pastErrors) async {
+  Future<void> backupPastErrorsData(String userId, List<PastErrorsObject> pastErrors) async {
     String backupJson = await createPastErrorsBackupJson(pastErrors);
     await _db.collection('pastErrors').doc(userId).set({'data': backupJson});
   }
@@ -161,7 +161,7 @@ class FirestoreService {
         Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
         String backupJson = data['data'];
         List<dynamic> jsonData = jsonDecode(backupJson);
-        List<pastErrorsObject> pastErrors = jsonData.map((data) => pastErrorsObject.fromJson(data)).toList();
+        List<PastErrorsObject> pastErrors = jsonData.map((data) => PastErrorsObject.fromJson(data)).toList();
         return pastErrors;
       } else {
         throw Exception('No backup found for this user');

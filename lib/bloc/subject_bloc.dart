@@ -5,6 +5,8 @@ import 'package:flashcard/service/local_repository_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../calendar_and_recap/pastErrors/model/newObject.dart';
+import '../calendar_and_recap/pastErrors/storage/NewSavings.dart';
 import '../model/deck.dart';
 import '../model/flashcard.dart';
 import '../model/subject.dart';
@@ -510,7 +512,7 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       await firestoreService.backupData(event.userId, backupJson);
 
       //get the pastErrorsObject list
-      List<pastErrorsObject> pastErrors = NewSavings.getPastErrorsObjectList(event.userId);
+      List<PastErrorsObject> pastErrors = NewSavings.getPastErrorsObjectList(event.userId);
 
       print("error List backup");
       //print pastErrors list
@@ -581,13 +583,13 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
       }
 
       //get the pastErrorsObject list
-      List<pastErrorsObject> pastErrors = await firestoreService.restorePastErrorsData(event.userId);
+      List<PastErrorsObject> pastErrors = await firestoreService.restorePastErrorsData(event.userId);
       //
       print("error list download");
       // print(pastErrors);
       //
       // //restore pastErrorsObject in the subbject_block
-      for (pastErrorsObject error in pastErrors) {
+      for (PastErrorsObject error in pastErrors) {
         NewSavings.addPastErrorsObject(error);
       }
 
