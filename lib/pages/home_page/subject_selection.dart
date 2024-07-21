@@ -149,7 +149,7 @@ class SubjectSelection extends StatelessWidget {
             AdaptableButton(
               onPressed: () => context.read<SubjectBloc>().add(DeleteAllSubjects()),
               icon: Icons.remove_outlined,
-              title: 'Delete all subjects',
+              title: 'Delete ALL',
               expanded: expanded, textColor: textColor, iconColor: iconColor,
 
             ),

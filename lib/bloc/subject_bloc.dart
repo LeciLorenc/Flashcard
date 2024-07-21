@@ -539,8 +539,6 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
 
       await firestoreService.backupPastErrorsData(event.userId, pastErrors);
 
-      //clean remove pastErrorsObject in the subbject_block
-      NewSavings.clearPastErrorsObjectList(event.userId);
     } catch (e) {
       print("error backuping data");
       print(e);
