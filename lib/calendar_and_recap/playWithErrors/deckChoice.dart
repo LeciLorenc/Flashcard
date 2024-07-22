@@ -87,6 +87,8 @@ class _DeckChoice extends State<DeckChoice> {
       children: [
 
         Checkbox(
+          checkColor: primaryColor,
+          fillColor: MaterialStateProperty.all(backgroundButtonColorLight),
           value: widget.pastErrorsViewModel.notOnly5Flashcards,
           onChanged: (bool? value) {
             setState(() {
@@ -94,7 +96,7 @@ class _DeckChoice extends State<DeckChoice> {
             });
           },
         ),
-        const Text("Replay ALL wrong flashcards"),
+        const Text("Replay ALL the wrong flashcards \nof the deck selected"),
       ],
     );
   }
