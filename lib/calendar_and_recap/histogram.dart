@@ -77,6 +77,7 @@ class HistogramPainter extends CustomPainter {
     int k = maxOfTheTotal();
     int maxIndexValue = k > 5 ? k : 5;
     double offsetForLeftAxisLabel = -12;
+/*
 
     List<int> yLabels=[];
     int kY=5;
@@ -92,6 +93,8 @@ class HistogramPainter extends CustomPainter {
     {
       kY= 10;
     }
+
+
     if(kY>=5)
     { //faccio scelta label
       for(int i = 1; i <= maxIndexValue; i++)
@@ -107,9 +110,10 @@ class HistogramPainter extends CustomPainter {
         yLabels.add(i);
       }
     }
+*/
 
     for (int i = 1; i <= maxIndexValue; i++) { // Start from 1 instead of 0
-      if(!yLabels.contains(i)) continue;
+      //if(!yLabels.contains(i)) continue;
       TextPainter textPainter = TextPainter(
         text: TextSpan(text: i.toString(), style:  TextStyle(fontSize: 10, color: isDark ? darkTextColor: lightTextColor)),
         textDirection: TextDirection.ltr,

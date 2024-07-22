@@ -40,7 +40,7 @@ class ErrorsList extends StatelessWidget {
   double setHeightForErrors(BuildContext context)
   {
     if (LayoutUtils.getHeight(context)>400 && LayoutUtils.isPortrait(context)) {
-      return 570;
+      return 530;
     } else if(LayoutUtils.getHeight(context)>400 && LayoutUtils.isLandscape(context)){
       return 270;
     }
