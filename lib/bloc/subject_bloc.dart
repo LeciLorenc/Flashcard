@@ -601,6 +601,8 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
 
       NewSavings.clearPastErrorsObjectList(event.userId);
 
+      //delete pastErrosaObject in the subbject_block
+      NewSavings.clearPastErrorsObjectList(event.userId);
       //get the pastErrorsObject list
       List<PastErrorsObject> pastErrors = await firestoreService
           .restorePastErrorsData(event.userId);

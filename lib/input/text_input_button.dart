@@ -26,6 +26,9 @@ class TextInputButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = isDarkMode ? Colors.white : primaryColor;
+
     return Row(
       children: [
         Expanded(
@@ -53,6 +56,7 @@ class TextInputButton extends StatelessWidget {
             child: Icon(
               iconButton,
               size: 34,
+              color: iconColor,
             ),
           ),
         ),

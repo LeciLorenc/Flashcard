@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flashcard/authentication/sign_in/sign_in_bloc.dart';
 import 'package:flashcard/constants.dart';
 import 'package:flashcard/custom_widgets/app_bar.dart';
-import 'package:flashcard/input/button.dart';
 import 'package:flashcard/input/text_input.dart';
 import 'package:flashcard/generated/l10n.dart';
+import 'package:flashcard/input/button.dart'; // Import the CustomButton
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
@@ -16,8 +16,11 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0;
+
     return Scaffold(
       appBar: const KAppBar(),
+      resizeToAvoidBottomInset: true,
       body: BlocProvider(
         create: (context) => signInBloc,
         child: BlocBuilder<SignInBloc, SignInState>(
@@ -28,98 +31,102 @@ class SignInScreen extends StatelessWidget {
             return LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 return SingleChildScrollView(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
                   child: Center(
-                    child: SizedBox(
-                      width: constraints.maxWidth < 600 ? 300 : 700,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: constraints.maxHeight * (constraints.maxWidth < 600 ? 0.4 : 0.35),
-                            child: Column(
-                              children: [
-                                const Spacer(flex: 2),
-                                Image.asset(
-                                  logo,
-                                  width: 150, // Increased the logo size
-                                  height: 150, // Increased the logo size
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      child: IntrinsicHeight(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (!isKeyboardOpen) ...[
+                              Image.asset(
+                                logo,
+                                width: 150,
+                                height: 150,
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                S.of(context).signIn,
+                                style: TextStyle(
+                                  color: Theme.of(context).textTheme.bodyLarge!.color,
+                                  fontSize: constraints.maxWidth < 600 ? 40 : 35,
+                                  fontFamily: 'Pacifico',
                                 ),
-                                const SizedBox(height: 20),
-                                FittedBox(
-                                  fit: BoxFit.fitWidth,
-                                  child: Text(
-                                    S.of(context).signIn,
-                                    style: TextStyle(
-                                      color: Theme.of(context).textTheme.bodyLarge!.color,
-                                      fontSize: constraints.maxWidth < 600 ? 80 : 70, // Reduced the font size
-                                      fontFamily: 'Pacifico',
-                                    ),
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                            if (state is EmailOrPasswordErrorState)
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  S.of(context).emailOrPasswordError,
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.error,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            if (state is GenericErrorState)
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  state.toString(),  // Adjusted to use a default error message
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.error,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            TextInput.email(
+                              textEditingController: email,
+                              errorText: state is EmailOrPasswordErrorState
+                                  ? S.of(context).emailOrPasswordError
+                                  : null,
+                            ),
+                            const SizedBox(height: spaceBetweenWidgets),
+                            TextInput.password(
+                              textEditingController: password,
+                              errorText: state is EmailOrPasswordErrorState
+                                  ? S.of(context).emailOrPasswordError
+                                  : null,
+                            ),
+                            const SizedBox(height: spaceBetweenWidgets),
+                            SizedBox(
+                              width: double.infinity,
+                              child: CustomButton(
+                                key: const Key('sign_in_button'),
+                                onPressed: () => signInBloc.add(
+                                  EmailPasswordSignInEvent(
+                                    email: email.text,
+                                    password: password.text,
                                   ),
                                 ),
-                                const Spacer(),
-                              ],
+                                text: S.of(context).signIn,
+                                icon: Icons.login, // Add icon here
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: constraints.maxHeight * (constraints.maxWidth < 600 ? 0.6 : 0.5),
-                            child: Column(
-                              children: [
-                                if (state is GenericErrorState)
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      state.message,
-                                      style: TextStyle(
-                                        color: Theme.of(context).colorScheme.error,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                const Spacer(),
-                                TextInput.email(
-                                  textEditingController: email,
-                                  errorText: state is EmailOrPasswordErrorState
-                                      ? S.of(context).emailOrPasswordError
-                                      : null,
-                                ),
-                                const SizedBox(height: spaceBetweenWidgets),
-                                TextInput.password(
-                                  textEditingController: password,
-                                  errorText: state is EmailOrPasswordErrorState
-                                      ? S.of(context).emailOrPasswordError
-                                      : null,
-                                ),
-                                const SizedBox(height: spaceBetweenWidgets),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Button(
-                                        key: const Key('sign_in_button'),
-                                        onPressed: () => signInBloc.add(
-                                          EmailPasswordSignInEvent(
-                                            email: email.text,
-                                            password: password.text,
-                                          ),
-                                        ),
-                                        text: S.of(context).signIn,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    Expanded(
-                                      child: Button(
-                                        key: const Key('google_sign_in_button'),
-                                        onPressed: () => signInBloc.add(GoogleSignInEvent()),
-                                        text: S.of(context).signInWithGoogle,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Spacer(),
-                              ],
+                            const SizedBox(height: spaceBetweenWidgets),
+                            SizedBox(
+                              width: double.infinity,
+                              child: CustomButton(
+                                key: const Key('google_sign_in_button'),
+                                onPressed: () => signInBloc.add(GoogleSignInEvent()),
+                                text: S.of(context).signInWithGoogle,
+                                icon: Icons.login, // Add icon here
+                              ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 20),
+                          ],
+                        ),
                       ),
                     ),
                   ),

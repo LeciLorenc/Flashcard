@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flashcard/constants.dart';
 
 class TextInput extends StatelessWidget {
   const TextInput({
@@ -46,6 +47,9 @@ class TextInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = isDarkMode ? Colors.green : primaryColor;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
@@ -66,7 +70,7 @@ class TextInput extends StatelessWidget {
             errorText: errorText,
             border: InputBorder.none,
             hintText: hintText,
-            icon: icon != null ? Icon(icon) : null,
+            icon: icon != null ? Icon(icon, color: iconColor) : null,
           ),
           obscureText: obscureText,
         ),

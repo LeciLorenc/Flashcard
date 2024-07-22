@@ -119,6 +119,59 @@ MaterialColor createColors(Color color) {
 
 
 
+
+class CustomButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String text;
+  final IconData? icon; // Add an optional icon parameter
+
+  const CustomButton({
+    Key? key,
+    required this.onPressed,
+    required this.text,
+    this.icon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final buttonBorderColor = isDarkMode ? primaryColor : primaryColor;
+    final buttonTextColor = isDarkMode ? Colors.white70 : primaryColor;
+    final buttonBackgroundColor = isDarkMode ? Colors.black : Colors.white;
+
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size.fromHeight(56),
+        backgroundColor: buttonBackgroundColor,
+        side: BorderSide(color: buttonBorderColor),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, color: buttonTextColor),
+            const SizedBox(width: 8),
+          ],
+          Text(
+            text,
+            style: TextStyle(
+              color: buttonTextColor,
+              fontSize: 16,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+
 //
 // const Color primaryColor = Color(0xFF287762);
 // const Color secondaryColor = Colors.red;

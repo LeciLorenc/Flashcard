@@ -25,6 +25,34 @@ class S {
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
+  String get signedInSuccessfully => Intl.message(
+        'Signed in successfully',
+        name: 'signedInSuccessfully',
+        desc: '',
+        args: [],
+      );
+
+  String get noAccountSignUp =>   Intl.message(
+        'No account? Sign up',
+        name: 'noAccountSignUp',
+        desc: '',
+        args: [],
+      );
+
+  get email => Intl.message(
+        'Email',
+        name: 'email',
+        desc: '',
+        args: [],
+      );
+
+  get password => Intl.message(
+        'Password',
+        name: 'password',
+        desc: '',
+        args: [],
+      );
+
 
 
   static Future<S> load(Locale locale) {

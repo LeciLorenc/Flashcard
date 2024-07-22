@@ -158,6 +158,7 @@ class SubjectSelection extends StatelessWidget {
               onPressed: () {
                 context.read<SubjectBloc>().add(BackupData(FirebaseAuth.instance.currentUser!.uid));
                 context.read<AuthenticationBloc>().logout();
+
               },
               icon: Icons.logout,
               title: 'Logout',
