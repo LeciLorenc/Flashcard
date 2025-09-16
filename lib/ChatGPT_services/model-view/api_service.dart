@@ -8,7 +8,7 @@ import '../../main.dart';
 
 class ApiService {
   //DO NOT UPDATE THIS, IS HERE ONLY FOR BE COPIED AND PASTED
-  static String API_KEY = 'sk-proj-aQvYlyyW9KFv20a2bcR7T3BlbkFJc7NOWp5UzMTsulkUyUQr';
+  static String API_KEY = 'your api key';
   static const String BASE_URL = "https://api.openai.com/v1";
 
   static Map<String, String> userApiKeys = {};
