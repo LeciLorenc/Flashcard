@@ -23,11 +23,11 @@ Below are key screenshots demonstrating FlashcardsAI features. All screenshots s
 
 | Create Deck with AI                | Calendar Widget                  | Custom App Icon                |
 |------------------------------------|----------------------------------|-------------------------------|
-| ![Add Deck with AI](screenshots/AddDeckWithAI.png) | ![Calendar Widget](screenshots/CalendarWidget.png) | ![Icon Dark](screenshots/IconDark.png) |
+| ![Add Deck with AI](screenshotts/AddDeckWithAI.png) | ![Calendar Widget](screenshotts/CalendarWidget.png) | ![Icon Dark](screenshotts/IconDark.png) |
 
 | Subject Selection Page             | Welcome Screen (Mobile)           | Welcome Screen (Tablet/Desktop) |
 |------------------------------------|-----------------------------------|---------------------------------|
-| ![Subject Selection](screenshots/subjectSelection.png) | ![Welcome Widget Mobile](screenshots/welcomeWidgetMobile.png) | ![Welcome Widget Tablet](screenshots/WelcomeWidgetTablet.png) |
+| ![Subject Selection](screenshotts/subjectSelection.png) | ![Welcome Widget Mobile](screenshotts/welcomeWidgetMobile.png) | ![Welcome Widget Tablet](screenshotts/WelcomeWidgetTablet.png) |
 
 > _Screenshots are from various stages of app usage (creating a deck, calendar view, home, welcome, etc.). For best quality, make sure to add these files in the repository under `/screenshots` exactly as named above._
 
